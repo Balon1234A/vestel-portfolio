@@ -35,9 +35,7 @@
             filter: drop-shadow(0 0 4px #ff69b4);
         }
 
-        /* Убираем стандартный курсор на всех интерактивных элементах */
-        a, button, .social-btn, .info-btn, .theme-btn, .like-btn, .sakura-trigger, 
-        .petal-trigger, .modal-close, .lang-btn {
+        a, button, .social-btn, .info-btn, .lang-btn, .modal-close {
             cursor: none;
         }
 
@@ -90,7 +88,6 @@
             100% { transform: translateY(0px); }
         }
 
-        /* Переключатель языка */
         .lang-switcher {
             display: flex;
             justify-content: flex-end;
@@ -407,13 +404,11 @@
 
 <div class="main-container">
     <div class="epic-card" id="mainCard">
-        <!-- Переключатель языка -->
         <div class="lang-switcher">
             <button class="lang-btn active" data-lang="ru">RU</button>
             <button class="lang-btn" data-lang="en">EN</button>
         </div>
 
-        <!-- Аватарка -->
         <div class="avatar-section">
             <div class="avatar-pulse"></div>
             <div class="avatar">
@@ -421,7 +416,6 @@
             </div>
         </div>
 
-        <!-- Имя и текст с поддержкой двух языков -->
         <div class="name">Паша</div>
         <div class="nick-wrapper">
             <span class="nick">@vestel</span>
@@ -435,25 +429,22 @@
             Должности: Sceleton Army - Curator, Support
         </div>
 
-        <!-- Социальные сети -->
         <div class="social-links">
             <div class="social-btn" id="discordBtn">
                 <i class="fab fa-discord"></i> <span id="discordText">vest_el</span>
             </div>
-            <a href="https://www.roblox.com/users/2370186892/profile" class="social-btn" target="_blank">
+            <a href="https://www.roblox.com/users/2370186892/profile" class="social-btn" target="_blank" id="robloxLink">
                 <i class="fas fa-gamepad"></i> <span id="robloxText">Roblox</span>
             </a>
-            <a href="https://t.me/vest_ell" class="social-btn" target="_blank">
+            <a href="https://t.me/vest_ell" class="social-btn" target="_blank" id="telegramLink">
                 <i class="fab fa-telegram"></i> <span id="telegramText">@vest_ell</span>
             </a>
         </div>
 
-        <!-- Кнопка INFO -->
         <div class="info-btn" id="infoBtn">
             <i class="fas fa-info-circle"></i> <span id="infoText">INFO</span>
         </div>
 
-        <!-- Нижняя панель -->
         <div class="footer-stuff">
             <span>🌸 さくら</span>
             <span id="footerQuote">Sceleton Army</span>
@@ -461,7 +452,6 @@
     </div>
 </div>
 
-<!-- МОДАЛЬНОЕ ОКНО INFO -->
 <div class="modal-overlay" id="infoModal">
     <div class="modal-window">
         <h2 id="modalTitle">🌸 INFO</h2>
@@ -479,7 +469,59 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
     (function() {
-        // ========== СЛОВАРЬ ДЛЯ ПЕРЕВОДА ==========
+        // ========== ЗВУК КЛИКА (синтезированный через Web Audio) ==========
+        let audioContext = null;
+        
+        function playClickSound() {
+            try {
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                // Если контекст в suspended состоянии (браузер блокирует), пробуем resume
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume().then(() => {
+                        playClickSoundInternal();
+                    }).catch(() => {});
+                } else {
+                    playClickSoundInternal();
+                }
+            } catch(e) {
+                // Если что-то пошло не так — молча игнорируем
+            }
+        }
+        
+        function playClickSoundInternal() {
+            try {
+                const now = audioContext.currentTime;
+                const gainNode = audioContext.createGain();
+                const oscillator = audioContext.createOscillator();
+                
+                oscillator.type = 'sine';
+                oscillator.frequency.value = 880; // нота Ля5 (приятный звук)
+                
+                gainNode.gain.setValueAtTime(0.15, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 0.3);
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.start(now);
+                oscillator.stop(now + 0.2);
+            } catch(e) {
+                // Игнорируем ошибки
+            }
+        }
+        
+        // Функция для добавления звука на все кликабельные элементы
+        function addClickSoundToElement(element) {
+            if (!element) return;
+            const originalClick = element.onclick;
+            element.addEventListener('click', (e) => {
+                playClickSound();
+            });
+        }
+        
+        // ========== ПЕРЕВОД ==========
         const translations = {
             ru: {
                 badgeRole: "💀 Sceleton Army",
@@ -551,7 +593,6 @@
             document.getElementById('infoCityValue').innerHTML = t.infoCityValue;
             document.getElementById('infoRoleValue').innerHTML = t.infoRoleValue;
             
-            // Обновляем активную кнопку
             document.querySelectorAll('.lang-btn').forEach(btn => {
                 if(btn.getAttribute('data-lang') === lang) {
                     btn.classList.add('active');
@@ -560,14 +601,6 @@
                 }
             });
         }
-
-        // Обработчики переключения языка
-        document.querySelectorAll('.lang-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const lang = btn.getAttribute('data-lang');
-                updateLanguage(lang);
-            });
-        });
 
         // ========== МОДАЛЬНОЕ ОКНО ==========
         const modal = document.getElementById('infoModal');
@@ -623,7 +656,7 @@
             });
         }
 
-        // ========== КАСТОМНЫЙ КУРСОР САКУРА ==========
+        // ========== КАСТОМНЫЙ КУРСОР ==========
         const cursor = document.createElement('div');
         cursor.className = 'custom-cursor';
         cursor.innerHTML = '🌸';
@@ -633,7 +666,6 @@
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
             
-            // Эффект изменения размера на кнопках
             const target = e.target.closest('.social-btn, .info-btn, .lang-btn, .modal-close');
             if(target) {
                 cursor.style.transform = 'translate(-50%, -50%) scale(1.3)';
@@ -644,7 +676,6 @@
             }
         });
         
-        // Скрываем курсор при уходе с окна
         document.addEventListener('mouseleave', () => {
             cursor.style.opacity = '0';
         });
@@ -652,6 +683,26 @@
             cursor.style.opacity = '1';
         });
 
+        // ========== ДОБАВЛЯЕМ ЗВУК НА ВСЕ КНОПКИ ==========
+        // Переключатели языка
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const lang = btn.getAttribute('data-lang');
+                updateLanguage(lang);
+            });
+            addClickSoundToElement(btn);
+        });
+        
+        // Кнопки соцсетей и INFO (уже есть обработчики, добавляем звук отдельно)
+        addClickSoundToElement(discordBtn);
+        addClickSoundToElement(document.getElementById('robloxLink'));
+        addClickSoundToElement(document.getElementById('telegramLink'));
+        addClickSoundToElement(infoBtn);
+        addClickSoundToElement(closeModalBtn);
+        
+        // Также добавляем звук на модальное окно при открытии/закрытии через фон
+        // Не нужно, так как фон не кликабельный
+        
         // ========== 3D ФОН ==========
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x0a0a0a);
@@ -760,6 +811,17 @@
             const y = (e.clientY / window.innerHeight - 0.5) * 10;
             document.getElementById('mainCard').style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
         });
+        
+        // Активация звука после первого взаимодействия (политика браузеров)
+        function enableAudioOnFirstClick() {
+            if (audioContext && audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+            document.removeEventListener('click', enableAudioOnFirstClick);
+            document.removeEventListener('touchstart', enableAudioOnFirstClick);
+        }
+        document.addEventListener('click', enableAudioOnFirstClick);
+        document.addEventListener('touchstart', enableAudioOnFirstClick);
     })();
 </script>
 </body>
