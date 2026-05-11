@@ -80,6 +80,10 @@
             box-shadow: 0 0 50px rgba(255, 105, 180, 0.4), inset 0 0 30px rgba(255, 105, 180, 0.1);
             padding: 35px 30px;
             transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        /* Анимация карточки (можно отключить) */
+        .epic-card.float-active {
             animation: float 4s ease-in-out infinite;
         }
 
@@ -133,6 +137,12 @@
             opacity: 0.6;
             animation: pulse 2s infinite;
             z-index: 0;
+        }
+
+        /* Отключаемый пульс */
+        .avatar-pulse.pulse-off {
+            animation: none;
+            opacity: 0.2;
         }
 
         @keyframes pulse {
@@ -276,31 +286,32 @@
             box-shadow: 0 10px 25px rgba(255,105,180,0.4);
         }
 
-        /* Скрытая админ-кнопка */
+        /* Скрытая админ-кнопка (почти невидимая) */
         .admin-trigger {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            width: 45px;
-            height: 45px;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(10px);
+            width: 35px;
+            height: 35px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(5px);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             z-index: 1000;
-            border: 1px solid rgba(255,105,180,0.3);
+            border: 1px solid rgba(255,105,180,0.15);
             transition: 0.2s;
-            font-size: 1.2rem;
-            color: var(--accent-color, #ff69b4);
+            font-size: 0.9rem;
+            color: rgba(255,105,180,0.3);
         }
 
         .admin-trigger:hover {
-            background: var(--accent-color, #ff69b4);
-            color: white;
-            transform: scale(1.1);
+            background: rgba(255,105,180,0.2);
+            color: rgba(255,105,180,0.7);
+            border-color: rgba(255,105,180,0.4);
+            transform: scale(1.05);
         }
 
         /* Админ-панель */
@@ -313,7 +324,7 @@
             border-radius: 30px;
             padding: 25px;
             width: 90%;
-            max-width: 400px;
+            max-width: 450px;
             z-index: 20000;
             border: 2px solid var(--accent-color, #ff69b4);
             box-shadow: 0 0 50px rgba(0,0,0,0.5);
@@ -328,16 +339,36 @@
             transform: translate(-50%, -50%) scale(1);
         }
 
-        .admin-panel h3 {
-            text-align: center;
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
+        }
+
+        .admin-header h3 {
             color: var(--accent-color, #ff69b4);
         }
 
-        .admin-panel input {
+        .admin-close-x {
+            background: none;
+            border: none;
+            color: #ff69b4;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0 8px;
+            transition: 0.2s;
+        }
+
+        .admin-close-x:hover {
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .admin-panel input, .admin-panel select {
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
+            padding: 8px 12px;
+            margin: 8px 0;
             background: rgba(255,255,255,0.1);
             border: 1px solid rgba(255,105,180,0.3);
             border-radius: 30px;
@@ -348,18 +379,20 @@
         .admin-panel button {
             background: var(--accent-color, #ff69b4);
             border: none;
-            padding: 10px 20px;
+            padding: 8px 16px;
             border-radius: 30px;
             color: white;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 8px;
             width: 100%;
         }
 
         .admin-settings {
-            margin-top: 20px;
+            margin-top: 15px;
             border-top: 1px solid rgba(255,105,180,0.3);
             padding-top: 15px;
+            max-height: 400px;
+            overflow-y: auto;
         }
 
         .setting-row {
@@ -372,22 +405,29 @@
         }
 
         .setting-row label {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #ccc;
+            min-width: 110px;
         }
 
         .setting-row input, .setting-row select {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,105,180,0.3);
-            border-radius: 20px;
-            padding: 6px 12px;
-            color: white;
-            font-size: 0.8rem;
+            width: auto;
+            flex: 1;
+            margin: 0;
         }
 
-        .admin-close {
-            background: rgba(255,255,255,0.1);
+        .setting-row input[type="color"] {
+            width: 50px;
+            height: 35px;
+        }
+
+        .reset-btn {
+            background: rgba(255,100,100,0.3);
             margin-top: 15px;
+        }
+
+        .reset-btn:hover {
+            background: #ff4444;
         }
 
         .modal-overlay {
@@ -504,6 +544,8 @@
             .name { font-size: 2rem; }
             .avatar-section { width: 110px; height: 110px; }
             .avatar { width: 110px; height: 110px; }
+            .setting-row { flex-direction: column; align-items: stretch; }
+            .setting-row label { margin-bottom: 5px; }
         }
     </style>
 </head>
@@ -513,14 +555,14 @@
 <div class="overlay"></div>
 
 <div class="main-container">
-    <div class="epic-card" id="mainCard">
+    <div class="epic-card float-active" id="mainCard">
         <div class="lang-switcher">
             <button class="lang-btn active" data-lang="ru">RU</button>
             <button class="lang-btn" data-lang="en">EN</button>
         </div>
 
         <div class="avatar-section">
-            <div class="avatar-pulse"></div>
+            <div class="avatar-pulse" id="avatarPulse"></div>
             <div class="avatar">
                 <img src="https://media.discordapp.net/attachments/1498720837694525580/1503369701840126102/5064BD7E-D3CE-4EAA-824B-103E9FF890CE.png?ex=6a0319a4&is=6a01c824&hm=b0fd716490103bde51d7aec9d4350081b0020b546f97509a1d9e23e2732bff01&=&format=webp&quality=lossless&width=925&height=960" alt="avatar">
             </div>
@@ -562,18 +604,25 @@
     </div>
 </div>
 
-<!-- Скрытая админ-кнопка -->
+<!-- Скрытая админ-кнопка (почти невидимая) -->
 <div class="admin-trigger" id="adminTrigger">
     <i class="fas fa-lock"></i>
 </div>
 
-<!-- Админ-панель (пароль) -->
+<!-- Админ-панель -->
 <div class="admin-panel" id="adminPanel">
-    <h3>🔐 АДМИН ПАНЕЛЬ</h3>
+    <div class="admin-header">
+        <h3>🔐 АДМИН ПАНЕЛЬ</h3>
+        <button class="admin-close-x" id="closeAdminXBtn">✕</button>
+    </div>
     <input type="password" id="adminPassword" placeholder="Введите пароль">
     <button id="adminLoginBtn">Войти</button>
     <div id="adminSettings" style="display: none;" class="admin-settings">
-        <h4>Настройки сайта</h4>
+        <h4>Основные настройки</h4>
+        <div class="setting-row">
+            <label>Имя:</label>
+            <input type="text" id="adminName" placeholder="Имя">
+        </div>
         <div class="setting-row">
             <label>Никнейм (@):</label>
             <input type="text" id="adminNick" placeholder="@vestel">
@@ -587,11 +636,16 @@
             <input type="text" id="adminAge" placeholder="17 лет">
         </div>
         <div class="setting-row">
-            <label>Город (в INFO):</label>
-            <input type="text" id="adminCity" placeholder="Пермь">
+            <label>День рождения:</label>
+            <input type="text" id="adminBirth" placeholder="28 августа">
         </div>
         <div class="setting-row">
-            <label>Цвет акцента (HEX):</label>
+            <label>Город:</label>
+            <input type="text" id="adminCity" placeholder="Пермь">
+        </div>
+        <h4>Визуальные эффекты</h4>
+        <div class="setting-row">
+            <label>Цвет акцента:</label>
             <input type="color" id="adminColor" value="#ff69b4">
         </div>
         <div class="setting-row">
@@ -601,8 +655,31 @@
                 <option value="off">Выключены</option>
             </select>
         </div>
-        <button id="applySettingsBtn">Применить изменения</button>
-        <button id="closeAdminBtn" class="admin-close">Закрыть</button>
+        <div class="setting-row">
+            <label>Скорость сакуры:</label>
+            <select id="adminSakuraSpeed">
+                <option value="slow">Медленно</option>
+                <option value="normal" selected>Нормально</option>
+                <option value="fast">Быстро</option>
+            </select>
+        </div>
+        <div class="setting-row">
+            <label>Анимация карточки:</label>
+            <select id="adminFloatAnim">
+                <option value="on">Включена</option>
+                <option value="off">Выключена</option>
+            </select>
+        </div>
+        <div class="setting-row">
+            <label>Свечение аватарки:</label>
+            <select id="adminGlowEffect">
+                <option value="on">Включено</option>
+                <option value="off">Выключено</option>
+            </select>
+        </div>
+        <button id="applySettingsBtn">✅ Применить изменения</button>
+        <button id="resetSettingsBtn" class="reset-btn">🔄 Сбросить все настройки</button>
+        <button id="logoutAdminBtn" class="admin-close" style="background: rgba(255,100,100,0.3); margin-top: 10px;">🚪 Выйти из админ-панели</button>
     </div>
 </div>
 
@@ -623,16 +700,41 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
     (function() {
-        // ========== ЗАГРУЗКА СОХРАНЁННЫХ НАСТРОЕК ==========
+        // Глобальные переменные
+        let sakuraInterval;
+        let sakuraEnabled = true;
+        let sakuraSpeed = 'normal'; // slow, normal, fast
+        let audioContext = null;
+        
+        // Функция получения интервала сакуры
+        function getSakuraInterval() {
+            switch(sakuraSpeed) {
+                case 'slow': return 4000;
+                case 'fast': return 1500;
+                default: return 2500;
+            }
+        }
+        
+        function restartSakura() {
+            if (sakuraInterval) clearInterval(sakuraInterval);
+            if (!sakuraEnabled) return;
+            sakuraInterval = setInterval(() => {
+                if (sakuraEnabled) {
+                    const count = Math.random() > 0.7 ? 2 : 1;
+                    for(let i = 0; i < count; i++) setTimeout(createSakura, i * 100);
+                }
+            }, getSakuraInterval());
+        }
+        
+        // Загрузка сохранённых настроек
         function loadSettings() {
             const settings = JSON.parse(localStorage.getItem('adminSettings') || '{}');
+            if (settings.name) document.getElementById('userName').innerHTML = settings.name;
             if (settings.nick) document.getElementById('userNick').innerHTML = '@' + settings.nick;
-            if (settings.role) document.getElementById('bioText').innerHTML = 'Должности: ' + settings.role;
+            if (settings.role) document.getElementById('bioText').innerHTML = (currentLang === 'ru' ? 'Должности: ' : 'Roles: ') + settings.role;
             if (settings.age) document.getElementById('userAge').innerHTML = '🎂 ' + settings.age;
-            if (settings.city) {
-                document.getElementById('infoCityValue').innerHTML = settings.city;
-                document.getElementById('infoCityLabel').innerHTML = document.querySelector('.lang-btn.active')?.getAttribute('data-lang') === 'ru' ? 'Город:' : 'City:';
-            }
+            if (settings.birth) document.getElementById('infoBirthValue').innerHTML = settings.birth;
+            if (settings.city) document.getElementById('infoCityValue').innerHTML = settings.city;
             if (settings.accentColor) {
                 document.documentElement.style.setProperty('--accent-color', settings.accentColor);
                 document.querySelector('.avatar-pulse').style.background = settings.accentColor;
@@ -641,36 +743,62 @@
             }
             if (settings.sakura === 'off') sakuraEnabled = false;
             else sakuraEnabled = true;
+            if (settings.sakuraSpeed) sakuraSpeed = settings.sakuraSpeed;
+            if (settings.floatAnim === 'off') {
+                document.getElementById('mainCard').classList.remove('float-active');
+            } else {
+                document.getElementById('mainCard').classList.add('float-active');
+            }
+            if (settings.glowEffect === 'off') {
+                document.getElementById('avatarPulse').classList.add('pulse-off');
+            } else {
+                document.getElementById('avatarPulse').classList.remove('pulse-off');
+            }
+            restartSakura();
         }
-
+        
         // Сохранение настроек
         function saveSettings() {
             const settings = {
+                name: document.getElementById('userName').innerHTML,
                 nick: document.getElementById('userNick').innerHTML.replace('@', ''),
                 role: document.getElementById('bioText').innerHTML.replace('Должности: ', '').replace('Roles: ', ''),
                 age: document.getElementById('userAge').innerHTML.replace('🎂 ', ''),
+                birth: document.getElementById('infoBirthValue').innerHTML,
                 city: document.getElementById('infoCityValue').innerHTML,
                 accentColor: getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim() || '#ff69b4',
-                sakura: sakuraEnabled ? 'on' : 'off'
+                sakura: sakuraEnabled ? 'on' : 'off',
+                sakuraSpeed: sakuraSpeed,
+                floatAnim: document.getElementById('mainCard').classList.contains('float-active') ? 'on' : 'off',
+                glowEffect: document.getElementById('avatarPulse').classList.contains('pulse-off') ? 'off' : 'on'
             };
             localStorage.setItem('adminSettings', JSON.stringify(settings));
         }
-
-        let sakuraInterval;
-        let sakuraEnabled = true;
-
-        function startSakura() {
-            if (sakuraInterval) clearInterval(sakuraInterval);
-            sakuraInterval = setInterval(() => {
-                if (sakuraEnabled) {
-                    const count = Math.random() > 0.7 ? 2 : 1;
-                    for(let i = 0; i < count; i++) setTimeout(createSakura, i * 100);
-                }
-            }, 2500);
+        
+        // Сброс всех настроек
+        function resetAllSettings() {
+            localStorage.removeItem('adminSettings');
+            document.getElementById('userName').innerHTML = 'Паша';
+            document.getElementById('userNick').innerHTML = '@vestel';
+            document.getElementById('bioText').innerHTML = (currentLang === 'ru' ? 'Должности: ' : 'Roles: ') + 'Sceleton Army - Curator, Support';
+            document.getElementById('userAge').innerHTML = '🎂 17 лет';
+            document.getElementById('infoBirthValue').innerHTML = '28 августа';
+            document.getElementById('infoCityValue').innerHTML = 'Пермь';
+            document.documentElement.style.setProperty('--accent-color', '#ff69b4');
+            document.querySelector('.avatar-pulse').style.background = '#ff69b4';
+            document.querySelector('.avatar').style.borderColor = '#ff69b4';
+            document.querySelector('.avatar').style.boxShadow = '0 0 30px #ff69b4';
+            sakuraEnabled = true;
+            sakuraSpeed = 'normal';
+            document.getElementById('mainCard').classList.add('float-active');
+            document.getElementById('avatarPulse').classList.remove('pulse-off');
+            restartSakura();
+            saveSettings();
+            showToast('✅ Все настройки сброшены!');
+            updateLanguage(currentLang);
         }
-
-        // ========== ЗВУК ==========
-        let audioContext = null;
+        
+        // Звук клика
         function playClickSound() {
             try {
                 if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -693,17 +821,11 @@
                 oscillator.stop(now + 0.2);
             } catch(e) {}
         }
-
-        // ========== ПЕРЕВОД ==========
+        
+        // Перевод
         const translations = {
             ru: {
-                badgeRole: "💀 Sceleton Army",
                 bio: "Должности: " + (JSON.parse(localStorage.getItem('adminSettings') || '{}').role || "Sceleton Army - Curator, Support"),
-                discordText: "vest_el",
-                robloxText: "Roblox",
-                telegramText: "@vest_ell",
-                infoText: "INFO",
-                footerQuote: "Sceleton Army",
                 modalTitle: "🌸 INFO",
                 infoNameLabel: "Имя:",
                 infoAgeLabel: "Возраст:",
@@ -711,20 +833,14 @@
                 infoCityLabel: "Город:",
                 infoRoleLabel: "Должность:",
                 closeText: "Закрыть",
-                infoNameValue: "Паша",
+                infoNameValue: document.getElementById('userName')?.innerHTML || "Паша",
                 infoAgeValue: document.getElementById('userAge')?.innerHTML.replace('🎂 ', '') || "17 лет",
-                infoBirthValue: "28 августа",
+                infoBirthValue: document.getElementById('infoBirthValue')?.innerHTML || "28 августа",
                 infoCityValue: document.getElementById('infoCityValue')?.innerHTML || "Пермь",
                 infoRoleValue: JSON.parse(localStorage.getItem('adminSettings') || '{}').role || "Sceleton Army - Curator, Support"
             },
             en: {
-                badgeRole: "💀 Sceleton Army",
                 bio: "Roles: " + (JSON.parse(localStorage.getItem('adminSettings') || '{}').role || "Sceleton Army - Curator, Support"),
-                discordText: "vest_el",
-                robloxText: "Roblox",
-                telegramText: "@vest_ell",
-                infoText: "INFO",
-                footerQuote: "Sceleton Army",
                 modalTitle: "🌸 INFO",
                 infoNameLabel: "Name:",
                 infoAgeLabel: "Age:",
@@ -732,25 +848,19 @@
                 infoCityLabel: "City:",
                 infoRoleLabel: "Role:",
                 closeText: "Close",
-                infoNameValue: "Pasha",
+                infoNameValue: document.getElementById('userName')?.innerHTML || "Pasha",
                 infoAgeValue: document.getElementById('userAge')?.innerHTML.replace('🎂 ', '') || "17 years old",
-                infoBirthValue: "August 28",
+                infoBirthValue: document.getElementById('infoBirthValue')?.innerHTML || "August 28",
                 infoCityValue: document.getElementById('infoCityValue')?.innerHTML || "Perm",
                 infoRoleValue: JSON.parse(localStorage.getItem('adminSettings') || '{}').role || "Sceleton Army - Curator, Support"
             }
         };
-
+        
         let currentLang = 'ru';
         function updateLanguage(lang) {
             currentLang = lang;
             const t = translations[lang];
-            document.getElementById('badgeRole').innerHTML = t.badgeRole;
             document.getElementById('bioText').innerHTML = t.bio;
-            document.getElementById('discordText').innerHTML = t.discordText;
-            document.getElementById('robloxText').innerHTML = t.robloxText;
-            document.getElementById('telegramText').innerHTML = t.telegramText;
-            document.getElementById('infoText').innerHTML = t.infoText;
-            document.getElementById('footerQuote').innerHTML = t.footerQuote;
             document.getElementById('modalTitle').innerHTML = t.modalTitle;
             document.getElementById('infoNameLabel').innerHTML = t.infoNameLabel;
             document.getElementById('infoAgeLabel').innerHTML = t.infoAgeLabel;
@@ -768,80 +878,99 @@
                 else btn.classList.remove('active');
             });
         }
-
-        // ========== АДМИН-ПАНЕЛЬ ==========
+        
+        // Админ-панель
         const adminTrigger = document.getElementById('adminTrigger');
         const adminPanel = document.getElementById('adminPanel');
         const adminLoginBtn = document.getElementById('adminLoginBtn');
         const adminPassword = document.getElementById('adminPassword');
         const adminSettingsDiv = document.getElementById('adminSettings');
         const applyBtn = document.getElementById('applySettingsBtn');
-        const closeAdminBtn = document.getElementById('closeAdminBtn');
-        const adminNick = document.getElementById('adminNick');
-        const adminRole = document.getElementById('adminRole');
-        const adminAge = document.getElementById('adminAge');
-        const adminCity = document.getElementById('adminCity');
-        const adminColor = document.getElementById('adminColor');
-        const adminSakuraSelect = document.getElementById('adminSakura');
-
+        const resetBtn = document.getElementById('resetSettingsBtn');
+        const logoutBtn = document.getElementById('logoutAdminBtn');
+        const closeAdminXBtn = document.getElementById('closeAdminXBtn');
+        
         let isAdminLoggedIn = false;
-
+        
         adminTrigger.onclick = () => {
             playClickSound();
             adminPanel.classList.add('active');
             adminPassword.value = '';
             adminSettingsDiv.style.display = 'none';
         };
-
+        
+        function closeAdminPanel() {
+            adminPanel.classList.remove('active');
+            isAdminLoggedIn = false;
+            adminSettingsDiv.style.display = 'none';
+        }
+        
+        closeAdminXBtn.onclick = () => { playClickSound(); closeAdminPanel(); };
+        logoutBtn.onclick = () => { playClickSound(); closeAdminPanel(); showToast('🔒 Вы вышли из админ-панели'); };
+        
         adminLoginBtn.onclick = () => {
             playClickSound();
             if (adminPassword.value === 'Pawel775577') {
                 isAdminLoggedIn = true;
                 adminSettingsDiv.style.display = 'block';
                 // Загружаем текущие настройки в поля
-                adminNick.value = document.getElementById('userNick').innerHTML.replace('@', '');
-                adminRole.value = document.getElementById('bioText').innerHTML.replace('Должности: ', '').replace('Roles: ', '');
-                adminAge.value = document.getElementById('userAge').innerHTML.replace('🎂 ', '');
-                adminCity.value = document.getElementById('infoCityValue').innerHTML;
-                adminColor.value = getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim() || '#ff69b4';
-                adminSakuraSelect.value = sakuraEnabled ? 'on' : 'off';
+                document.getElementById('adminName').value = document.getElementById('userName').innerHTML;
+                document.getElementById('adminNick').value = document.getElementById('userNick').innerHTML.replace('@', '');
+                document.getElementById('adminRole').value = document.getElementById('bioText').innerHTML.replace('Должности: ', '').replace('Roles: ', '');
+                document.getElementById('adminAge').value = document.getElementById('userAge').innerHTML.replace('🎂 ', '');
+                document.getElementById('adminBirth').value = document.getElementById('infoBirthValue').innerHTML;
+                document.getElementById('adminCity').value = document.getElementById('infoCityValue').innerHTML;
+                document.getElementById('adminColor').value = getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim() || '#ff69b4';
+                document.getElementById('adminSakura').value = sakuraEnabled ? 'on' : 'off';
+                document.getElementById('adminSakuraSpeed').value = sakuraSpeed;
+                document.getElementById('adminFloatAnim').value = document.getElementById('mainCard').classList.contains('float-active') ? 'on' : 'off';
+                document.getElementById('adminGlowEffect').value = document.getElementById('avatarPulse').classList.contains('pulse-off') ? 'off' : 'on';
                 showToast('✅ Добро пожаловать в админ-панель!');
             } else {
                 showToast('❌ Неверный пароль!');
-                adminPanel.classList.remove('active');
+                closeAdminPanel();
             }
         };
-
+        
         applyBtn.onclick = () => {
             playClickSound();
-            // Применяем настройки
-            const newNick = adminNick.value;
-            const newRole = adminRole.value;
-            const newAge = adminAge.value;
-            const newCity = adminCity.value;
-            const newColor = adminColor.value;
-            const sakuraState = adminSakuraSelect.value;
-
+            const newName = document.getElementById('adminName').value;
+            const newNick = document.getElementById('adminNick').value;
+            const newRole = document.getElementById('adminRole').value;
+            const newAge = document.getElementById('adminAge').value;
+            const newBirth = document.getElementById('adminBirth').value;
+            const newCity = document.getElementById('adminCity').value;
+            const newColor = document.getElementById('adminColor').value;
+            const sakuraState = document.getElementById('adminSakura').value;
+            const newSakuraSpeed = document.getElementById('adminSakuraSpeed').value;
+            const floatState = document.getElementById('adminFloatAnim').value;
+            const glowState = document.getElementById('adminGlowEffect').value;
+            
+            document.getElementById('userName').innerHTML = newName;
             document.getElementById('userNick').innerHTML = '@' + newNick;
             document.getElementById('bioText').innerHTML = (currentLang === 'ru' ? 'Должности: ' : 'Roles: ') + newRole;
             document.getElementById('userAge').innerHTML = '🎂 ' + newAge;
+            document.getElementById('infoBirthValue').innerHTML = newBirth;
             document.getElementById('infoCityValue').innerHTML = newCity;
             document.getElementById('infoRoleValue').innerHTML = newRole;
-
-            // Меняем цвет
+            
             document.documentElement.style.setProperty('--accent-color', newColor);
             document.querySelector('.avatar-pulse').style.background = newColor;
             document.querySelector('.avatar').style.borderColor = newColor;
             document.querySelector('.avatar').style.boxShadow = `0 0 30px ${newColor}`;
             
-            // Сакура
             sakuraEnabled = (sakuraState === 'on');
+            sakuraSpeed = newSakuraSpeed;
             
-            // Сохраняем
+            if (floatState === 'off') document.getElementById('mainCard').classList.remove('float-active');
+            else document.getElementById('mainCard').classList.add('float-active');
+            
+            if (glowState === 'off') document.getElementById('avatarPulse').classList.add('pulse-off');
+            else document.getElementById('avatarPulse').classList.remove('pulse-off');
+            
+            restartSakura();
             saveSettings();
-            showToast('✅ Настройки применены для всех пользователей!');
             
-            // Обновляем переводы с новыми данными
             translations.ru.bio = 'Должности: ' + newRole;
             translations.en.bio = 'Roles: ' + newRole;
             translations.ru.infoRoleValue = newRole;
@@ -850,14 +979,16 @@
             translations.en.infoCityValue = newCity;
             translations.ru.infoAgeValue = newAge;
             translations.en.infoAgeValue = newAge;
+            translations.ru.infoNameValue = newName;
+            translations.en.infoNameValue = newName;
+            translations.ru.infoBirthValue = newBirth;
+            translations.en.infoBirthValue = newBirth;
             updateLanguage(currentLang);
+            showToast('✅ Настройки применены!');
         };
-
-        closeAdminBtn.onclick = () => {
-            playClickSound();
-            adminPanel.classList.remove('active');
-        };
-
+        
+        resetBtn.onclick = () => { playClickSound(); resetAllSettings(); };
+        
         function showToast(message) {
             const existing = document.querySelector('.toast-notification');
             if(existing) existing.remove();
@@ -867,16 +998,16 @@
             document.body.appendChild(toast);
             setTimeout(() => toast.remove(), 2000);
         }
-
-        // ========== МОДАЛЬНОЕ ОКНО ==========
+        
+        // Модальное окно
         const modal = document.getElementById('infoModal');
         const infoBtn = document.getElementById('infoBtn');
         const closeModalBtn = document.getElementById('closeModalBtn');
         infoBtn.onclick = () => { playClickSound(); modal.classList.add('active'); };
         closeModalBtn.onclick = () => { playClickSound(); modal.classList.remove('active'); };
         modal.onclick = (e) => { if(e.target === modal) modal.classList.remove('active'); };
-
-        // ========== КОПИРОВАНИЕ DISCORD ==========
+        
+        // Копирование Discord
         const discordBtn = document.getElementById('discordBtn');
         discordBtn.onclick = async (e) => {
             e.preventDefault();
@@ -888,8 +1019,8 @@
                 setTimeout(() => discordBtn.style.transform = '', 150);
             } catch(err) { showToast('❌ Не удалось скопировать'); }
         };
-
-        // ========== КУРСОР ==========
+        
+        // Курсор сакура
         const cursor = document.createElement('div');
         cursor.className = 'custom-cursor';
         cursor.innerHTML = '🌸';
@@ -903,8 +1034,8 @@
         });
         document.addEventListener('mouseleave', () => cursor.style.opacity = '0');
         document.addEventListener('mouseenter', () => cursor.style.opacity = '1');
-
-        // ========== 3D ФОН ==========
+        
+        // 3D фон
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x0a0a0a);
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -972,7 +1103,7 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
         
-        // ========== САКУРА ==========
+        // Сакура
         const sakuraSymbols = ['🌸', '🌸', '💮', '🌸', '🌸', '✿', '❀', '🌸'];
         function createSakura() {
             const petal = document.createElement('div');
@@ -993,9 +1124,9 @@
         document.head.appendChild(style);
         
         for(let i=0;i<12;i++) setTimeout(createSakura, i * 150);
-        startSakura();
+        restartSakura();
         
-        // ========== ПАРАЛЛАКС ==========
+        // Параллакс
         document.addEventListener('mousemove', (e) => {
             const x = (e.clientX / window.innerWidth - 0.5) * 10;
             const y = (e.clientY / window.innerHeight - 0.5) * 10;
