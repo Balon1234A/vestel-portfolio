@@ -20,6 +20,7 @@
             overflow-x: hidden;
             background: #0a0a0a;
             color: #fff;
+            transition: background-color 0.3s ease;
         }
 
         /* КАСТОМНЫЙ КУРСОР В ВИДЕ САКУРЫ */
@@ -107,12 +108,12 @@
         }
 
         .lang-btn.active {
-            background: #ff69b4;
-            border-color: #ff69b4;
+            background: var(--accent-color, #ff69b4);
+            border-color: var(--accent-color, #ff69b4);
         }
 
         .lang-btn:hover {
-            background: #ff69b4;
+            background: var(--accent-color, #ff69b4);
             transform: scale(1.05);
         }
 
@@ -128,7 +129,7 @@
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            background: #ff69b4;
+            background: var(--accent-color, #ff69b4);
             opacity: 0.6;
             animation: pulse 2s infinite;
             z-index: 0;
@@ -145,8 +146,8 @@
             height: 140px;
             border-radius: 50%;
             overflow: hidden;
-            border: 3px solid #ff69b4;
-            box-shadow: 0 0 30px #ff69b4;
+            border: 3px solid var(--accent-color, #ff69b4);
+            box-shadow: 0 0 30px var(--accent-color, #ff69b4);
             z-index: 1;
         }
 
@@ -160,7 +161,7 @@
             font-size: 2.5rem;
             font-weight: 900;
             text-align: center;
-            background: linear-gradient(135deg, #fff, #ff69b4, #ff99cc, #ff69b4);
+            background: linear-gradient(135deg, #fff, var(--accent-color, #ff69b4), #ff99cc, var(--accent-color, #ff69b4));
             background-size: 300% 300%;
             -webkit-background-clip: text;
             background-clip: text;
@@ -179,7 +180,7 @@
             text-align: center;
             font-size: 1rem;
             font-weight: 500;
-            color: #ff99cc;
+            color: var(--accent-color, #ff99cc);
             background: rgba(255, 105, 180, 0.12);
             display: inline-block;
             padding: 4px 16px;
@@ -211,7 +212,7 @@
             border-radius: 28px;
             padding: 12px 18px;
             line-height: 1.5;
-            border-left: 2px solid #ff69b4;
+            border-left: 2px solid var(--accent-color, #ff69b4);
             text-align: center;
         }
 
@@ -239,7 +240,7 @@
         }
 
         .social-btn:hover {
-            background: #ff69b4;
+            background: var(--accent-color, #ff69b4);
             transform: translateY(-3px);
             box-shadow: 0 10px 25px rgba(255,105,180,0.4);
         }
@@ -270,9 +271,123 @@
         }
 
         .info-btn:hover {
-            background: #ff69b4;
+            background: var(--accent-color, #ff69b4);
             transform: translateY(-3px);
             box-shadow: 0 10px 25px rgba(255,105,180,0.4);
+        }
+
+        /* Скрытая админ-кнопка */
+        .admin-trigger {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 45px;
+            height: 45px;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            border: 1px solid rgba(255,105,180,0.3);
+            transition: 0.2s;
+            font-size: 1.2rem;
+            color: var(--accent-color, #ff69b4);
+        }
+
+        .admin-trigger:hover {
+            background: var(--accent-color, #ff69b4);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Админ-панель */
+        .admin-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background: linear-gradient(135deg, #1a1a2e, #0d0d1a);
+            border-radius: 30px;
+            padding: 25px;
+            width: 90%;
+            max-width: 400px;
+            z-index: 20000;
+            border: 2px solid var(--accent-color, #ff69b4);
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .admin-panel.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .admin-panel h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--accent-color, #ff69b4);
+        }
+
+        .admin-panel input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,105,180,0.3);
+            border-radius: 30px;
+            color: white;
+            outline: none;
+        }
+
+        .admin-panel button {
+            background: var(--accent-color, #ff69b4);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            color: white;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .admin-settings {
+            margin-top: 20px;
+            border-top: 1px solid rgba(255,105,180,0.3);
+            padding-top: 15px;
+        }
+
+        .setting-row {
+            margin: 12px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .setting-row label {
+            font-size: 0.85rem;
+            color: #ccc;
+        }
+
+        .setting-row input, .setting-row select {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,105,180,0.3);
+            border-radius: 20px;
+            padding: 6px 12px;
+            color: white;
+            font-size: 0.8rem;
+        }
+
+        .admin-close {
+            background: rgba(255,255,255,0.1);
+            margin-top: 15px;
         }
 
         .modal-overlay {
@@ -304,7 +419,7 @@
             max-width: 380px;
             width: 90%;
             text-align: center;
-            border: 2px solid #ff69b4;
+            border: 2px solid var(--accent-color, #ff69b4);
             box-shadow: 0 0 50px rgba(255,105,180,0.5);
             transform: scale(0.9);
             transition: transform 0.3s ease;
@@ -317,7 +432,7 @@
         .modal-window h2 {
             font-size: 2rem;
             margin-bottom: 20px;
-            background: linear-gradient(135deg, #ff69b4, #ff99cc);
+            background: linear-gradient(135deg, var(--accent-color, #ff69b4), #ff99cc);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
@@ -332,12 +447,12 @@
 
         .modal-info i {
             width: 28px;
-            color: #ff69b4;
+            color: var(--accent-color, #ff69b4);
             margin-right: 10px;
         }
 
         .modal-close {
-            background: linear-gradient(135deg, #ff69b4, #ff3388);
+            background: linear-gradient(135deg, var(--accent-color, #ff69b4), #ff3388);
             border: none;
             border-radius: 40px;
             padding: 12px 30px;
@@ -349,24 +464,19 @@
             font-size: 1rem;
         }
 
-        .modal-close:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px #ff69b4;
-        }
-
         .toast-notification {
             position: fixed;
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(135deg, #ff69b4, #ff3388);
+            background: linear-gradient(135deg, var(--accent-color, #ff69b4), #ff3388);
             color: white;
             padding: 12px 24px;
             border-radius: 50px;
             font-weight: 600;
             font-size: 0.9rem;
             z-index: 10001;
-            box-shadow: 0 0 20px rgba(255,105,180,0.5);
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
             animation: toastFade 2s ease forwards;
             pointer-events: none;
         }
@@ -416,12 +526,12 @@
             </div>
         </div>
 
-        <div class="name">Паша</div>
+        <div class="name" id="userName">Паша</div>
         <div class="nick-wrapper">
-            <span class="nick">@vestel</span>
+            <span class="nick" id="userNick">@vestel</span>
         </div>
         <div style="text-align: center; margin-bottom: 20px;">
-            <span class="badge">🎂 17 лет</span>
+            <span class="badge" id="userAge">🎂 17 лет</span>
             <span class="badge" id="badgeRole">💀 Sceleton Army</span>
         </div>
 
@@ -452,6 +562,50 @@
     </div>
 </div>
 
+<!-- Скрытая админ-кнопка -->
+<div class="admin-trigger" id="adminTrigger">
+    <i class="fas fa-lock"></i>
+</div>
+
+<!-- Админ-панель (пароль) -->
+<div class="admin-panel" id="adminPanel">
+    <h3>🔐 АДМИН ПАНЕЛЬ</h3>
+    <input type="password" id="adminPassword" placeholder="Введите пароль">
+    <button id="adminLoginBtn">Войти</button>
+    <div id="adminSettings" style="display: none;" class="admin-settings">
+        <h4>Настройки сайта</h4>
+        <div class="setting-row">
+            <label>Никнейм (@):</label>
+            <input type="text" id="adminNick" placeholder="@vestel">
+        </div>
+        <div class="setting-row">
+            <label>Должность:</label>
+            <input type="text" id="adminRole" placeholder="Должность">
+        </div>
+        <div class="setting-row">
+            <label>Возраст:</label>
+            <input type="text" id="adminAge" placeholder="17 лет">
+        </div>
+        <div class="setting-row">
+            <label>Город (в INFO):</label>
+            <input type="text" id="adminCity" placeholder="Пермь">
+        </div>
+        <div class="setting-row">
+            <label>Цвет акцента (HEX):</label>
+            <input type="color" id="adminColor" value="#ff69b4">
+        </div>
+        <div class="setting-row">
+            <label>Сакура (лепестки):</label>
+            <select id="adminSakura">
+                <option value="on">Включены</option>
+                <option value="off">Выключены</option>
+            </select>
+        </div>
+        <button id="applySettingsBtn">Применить изменения</button>
+        <button id="closeAdminBtn" class="admin-close">Закрыть</button>
+    </div>
+</div>
+
 <div class="modal-overlay" id="infoModal">
     <div class="modal-window">
         <h2 id="modalTitle">🌸 INFO</h2>
@@ -469,63 +623,82 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
     (function() {
-        // ========== ЗВУК КЛИКА (синтезированный через Web Audio) ==========
+        // ========== ЗАГРУЗКА СОХРАНЁННЫХ НАСТРОЕК ==========
+        function loadSettings() {
+            const settings = JSON.parse(localStorage.getItem('adminSettings') || '{}');
+            if (settings.nick) document.getElementById('userNick').innerHTML = '@' + settings.nick;
+            if (settings.role) document.getElementById('bioText').innerHTML = 'Должности: ' + settings.role;
+            if (settings.age) document.getElementById('userAge').innerHTML = '🎂 ' + settings.age;
+            if (settings.city) {
+                document.getElementById('infoCityValue').innerHTML = settings.city;
+                document.getElementById('infoCityLabel').innerHTML = document.querySelector('.lang-btn.active')?.getAttribute('data-lang') === 'ru' ? 'Город:' : 'City:';
+            }
+            if (settings.accentColor) {
+                document.documentElement.style.setProperty('--accent-color', settings.accentColor);
+                document.querySelector('.avatar-pulse').style.background = settings.accentColor;
+                document.querySelector('.avatar').style.borderColor = settings.accentColor;
+                document.querySelector('.avatar').style.boxShadow = `0 0 30px ${settings.accentColor}`;
+            }
+            if (settings.sakura === 'off') sakuraEnabled = false;
+            else sakuraEnabled = true;
+        }
+
+        // Сохранение настроек
+        function saveSettings() {
+            const settings = {
+                nick: document.getElementById('userNick').innerHTML.replace('@', ''),
+                role: document.getElementById('bioText').innerHTML.replace('Должности: ', '').replace('Roles: ', ''),
+                age: document.getElementById('userAge').innerHTML.replace('🎂 ', ''),
+                city: document.getElementById('infoCityValue').innerHTML,
+                accentColor: getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim() || '#ff69b4',
+                sakura: sakuraEnabled ? 'on' : 'off'
+            };
+            localStorage.setItem('adminSettings', JSON.stringify(settings));
+        }
+
+        let sakuraInterval;
+        let sakuraEnabled = true;
+
+        function startSakura() {
+            if (sakuraInterval) clearInterval(sakuraInterval);
+            sakuraInterval = setInterval(() => {
+                if (sakuraEnabled) {
+                    const count = Math.random() > 0.7 ? 2 : 1;
+                    for(let i = 0; i < count; i++) setTimeout(createSakura, i * 100);
+                }
+            }, 2500);
+        }
+
+        // ========== ЗВУК ==========
         let audioContext = null;
-        
         function playClickSound() {
             try {
-                if (!audioContext) {
-                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                }
-                // Если контекст в suspended состоянии (браузер блокирует), пробуем resume
-                if (audioContext.state === 'suspended') {
-                    audioContext.resume().then(() => {
-                        playClickSoundInternal();
-                    }).catch(() => {});
-                } else {
-                    playClickSoundInternal();
-                }
-            } catch(e) {
-                // Если что-то пошло не так — молча игнорируем
-            }
+                if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioContext.state === 'suspended') audioContext.resume().then(() => playClickSoundInternal()).catch(()=>{});
+                else playClickSoundInternal();
+            } catch(e) {}
         }
-        
         function playClickSoundInternal() {
             try {
                 const now = audioContext.currentTime;
                 const gainNode = audioContext.createGain();
                 const oscillator = audioContext.createOscillator();
-                
                 oscillator.type = 'sine';
-                oscillator.frequency.value = 880; // нота Ля5 (приятный звук)
-                
+                oscillator.frequency.value = 880;
                 gainNode.gain.setValueAtTime(0.15, now);
                 gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 0.3);
-                
                 oscillator.connect(gainNode);
                 gainNode.connect(audioContext.destination);
-                
                 oscillator.start(now);
                 oscillator.stop(now + 0.2);
-            } catch(e) {
-                // Игнорируем ошибки
-            }
+            } catch(e) {}
         }
-        
-        // Функция для добавления звука на все кликабельные элементы
-        function addClickSoundToElement(element) {
-            if (!element) return;
-            const originalClick = element.onclick;
-            element.addEventListener('click', (e) => {
-                playClickSound();
-            });
-        }
-        
+
         // ========== ПЕРЕВОД ==========
         const translations = {
             ru: {
                 badgeRole: "💀 Sceleton Army",
-                bio: "Должности: Sceleton Army - Curator, Support",
+                bio: "Должности: " + (JSON.parse(localStorage.getItem('adminSettings') || '{}').role || "Sceleton Army - Curator, Support"),
                 discordText: "vest_el",
                 robloxText: "Roblox",
                 telegramText: "@vest_ell",
@@ -539,14 +712,14 @@
                 infoRoleLabel: "Должность:",
                 closeText: "Закрыть",
                 infoNameValue: "Паша",
-                infoAgeValue: "17 лет",
+                infoAgeValue: document.getElementById('userAge')?.innerHTML.replace('🎂 ', '') || "17 лет",
                 infoBirthValue: "28 августа",
-                infoCityValue: "Пермь",
-                infoRoleValue: "Sceleton Army - Curator, Support"
+                infoCityValue: document.getElementById('infoCityValue')?.innerHTML || "Пермь",
+                infoRoleValue: JSON.parse(localStorage.getItem('adminSettings') || '{}').role || "Sceleton Army - Curator, Support"
             },
             en: {
                 badgeRole: "💀 Sceleton Army",
-                bio: "Roles: Sceleton Army - Curator, Support",
+                bio: "Roles: " + (JSON.parse(localStorage.getItem('adminSettings') || '{}').role || "Sceleton Army - Curator, Support"),
                 discordText: "vest_el",
                 robloxText: "Roblox",
                 telegramText: "@vest_ell",
@@ -560,19 +733,17 @@
                 infoRoleLabel: "Role:",
                 closeText: "Close",
                 infoNameValue: "Pasha",
-                infoAgeValue: "17 years old",
+                infoAgeValue: document.getElementById('userAge')?.innerHTML.replace('🎂 ', '') || "17 years old",
                 infoBirthValue: "August 28",
-                infoCityValue: "Perm",
-                infoRoleValue: "Sceleton Army - Curator, Support"
+                infoCityValue: document.getElementById('infoCityValue')?.innerHTML || "Perm",
+                infoRoleValue: JSON.parse(localStorage.getItem('adminSettings') || '{}').role || "Sceleton Army - Curator, Support"
             }
         };
 
         let currentLang = 'ru';
-
         function updateLanguage(lang) {
             currentLang = lang;
             const t = translations[lang];
-            
             document.getElementById('badgeRole').innerHTML = t.badgeRole;
             document.getElementById('bioText').innerHTML = t.bio;
             document.getElementById('discordText').innerHTML = t.discordText;
@@ -592,117 +763,147 @@
             document.getElementById('infoBirthValue').innerHTML = t.infoBirthValue;
             document.getElementById('infoCityValue').innerHTML = t.infoCityValue;
             document.getElementById('infoRoleValue').innerHTML = t.infoRoleValue;
-            
             document.querySelectorAll('.lang-btn').forEach(btn => {
-                if(btn.getAttribute('data-lang') === lang) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
+                if(btn.getAttribute('data-lang') === lang) btn.classList.add('active');
+                else btn.classList.remove('active');
             });
+        }
+
+        // ========== АДМИН-ПАНЕЛЬ ==========
+        const adminTrigger = document.getElementById('adminTrigger');
+        const adminPanel = document.getElementById('adminPanel');
+        const adminLoginBtn = document.getElementById('adminLoginBtn');
+        const adminPassword = document.getElementById('adminPassword');
+        const adminSettingsDiv = document.getElementById('adminSettings');
+        const applyBtn = document.getElementById('applySettingsBtn');
+        const closeAdminBtn = document.getElementById('closeAdminBtn');
+        const adminNick = document.getElementById('adminNick');
+        const adminRole = document.getElementById('adminRole');
+        const adminAge = document.getElementById('adminAge');
+        const adminCity = document.getElementById('adminCity');
+        const adminColor = document.getElementById('adminColor');
+        const adminSakuraSelect = document.getElementById('adminSakura');
+
+        let isAdminLoggedIn = false;
+
+        adminTrigger.onclick = () => {
+            playClickSound();
+            adminPanel.classList.add('active');
+            adminPassword.value = '';
+            adminSettingsDiv.style.display = 'none';
+        };
+
+        adminLoginBtn.onclick = () => {
+            playClickSound();
+            if (adminPassword.value === 'Pawel775577') {
+                isAdminLoggedIn = true;
+                adminSettingsDiv.style.display = 'block';
+                // Загружаем текущие настройки в поля
+                adminNick.value = document.getElementById('userNick').innerHTML.replace('@', '');
+                adminRole.value = document.getElementById('bioText').innerHTML.replace('Должности: ', '').replace('Roles: ', '');
+                adminAge.value = document.getElementById('userAge').innerHTML.replace('🎂 ', '');
+                adminCity.value = document.getElementById('infoCityValue').innerHTML;
+                adminColor.value = getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim() || '#ff69b4';
+                adminSakuraSelect.value = sakuraEnabled ? 'on' : 'off';
+                showToast('✅ Добро пожаловать в админ-панель!');
+            } else {
+                showToast('❌ Неверный пароль!');
+                adminPanel.classList.remove('active');
+            }
+        };
+
+        applyBtn.onclick = () => {
+            playClickSound();
+            // Применяем настройки
+            const newNick = adminNick.value;
+            const newRole = adminRole.value;
+            const newAge = adminAge.value;
+            const newCity = adminCity.value;
+            const newColor = adminColor.value;
+            const sakuraState = adminSakuraSelect.value;
+
+            document.getElementById('userNick').innerHTML = '@' + newNick;
+            document.getElementById('bioText').innerHTML = (currentLang === 'ru' ? 'Должности: ' : 'Roles: ') + newRole;
+            document.getElementById('userAge').innerHTML = '🎂 ' + newAge;
+            document.getElementById('infoCityValue').innerHTML = newCity;
+            document.getElementById('infoRoleValue').innerHTML = newRole;
+
+            // Меняем цвет
+            document.documentElement.style.setProperty('--accent-color', newColor);
+            document.querySelector('.avatar-pulse').style.background = newColor;
+            document.querySelector('.avatar').style.borderColor = newColor;
+            document.querySelector('.avatar').style.boxShadow = `0 0 30px ${newColor}`;
+            
+            // Сакура
+            sakuraEnabled = (sakuraState === 'on');
+            
+            // Сохраняем
+            saveSettings();
+            showToast('✅ Настройки применены для всех пользователей!');
+            
+            // Обновляем переводы с новыми данными
+            translations.ru.bio = 'Должности: ' + newRole;
+            translations.en.bio = 'Roles: ' + newRole;
+            translations.ru.infoRoleValue = newRole;
+            translations.en.infoRoleValue = newRole;
+            translations.ru.infoCityValue = newCity;
+            translations.en.infoCityValue = newCity;
+            translations.ru.infoAgeValue = newAge;
+            translations.en.infoAgeValue = newAge;
+            updateLanguage(currentLang);
+        };
+
+        closeAdminBtn.onclick = () => {
+            playClickSound();
+            adminPanel.classList.remove('active');
+        };
+
+        function showToast(message) {
+            const existing = document.querySelector('.toast-notification');
+            if(existing) existing.remove();
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            toast.innerHTML = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2000);
         }
 
         // ========== МОДАЛЬНОЕ ОКНО ==========
         const modal = document.getElementById('infoModal');
         const infoBtn = document.getElementById('infoBtn');
         const closeModalBtn = document.getElementById('closeModalBtn');
-        
-        function openModal() {
-            modal.classList.add('active');
-        }
-        
-        function closeModal() {
-            modal.classList.remove('active');
-        }
-        
-        if(infoBtn) infoBtn.addEventListener('click', openModal);
-        if(closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
-        
-        modal.addEventListener('click', (e) => {
-            if(e.target === modal) closeModal();
-        });
-        
-        document.addEventListener('keydown', (e) => {
-            if(e.key === 'Escape' && modal.classList.contains('active')) closeModal();
-        });
-
-        // ========== УВЕДОМЛЕНИЕ ==========
-        function showToast(message) {
-            const existingToast = document.querySelector('.toast-notification');
-            if(existingToast) existingToast.remove();
-            const toast = document.createElement('div');
-            toast.className = 'toast-notification';
-            toast.innerHTML = message;
-            document.body.appendChild(toast);
-            setTimeout(() => {
-                if(toast && toast.remove) toast.remove();
-            }, 2000);
-        }
+        infoBtn.onclick = () => { playClickSound(); modal.classList.add('active'); };
+        closeModalBtn.onclick = () => { playClickSound(); modal.classList.remove('active'); };
+        modal.onclick = (e) => { if(e.target === modal) modal.classList.remove('active'); };
 
         // ========== КОПИРОВАНИЕ DISCORD ==========
         const discordBtn = document.getElementById('discordBtn');
-        if(discordBtn) {
-            discordBtn.addEventListener('click', async (e) => {
-                e.preventDefault();
-                const discordNick = 'vest_el';
-                try {
-                    await navigator.clipboard.writeText(discordNick);
-                    showToast('✅ Discord скопирован: ' + discordNick);
-                    discordBtn.style.transform = 'scale(0.95)';
-                    setTimeout(() => { discordBtn.style.transform = ''; }, 150);
-                } catch (err) {
-                    showToast('❌ Не удалось скопировать');
-                }
-            });
-        }
+        discordBtn.onclick = async (e) => {
+            e.preventDefault();
+            playClickSound();
+            try {
+                await navigator.clipboard.writeText('vest_el');
+                showToast('✅ Discord скопирован: vest_el');
+                discordBtn.style.transform = 'scale(0.95)';
+                setTimeout(() => discordBtn.style.transform = '', 150);
+            } catch(err) { showToast('❌ Не удалось скопировать'); }
+        };
 
-        // ========== КАСТОМНЫЙ КУРСОР ==========
+        // ========== КУРСОР ==========
         const cursor = document.createElement('div');
         cursor.className = 'custom-cursor';
         cursor.innerHTML = '🌸';
         document.body.appendChild(cursor);
-        
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
-            
-            const target = e.target.closest('.social-btn, .info-btn, .lang-btn, .modal-close');
-            if(target) {
-                cursor.style.transform = 'translate(-50%, -50%) scale(1.3)';
-                cursor.style.filter = 'drop-shadow(0 0 8px #ff69b4)';
-            } else {
-                cursor.style.transform = 'translate(-50%, -50%) scale(1)';
-                cursor.style.filter = 'drop-shadow(0 0 4px #ff69b4)';
-            }
+            const target = e.target.closest('.social-btn, .info-btn, .lang-btn, .modal-close, .admin-trigger');
+            if(target) { cursor.style.transform = 'translate(-50%, -50%) scale(1.3)'; cursor.style.filter = 'drop-shadow(0 0 8px #ff69b4)'; }
+            else { cursor.style.transform = 'translate(-50%, -50%) scale(1)'; cursor.style.filter = 'drop-shadow(0 0 4px #ff69b4)'; }
         });
-        
-        document.addEventListener('mouseleave', () => {
-            cursor.style.opacity = '0';
-        });
-        document.addEventListener('mouseenter', () => {
-            cursor.style.opacity = '1';
-        });
+        document.addEventListener('mouseleave', () => cursor.style.opacity = '0');
+        document.addEventListener('mouseenter', () => cursor.style.opacity = '1');
 
-        // ========== ДОБАВЛЯЕМ ЗВУК НА ВСЕ КНОПКИ ==========
-        // Переключатели языка
-        document.querySelectorAll('.lang-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const lang = btn.getAttribute('data-lang');
-                updateLanguage(lang);
-            });
-            addClickSoundToElement(btn);
-        });
-        
-        // Кнопки соцсетей и INFO (уже есть обработчики, добавляем звук отдельно)
-        addClickSoundToElement(discordBtn);
-        addClickSoundToElement(document.getElementById('robloxLink'));
-        addClickSoundToElement(document.getElementById('telegramLink'));
-        addClickSoundToElement(infoBtn);
-        addClickSoundToElement(closeModalBtn);
-        
-        // Также добавляем звук на модальное окно при открытии/закрытии через фон
-        // Не нужно, так как фон не кликабельный
-        
         // ========== 3D ФОН ==========
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x0a0a0a);
@@ -728,19 +929,15 @@
         const ringMat = new THREE.MeshStandardMaterial({ color: 0xff69b4, emissive: 0xff3388, emissiveIntensity: 0.6 });
         const ring = new THREE.Mesh(ringGeo, ringMat);
         scene.add(ring);
-        
         const ring2Geo = new THREE.TorusGeometry(8, 0.08, 64, 300);
         const ring2 = new THREE.Mesh(ring2Geo, ringMat);
         scene.add(ring2);
         
         const sphereGroup = new THREE.Group();
         for(let i = 0; i < 50; i++) {
-            const sphereGeo = new THREE.SphereGeometry(0.1, 8, 8);
-            const sphereMat = new THREE.MeshStandardMaterial({ color: 0xff88bb, emissive: 0xff3388 });
-            const sphere = new THREE.Mesh(sphereGeo, sphereMat);
+            const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.1, 8, 8), new THREE.MeshStandardMaterial({ color: 0xff88bb, emissive: 0xff3388 }));
             const angle = (i / 50) * Math.PI * 2;
-            const rad = 5;
-            sphere.position.set(Math.cos(angle) * rad, Math.sin(angle * 2) * 1.5, Math.sin(angle) * rad);
+            sphere.position.set(Math.cos(angle) * 5, Math.sin(angle * 2) * 1.5, Math.sin(angle) * 5);
             sphereGroup.add(sphere);
         }
         scene.add(sphereGroup);
@@ -748,8 +945,7 @@
         const light1 = new THREE.PointLight(0xff69b4, 0.8);
         light1.position.set(5, 5, 10);
         scene.add(light1);
-        const ambient = new THREE.AmbientLight(0x222222);
-        scene.add(ambient);
+        scene.add(new THREE.AmbientLight(0x222222));
         
         let time = 0;
         function animateBackground() {
@@ -763,7 +959,6 @@
             ring2.rotation.x = time * 0.2;
             sphereGroup.rotation.y = time * 0.2;
             sphereGroup.rotation.x = Math.sin(time * 0.5) * 0.2;
-            
             camera.position.x = Math.sin(time * 0.2) * 1;
             camera.position.y = Math.cos(time * 0.25) * 0.8;
             camera.lookAt(0, 0, 0);
@@ -777,7 +972,7 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
         
-        // ========== ПАДАЮЩАЯ САКУРА ==========
+        // ========== САКУРА ==========
         const sakuraSymbols = ['🌸', '🌸', '💮', '🌸', '🌸', '✿', '❀', '🌸'];
         function createSakura() {
             const petal = document.createElement('div');
@@ -798,12 +993,7 @@
         document.head.appendChild(style);
         
         for(let i=0;i<12;i++) setTimeout(createSakura, i * 150);
-        setInterval(() => {
-            const count = Math.random() > 0.7 ? 2 : 1;
-            for(let i = 0; i < count; i++) {
-                setTimeout(createSakura, i * 100);
-            }
-        }, 2500);
+        startSakura();
         
         // ========== ПАРАЛЛАКС ==========
         document.addEventListener('mousemove', (e) => {
@@ -812,16 +1002,21 @@
             document.getElementById('mainCard').style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
         });
         
-        // Активация звука после первого взаимодействия (политика браузеров)
-        function enableAudioOnFirstClick() {
-            if (audioContext && audioContext.state === 'suspended') {
-                audioContext.resume();
-            }
-            document.removeEventListener('click', enableAudioOnFirstClick);
-            document.removeEventListener('touchstart', enableAudioOnFirstClick);
+        // Звуки на кнопки
+        document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', playClickSound));
+        document.getElementById('robloxLink').addEventListener('click', playClickSound);
+        document.getElementById('telegramLink').addEventListener('click', playClickSound);
+        
+        function enableAudio() {
+            if(audioContext && audioContext.state === 'suspended') audioContext.resume();
+            document.removeEventListener('click', enableAudio);
+            document.removeEventListener('touchstart', enableAudio);
         }
-        document.addEventListener('click', enableAudioOnFirstClick);
-        document.addEventListener('touchstart', enableAudioOnFirstClick);
+        document.addEventListener('click', enableAudio);
+        document.addEventListener('touchstart', enableAudio);
+        
+        loadSettings();
+        updateLanguage('ru');
     })();
 </script>
 </body>
