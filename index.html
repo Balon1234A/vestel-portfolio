@@ -54,10 +54,10 @@
             border-radius: 48px;
             border: 1px solid rgba(255, 105, 180, 0.35);
             box-shadow: 0 25px 45px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 105, 180, 0.15), 0 0 25px rgba(255, 105, 180, 0.25);
-            padding: 36px 28px;
             text-align: center;
             position: relative;
             z-index: 10;
+            overflow: hidden;
         }
 
         /* свечение по краям */
@@ -75,41 +75,28 @@
             pointer-events: none;
         }
 
-        /* КОНТЕЙНЕР ДЛЯ АВАТАРКИ + БАННЕРА */
-        .avatar-container {
-            position: relative;
-            width: 130px;
-            height: 130px;
-            margin: 0 auto 25px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* МИНИ-БАННЕР (задний фон за аватаркой) */
-        .mini-banner {
-            position: absolute;
-            width: 130px;
-            height: 130px;
-            border-radius: 50%;
+        /* БОЛЬШОЙ БАННЕР (шапка карточки) */
+        .hero-banner {
+            width: 100%;
+            height: 160px;
             object-fit: cover;
-            z-index: 1;
-            border: 2px solid rgba(255, 105, 180, 0.6);
-            box-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
-            transition: 0.3s;
+            object-position: center;
+            display: block;
         }
 
-        /* Можно сделать баннер не круглым, а немного шире — раскомментировать если нужно */
-        /* .mini-banner {
-            border-radius: 30% 70% 50% 50% / 30% 40% 60% 70%;
-        } */
-
-        /* АВАТАРКА (поверх баннера) */
-        .avatar {
+        /* Контейнер для аватарки (накладываем поверх банера) */
+        .avatar-wrapper {
             position: relative;
-            z-index: 2;
-            width: 100px;
-            height: 100px;
+            margin-top: -55px;
+            margin-bottom: 12px;
+            z-index: 5;
+        }
+
+        /* АВАТАРКА (круглая, поверх банера) */
+        .avatar {
+            width: 110px;
+            height: 110px;
+            margin: 0 auto;
             background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
             border-radius: 50%;
             display: flex;
@@ -130,6 +117,11 @@
         .avatar span {
             font-size: 3rem;
             filter: drop-shadow(0 2px 6px rgba(255,105,180,0.5));
+        }
+
+        /* Контент под аватаркой */
+        .content {
+            padding: 0 28px 36px 28px;
         }
 
         .name {
@@ -255,23 +247,21 @@
         }
 
         @media (max-width: 480px) {
-            .black-card {
-                padding: 28px 20px;
+            .content {
+                padding: 0 20px 28px 20px;
             }
             .name {
                 font-size: 2rem;
             }
-            .avatar-container {
-                width: 110px;
-                height: 110px;
+            .hero-banner {
+                height: 130px;
             }
-            .mini-banner {
-                width: 110px;
-                height: 110px;
+            .avatar-wrapper {
+                margin-top: -45px;
             }
             .avatar {
-                width: 80px;
-                height: 80px;
+                width: 85px;
+                height: 85px;
             }
             .avatar span {
                 font-size: 2.5rem;
@@ -282,15 +272,14 @@
 <body>
 
 <div class="black-card">
-    <!-- КОНТЕЙНЕР: БАННЕР (сзади) + АВАТАРКА (спереди) -->
-    <div class="avatar-container">
-        <!-- МИНИ-БАННЕР (ЗАМЕНИ ССЫЛКУ НА СВОЮ КАРТИНКУ) -->
-        <img class="mini-banner" 
-             src="https://media.discordapp.net/attachments/1498720837694525580/1503369728066977863/1A0847B0-488F-48AD-91CB-BFC1D5E86069.png?ex=6a0319aa&is=6a01c82a&hm=2708c4675d53d3c3ca1d901cbe125b4874998d15b4bb824893c57ae034f12289&=&format=webp&quality=lossless&width=1712&height=856" 
-             alt="mini banner"
-             onerror="this.style.opacity='0.3'; this.style.border='1px dashed #ff69b4';">
-        
-        <!-- АВАТАРКА (ЗАМЕНИ ССЫЛКУ НА СВОЮ АВА) -->
+    <!-- БОЛЬШОЙ БАННЕР (шапка) — ЗАМЕНИ ССЫЛКУ НА СВОЮ -->
+    <img class="hero-banner" 
+         src="https://media.discordapp.net/attachments/1498720837694525580/1503369728066977863/1A0847B0-488F-48AD-91CB-BFC1D5E86069.png?ex=6a0319aa&is=6a01c82a&hm=2708c4675d53d3c3ca1d901cbe125b4874998d15b4bb824893c57ae034f12289&=&format=webp&quality=lossless&width=1712&height=856" 
+         alt="banner"
+         onerror="this.style.height='120px'; this.style.background='#1a1a2e';">
+
+    <!-- АВАТАРКА (поверх банера) -->
+    <div class="avatar-wrapper">
         <div class="avatar">
             <img src="https://media.discordapp.net/attachments/1498720837694525580/1503369701840126102/5064BD7E-D3CE-4EAA-824B-103E9FF890CE.png?ex=6a0319a4&is=6a01c824&hm=b0fd716490103bde51d7aec9d4350081b0020b546f97509a1d9e23e2732bff01&=&format=webp&quality=lossless&width=925&height=960" 
                  alt="avatar"
@@ -298,27 +287,30 @@
         </div>
     </div>
 
-    <div class="name">Паша</div>
-    <div class="nick">@vestel</div>
-    <div class="age">
-        <i>🌸</i> 17 лет
-    </div>
-    <div class="bio">
-        Должности: Sceleton Army - Curator
-    </div>
-    <div class="links">
-        <a href="#" class="link-btn" target="_blank">
-            <i>🎮</i> Discord: vestel_17
-        </a>
-        <a href="https://t.me/vest_ell" class="link-btn" target="_blank">
-            <i>📱</i> Telegram: @vest_ell
-        </a>
-    </div>
-    <div class="sakura-icon">
-        <span>🌸</span> <span>✦</span> <span>🌙</span> <span>🍃</span> <span>🌸</span>
-    </div>
-    <div class="footer-note">
-        ✦ さくら & ブラック ✦ <button class="petal-trigger" id="addPetalsBtn">+ лепестки</button>
+    <!-- ВЕСЬ КОНТЕНТ НИЖЕ -->
+    <div class="content">
+        <div class="name">Паша</div>
+        <div class="nick">@vestel</div>
+        <div class="age">
+            <i>🌸</i> 17 лет
+        </div>
+        <div class="bio">
+            Должности: Sceleton Army - Curator
+        </div>
+        <div class="links">
+            <a href="#" class="link-btn" target="_blank">
+                <i>🎮</i> Discord: vestel_17
+            </a>
+            <a href="https://t.me/vest_ell" class="link-btn" target="_blank">
+                <i>📱</i> Telegram: @vest_ell
+            </a>
+        </div>
+        <div class="sakura-icon">
+            <span>🌸</span> <span>✦</span> <span>🌙</span> <span>🍃</span> <span>🌸</span>
+        </div>
+        <div class="footer-note">
+            ✦ さくら & ブラック ✦ <button class="petal-trigger" id="addPetalsBtn">+ лепестки</button>
+        </div>
     </div>
 </div>
 
