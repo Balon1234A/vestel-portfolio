@@ -12,6 +12,7 @@
             padding: 0;
             box-sizing: border-box;
             user-select: none;
+            cursor: none;
         }
 
         body {
@@ -19,6 +20,25 @@
             overflow-x: hidden;
             background: #0a0a0a;
             color: #fff;
+        }
+
+        /* КАСТОМНЫЙ КУРСОР В ВИДЕ САКУРЫ */
+        .custom-cursor {
+            position: fixed;
+            width: 32px;
+            height: 32px;
+            pointer-events: none;
+            z-index: 99999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.05s ease;
+            font-size: 28px;
+            filter: drop-shadow(0 0 4px #ff69b4);
+        }
+
+        /* Убираем стандартный курсор на всех интерактивных элементах */
+        a, button, .social-btn, .info-btn, .theme-btn, .like-btn, .sakura-trigger, 
+        .petal-trigger, .modal-close, .lang-btn {
+            cursor: none;
         }
 
         canvas#bg-canvas {
@@ -68,6 +88,35 @@
             0% { transform: translateY(0px); }
             50% { transform: translateY(-8px); }
             100% { transform: translateY(0px); }
+        }
+
+        /* Переключатель языка */
+        .lang-switcher {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .lang-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,105,180,0.3);
+            border-radius: 30px;
+            padding: 4px 12px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #fff;
+        }
+
+        .lang-btn.active {
+            background: #ff69b4;
+            border-color: #ff69b4;
+        }
+
+        .lang-btn:hover {
+            background: #ff69b4;
+            transform: scale(1.05);
         }
 
         .avatar-section {
@@ -334,14 +383,13 @@
 
         .footer-stuff {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
             margin-top: 25px;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             color: #ff99cc;
             border-top: 1px dashed rgba(255,105,180,0.3);
             padding-top: 18px;
-            letter-spacing: 2px;
         }
 
         @media (max-width: 550px) {
@@ -359,6 +407,12 @@
 
 <div class="main-container">
     <div class="epic-card" id="mainCard">
+        <!-- Переключатель языка -->
+        <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="ru">RU</button>
+            <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+
         <!-- Аватарка -->
         <div class="avatar-section">
             <div class="avatar-pulse"></div>
@@ -367,44 +421,42 @@
             </div>
         </div>
 
-        <!-- Имя прямо под аватаркой -->
+        <!-- Имя и текст с поддержкой двух языков -->
         <div class="name">Паша</div>
-
-        <!-- Никнейм и бейджи -->
         <div class="nick-wrapper">
             <span class="nick">@vestel</span>
         </div>
         <div style="text-align: center; margin-bottom: 20px;">
             <span class="badge">🎂 17 лет</span>
-            <span class="badge">💀 Sceleton Army</span>
+            <span class="badge" id="badgeRole">💀 Sceleton Army</span>
         </div>
 
-        <!-- Био -->
-        <div class="bio">
+        <div class="bio" id="bioText">
             Должности: Sceleton Army - Curator, Support
         </div>
 
-        <!-- Социальные сети (с иконками FontAwesome) -->
+        <!-- Социальные сети -->
         <div class="social-links">
             <div class="social-btn" id="discordBtn">
-                <i class="fab fa-discord"></i> vest_el
+                <i class="fab fa-discord"></i> <span id="discordText">vest_el</span>
             </div>
             <a href="https://www.roblox.com/users/2370186892/profile" class="social-btn" target="_blank">
-                <i class="fas fa-gamepad"></i> Roblox
+                <i class="fas fa-gamepad"></i> <span id="robloxText">Roblox</span>
             </a>
             <a href="https://t.me/vest_ell" class="social-btn" target="_blank">
-                <i class="fab fa-telegram"></i> @vest_ell
+                <i class="fab fa-telegram"></i> <span id="telegramText">@vest_ell</span>
             </a>
         </div>
 
         <!-- Кнопка INFO -->
         <div class="info-btn" id="infoBtn">
-            <i class="fas fa-info-circle"></i> INFO
+            <i class="fas fa-info-circle"></i> <span id="infoText">INFO</span>
         </div>
 
-        <!-- Нижняя панель: только китайские символы -->
+        <!-- Нижняя панель -->
         <div class="footer-stuff">
             <span>🌸 さくら</span>
+            <span id="footerQuote">Sceleton Army</span>
         </div>
     </div>
 </div>
@@ -412,21 +464,111 @@
 <!-- МОДАЛЬНОЕ ОКНО INFO -->
 <div class="modal-overlay" id="infoModal">
     <div class="modal-window">
-        <h2>🌸 INFO</h2>
-        <div class="modal-info">
-            <p><i class="fas fa-user"></i> <strong>Имя:</strong> Паша</p>
-            <p><i class="fas fa-calendar-alt"></i> <strong>Возраст:</strong> 17 лет</p>
-            <p><i class="fas fa-birthday-cake"></i> <strong>День рождения:</strong> 28 августа</p>
-            <p><i class="fas fa-city"></i> <strong>Город:</strong> Пермь</p>
-            <p><i class="fas fa-skull"></i> <strong>Должность:</strong> Sceleton Army - Curator, Support</p>
+        <h2 id="modalTitle">🌸 INFO</h2>
+        <div class="modal-info" id="modalInfo">
+            <p><i class="fas fa-user"></i> <strong id="infoNameLabel">Имя:</strong> <span id="infoNameValue">Паша</span></p>
+            <p><i class="fas fa-calendar-alt"></i> <strong id="infoAgeLabel">Возраст:</strong> <span id="infoAgeValue">17 лет</span></p>
+            <p><i class="fas fa-birthday-cake"></i> <strong id="infoBirthLabel">День рождения:</strong> <span id="infoBirthValue">28 августа</span></p>
+            <p><i class="fas fa-city"></i> <strong id="infoCityLabel">Город:</strong> <span id="infoCityValue">Пермь</span></p>
+            <p><i class="fas fa-skull"></i> <strong id="infoRoleLabel">Должность:</strong> <span id="infoRoleValue">Sceleton Army - Curator, Support</span></p>
         </div>
-        <button class="modal-close" id="closeModalBtn">✨ Закрыть ✨</button>
+        <button class="modal-close" id="closeModalBtn">✨ <span id="closeText">Закрыть</span> ✨</button>
     </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
     (function() {
+        // ========== СЛОВАРЬ ДЛЯ ПЕРЕВОДА ==========
+        const translations = {
+            ru: {
+                badgeRole: "💀 Sceleton Army",
+                bio: "Должности: Sceleton Army - Curator, Support",
+                discordText: "vest_el",
+                robloxText: "Roblox",
+                telegramText: "@vest_ell",
+                infoText: "INFO",
+                footerQuote: "Sceleton Army",
+                modalTitle: "🌸 INFO",
+                infoNameLabel: "Имя:",
+                infoAgeLabel: "Возраст:",
+                infoBirthLabel: "День рождения:",
+                infoCityLabel: "Город:",
+                infoRoleLabel: "Должность:",
+                closeText: "Закрыть",
+                infoNameValue: "Паша",
+                infoAgeValue: "17 лет",
+                infoBirthValue: "28 августа",
+                infoCityValue: "Пермь",
+                infoRoleValue: "Sceleton Army - Curator, Support"
+            },
+            en: {
+                badgeRole: "💀 Sceleton Army",
+                bio: "Roles: Sceleton Army - Curator, Support",
+                discordText: "vest_el",
+                robloxText: "Roblox",
+                telegramText: "@vest_ell",
+                infoText: "INFO",
+                footerQuote: "Sceleton Army",
+                modalTitle: "🌸 INFO",
+                infoNameLabel: "Name:",
+                infoAgeLabel: "Age:",
+                infoBirthLabel: "Birthday:",
+                infoCityLabel: "City:",
+                infoRoleLabel: "Role:",
+                closeText: "Close",
+                infoNameValue: "Pasha",
+                infoAgeValue: "17 years old",
+                infoBirthValue: "August 28",
+                infoCityValue: "Perm",
+                infoRoleValue: "Sceleton Army - Curator, Support"
+            }
+        };
+
+        let currentLang = 'ru';
+
+        function updateLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            
+            document.getElementById('badgeRole').innerHTML = t.badgeRole;
+            document.getElementById('bioText').innerHTML = t.bio;
+            document.getElementById('discordText').innerHTML = t.discordText;
+            document.getElementById('robloxText').innerHTML = t.robloxText;
+            document.getElementById('telegramText').innerHTML = t.telegramText;
+            document.getElementById('infoText').innerHTML = t.infoText;
+            document.getElementById('footerQuote').innerHTML = t.footerQuote;
+            document.getElementById('modalTitle').innerHTML = t.modalTitle;
+            document.getElementById('infoNameLabel').innerHTML = t.infoNameLabel;
+            document.getElementById('infoAgeLabel').innerHTML = t.infoAgeLabel;
+            document.getElementById('infoBirthLabel').innerHTML = t.infoBirthLabel;
+            document.getElementById('infoCityLabel').innerHTML = t.infoCityLabel;
+            document.getElementById('infoRoleLabel').innerHTML = t.infoRoleLabel;
+            document.getElementById('closeText').innerHTML = t.closeText;
+            document.getElementById('infoNameValue').innerHTML = t.infoNameValue;
+            document.getElementById('infoAgeValue').innerHTML = t.infoAgeValue;
+            document.getElementById('infoBirthValue').innerHTML = t.infoBirthValue;
+            document.getElementById('infoCityValue').innerHTML = t.infoCityValue;
+            document.getElementById('infoRoleValue').innerHTML = t.infoRoleValue;
+            
+            // Обновляем активную кнопку
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if(btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        // Обработчики переключения языка
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const lang = btn.getAttribute('data-lang');
+                updateLanguage(lang);
+            });
+        });
+
         // ========== МОДАЛЬНОЕ ОКНО ==========
         const modal = document.getElementById('infoModal');
         const infoBtn = document.getElementById('infoBtn');
@@ -480,6 +622,35 @@
                 }
             });
         }
+
+        // ========== КАСТОМНЫЙ КУРСОР САКУРА ==========
+        const cursor = document.createElement('div');
+        cursor.className = 'custom-cursor';
+        cursor.innerHTML = '🌸';
+        document.body.appendChild(cursor);
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            // Эффект изменения размера на кнопках
+            const target = e.target.closest('.social-btn, .info-btn, .lang-btn, .modal-close');
+            if(target) {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1.3)';
+                cursor.style.filter = 'drop-shadow(0 0 8px #ff69b4)';
+            } else {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+                cursor.style.filter = 'drop-shadow(0 0 4px #ff69b4)';
+            }
+        });
+        
+        // Скрываем курсор при уходе с окна
+        document.addEventListener('mouseleave', () => {
+            cursor.style.opacity = '0';
+        });
+        document.addEventListener('mouseenter', () => {
+            cursor.style.opacity = '1';
+        });
 
         // ========== 3D ФОН ==========
         const scene = new THREE.Scene();
