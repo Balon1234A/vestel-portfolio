@@ -21,6 +21,7 @@
             background: #0a0a0a;
             color: #fff;
             transition: background-color 0.3s ease;
+            position: relative;
         }
 
         /* КАСТОМНЫЙ КУРСОР В ВИДЕ САКУРЫ */
@@ -49,13 +50,52 @@
             z-index: 0;
         }
 
+        /* ДЕКОРАТИВНЫЕ ВЕТКИ САКУРЫ ПО БОКАМ */
+        .sakura-branch {
+            position: fixed;
+            top: 0;
+            width: 180px;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+            background-repeat: no-repeat;
+            background-position: top center;
+            background-size: contain;
+            opacity: 0.6;
+            transition: opacity 1s ease;
+        }
+
+        .sakura-branch.left {
+            left: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 800"><path fill="none" stroke="%23ff69b4" stroke-width="4" d="M50,0 L70,100 L40,150 L90,220 L60,280 L120,350 L80,400 L140,480 L100,550 L160,650 L120,750 L180,800" /><path fill="none" stroke="%23ff99cc" stroke-width="2" d="M70,100 L130,130 L90,150" /><path fill="none" stroke="%23ff69b4" stroke-width="3" d="M90,220 L160,250 L110,280" /><path fill="none" stroke="%23ff99cc" stroke-width="2" d="M120,350 L180,370 L130,400" /><circle cx="70" cy="100" r="5" fill="%23ffb7c5" opacity="0.8"/><circle cx="130" cy="130" r="4" fill="%23ffb7c5" opacity="0.8"/><circle cx="90" cy="150" r="5" fill="%23ffb7c5" opacity="0.8"/><circle cx="160" cy="250" r="5" fill="%23ffb7c5" opacity="0.8"/><circle cx="110" cy="280" r="4" fill="%23ffb7c5" opacity="0.8"/><circle cx="180" cy="370" r="5" fill="%23ffb7c5" opacity="0.8"/><circle cx="130" cy="400" r="5" fill="%23ffb7c5" opacity="0.8"/></svg>');
+            background-position: left center;
+        }
+
+        .sakura-branch.right {
+            right: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 800"><path fill="none" stroke="%23ff69b4" stroke-width="4" d="M150,0 L130,100 L160,180 L110,250 L140,320 L80,380 L120,460 L70,530 L110,620 L60,700 L100,780" /><path fill="none" stroke="%23ff99cc" stroke-width="2" d="M130,100 L70,140 L120,170" /><path fill="none" stroke="%23ff69b4" stroke-width="3" d="M110,250 L40,280 L90,310" /><path fill="none" stroke="%23ff99cc" stroke-width="2" d="M80,380 L20,400 L70,430" /><circle cx="130" cy="100" r="5" fill="%23ffb7c5" opacity="0.8"/><circle cx="70" cy="140" r="4" fill="%23ffb7c5" opacity="0.8"/><circle cx="120" cy="170" r="5" fill="%23ffb7c5" opacity="0.8"/><circle cx="40" cy="280" r="5" fill="%23ffb7c5" opacity="0.8"/><circle cx="90" cy="310" r="4" fill="%23ffb7c5" opacity="0.8"/><circle cx="20" cy="400" r="5" fill="%23ffb7c5" opacity="0.8"/><circle cx="70" cy="430" r="5" fill="%23ffb7c5" opacity="0.8"/></svg>');
+            background-position: right center;
+        }
+
+        /* Анимация покачивания веток */
+        @keyframes swayLeft {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-8px); }
+        }
+        @keyframes swayRight {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(8px); }
+        }
+        .sakura-branch.left { animation: swayLeft 6s ease-in-out infinite; }
+        .sakura-branch.right { animation: swayRight 6s ease-in-out infinite; }
+
         .overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, transparent, rgba(0,0,0,0.4));
+            background: radial-gradient(circle, transparent, rgba(0,0,0,0.5));
             pointer-events: none;
             z-index: 1;
         }
@@ -70,19 +110,19 @@
             padding: 20px;
         }
 
+        /* Карточка */
         .epic-card {
             max-width: 500px;
             width: 100%;
-            background: rgba(0, 0, 0, 0.75);
+            background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(20px);
             border-radius: 50px;
             border: 1px solid rgba(255, 105, 180, 0.6);
-            box-shadow: 0 0 50px rgba(255, 105, 180, 0.4), inset 0 0 30px rgba(255, 105, 180, 0.1);
+            box-shadow: 0 0 50px rgba(255, 105, 180, 0.3), inset 0 0 30px rgba(255, 105, 180, 0.1);
             padding: 35px 30px;
             transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
         }
 
-        /* Анимация карточки (можно отключить) */
         .epic-card.float-active {
             animation: float 4s ease-in-out infinite;
         }
@@ -93,13 +133,13 @@
             100% { transform: translateY(0px); }
         }
 
+        /* Переключатель языка */
         .lang-switcher {
             display: flex;
             justify-content: flex-end;
             gap: 10px;
             margin-bottom: 15px;
         }
-
         .lang-btn {
             background: rgba(255,255,255,0.1);
             border: 1px solid rgba(255,105,180,0.3);
@@ -110,24 +150,22 @@
             transition: 0.2s;
             color: #fff;
         }
-
         .lang-btn.active {
             background: var(--accent-color, #ff69b4);
             border-color: var(--accent-color, #ff69b4);
         }
-
         .lang-btn:hover {
             background: var(--accent-color, #ff69b4);
             transform: scale(1.05);
         }
 
+        /* Аватар */
         .avatar-section {
             position: relative;
             width: 140px;
             height: 140px;
             margin: 0 auto 15px;
         }
-
         .avatar-pulse {
             position: absolute;
             width: 100%;
@@ -138,18 +176,11 @@
             animation: pulse 2s infinite;
             z-index: 0;
         }
-
-        /* Отключаемый пульс */
-        .avatar-pulse.pulse-off {
-            animation: none;
-            opacity: 0.2;
-        }
-
+        .avatar-pulse.pulse-off { animation: none; opacity: 0.2; }
         @keyframes pulse {
             0% { transform: scale(1); opacity: 0.6; }
             100% { transform: scale(1.3); opacity: 0; }
         }
-
         .avatar {
             position: relative;
             width: 140px;
@@ -160,32 +191,26 @@
             box-shadow: 0 0 30px var(--accent-color, #ff69b4);
             z-index: 1;
         }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
 
-        .avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
+        /* Текст */
         .name {
             font-size: 2.5rem;
             font-weight: 900;
             text-align: center;
             background: linear-gradient(135deg, #fff, var(--accent-color, #ff69b4), #ff99cc, var(--accent-color, #ff69b4));
             background-size: 300% 300%;
-            -webkit-background-clip: text;
             background-clip: text;
+            -webkit-background-clip: text;
             color: transparent;
             animation: gradientShift 4s ease infinite;
             margin-bottom: 10px;
         }
-
         @keyframes gradientShift {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-
         .nick {
             text-align: center;
             font-size: 1rem;
@@ -198,11 +223,7 @@
             margin-bottom: 25px;
             letter-spacing: 0.5px;
         }
-
-        .nick-wrapper {
-            text-align: center;
-        }
-
+        .nick-wrapper { text-align: center; }
         .badge {
             display: inline-flex;
             align-items: center;
@@ -213,7 +234,6 @@
             font-size: 0.75rem;
             margin: 0 5px;
         }
-
         .bio {
             font-size: 0.95rem;
             color: #eaeaea;
@@ -226,15 +246,10 @@
             text-align: center;
         }
 
-        .social-links {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin: 25px 0;
-            flex-wrap: wrap;
-        }
-
-        .social-btn {
+        /* Кнопки */
+        .social-links, .info-btn { margin: 25px 0; text-align: center; }
+        .social-links { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+        .social-btn, .info-btn {
             background: rgba(255,255,255,0.08);
             border: 1px solid rgba(255,105,180,0.3);
             border-radius: 50px;
@@ -248,45 +263,14 @@
             gap: 10px;
             cursor: pointer;
         }
-
-        .social-btn:hover {
+        .social-btn:hover, .info-btn:hover {
             background: var(--accent-color, #ff69b4);
             transform: translateY(-3px);
             box-shadow: 0 10px 25px rgba(255,105,180,0.4);
         }
+        .info-btn { width: 100%; justify-content: center; margin-top: 5px; }
 
-        .social-btn a {
-            text-decoration: none;
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .info-btn {
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,105,180,0.3);
-            border-radius: 50px;
-            padding: 12px 25px;
-            color: white;
-            font-weight: 500;
-            transition: 0.25s;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            width: 100%;
-            justify-content: center;
-            margin-top: 5px;
-        }
-
-        .info-btn:hover {
-            background: var(--accent-color, #ff69b4);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(255,105,180,0.4);
-        }
-
-        /* Скрытая админ-кнопка (почти невидимая) */
+        /* Админ-панель */
         .admin-trigger {
             position: fixed;
             bottom: 20px;
@@ -306,15 +290,11 @@
             font-size: 0.9rem;
             color: rgba(255,105,180,0.3);
         }
-
         .admin-trigger:hover {
             background: rgba(255,105,180,0.2);
             color: rgba(255,105,180,0.7);
-            border-color: rgba(255,105,180,0.4);
             transform: scale(1.05);
         }
-
-        /* Админ-панель */
         .admin-panel {
             position: fixed;
             top: 50%;
@@ -332,220 +312,72 @@
             visibility: hidden;
             transition: all 0.3s ease;
         }
-
-        .admin-panel.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        .admin-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .admin-header h3 {
-            color: var(--accent-color, #ff69b4);
-        }
-
-        .admin-close-x {
-            background: none;
-            border: none;
-            color: #ff69b4;
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0 8px;
-            transition: 0.2s;
-        }
-
-        .admin-close-x:hover {
-            color: white;
-            transform: scale(1.1);
-        }
-
+        .admin-panel.active { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .admin-header h3 { color: var(--accent-color, #ff69b4); }
+        .admin-close-x { background: none; border: none; color: #ff69b4; font-size: 1.5rem; cursor: pointer; }
         .admin-panel input, .admin-panel select {
-            width: 100%;
-            padding: 8px 12px;
-            margin: 8px 0;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,105,180,0.3);
-            border-radius: 30px;
-            color: white;
-            outline: none;
+            width: 100%; padding: 8px 12px; margin: 8px 0;
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,105,180,0.3);
+            border-radius: 30px; color: white; outline: none;
         }
-
         .admin-panel button {
-            background: var(--accent-color, #ff69b4);
-            border: none;
-            padding: 8px 16px;
-            border-radius: 30px;
-            color: white;
-            cursor: pointer;
-            margin-top: 8px;
-            width: 100%;
+            background: var(--accent-color, #ff69b4); border: none; padding: 8px 16px;
+            border-radius: 30px; color: white; cursor: pointer; width: 100%; margin-top: 8px;
         }
+        .admin-settings { margin-top: 15px; border-top: 1px solid rgba(255,105,180,0.3); padding-top: 15px; max-height: 400px; overflow-y: auto; }
+        .setting-row { margin: 12px 0; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .setting-row label { font-size: 0.8rem; color: #ccc; min-width: 110px; }
+        .setting-row input, .setting-row select { width: auto; flex: 1; margin: 0; }
+        .setting-row input[type="color"] { width: 50px; height: 35px; }
+        .reset-btn { background: rgba(255,100,100,0.3); margin-top: 15px; }
+        .reset-btn:hover { background: #ff4444; }
 
-        .admin-settings {
-            margin-top: 15px;
-            border-top: 1px solid rgba(255,105,180,0.3);
-            padding-top: 15px;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .setting-row {
-            margin: 12px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .setting-row label {
-            font-size: 0.8rem;
-            color: #ccc;
-            min-width: 110px;
-        }
-
-        .setting-row input, .setting-row select {
-            width: auto;
-            flex: 1;
-            margin: 0;
-        }
-
-        .setting-row input[type="color"] {
-            width: 50px;
-            height: 35px;
-        }
-
-        .reset-btn {
-            background: rgba(255,100,100,0.3);
-            margin-top: 15px;
-        }
-
-        .reset-btn:hover {
-            background: #ff4444;
-        }
-
+        /* Модальное окно */
         .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);
+            z-index: 10000; display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transition: all 0.3s ease;
         }
-
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
+        .modal-overlay.active { opacity: 1; visibility: visible; }
         .modal-window {
             background: linear-gradient(135deg, #1a1a2e, #0d0d1a);
-            border-radius: 40px;
-            padding: 35px 30px;
-            max-width: 380px;
-            width: 90%;
-            text-align: center;
-            border: 2px solid var(--accent-color, #ff69b4);
-            box-shadow: 0 0 50px rgba(255,105,180,0.5);
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
+            border-radius: 40px; padding: 35px 30px; max-width: 380px; width: 90%;
+            text-align: center; border: 2px solid var(--accent-color, #ff69b4);
+            transform: scale(0.9); transition: transform 0.3s ease;
         }
-
-        .modal-overlay.active .modal-window {
-            transform: scale(1);
-        }
-
-        .modal-window h2 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, var(--accent-color, #ff69b4), #ff99cc);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-        }
-
-        .modal-info {
-            text-align: left;
-            margin: 20px 0;
-            font-size: 1rem;
-            line-height: 2;
-        }
-
-        .modal-info i {
-            width: 28px;
-            color: var(--accent-color, #ff69b4);
-            margin-right: 10px;
-        }
-
+        .modal-overlay.active .modal-window { transform: scale(1); }
+        .modal-window h2 { font-size: 2rem; margin-bottom: 20px; background: linear-gradient(135deg, var(--accent-color, #ff69b4), #ff99cc); background-clip: text; -webkit-background-clip: text; color: transparent; }
+        .modal-info { text-align: left; margin: 20px 0; font-size: 1rem; line-height: 2; }
+        .modal-info i { width: 28px; color: var(--accent-color, #ff69b4); margin-right: 10px; }
         .modal-close {
             background: linear-gradient(135deg, var(--accent-color, #ff69b4), #ff3388);
-            border: none;
-            border-radius: 40px;
-            padding: 12px 30px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 15px;
-            transition: 0.2s;
-            font-size: 1rem;
+            border: none; border-radius: 40px; padding: 12px 30px; color: white;
+            font-weight: bold; cursor: pointer; margin-top: 15px;
         }
-
         .toast-notification {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
             background: linear-gradient(135deg, var(--accent-color, #ff69b4), #ff3388);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            z-index: 10001;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            animation: toastFade 2s ease forwards;
-            pointer-events: none;
+            color: white; padding: 12px 24px; border-radius: 50px; font-weight: 600;
+            z-index: 10001; animation: toastFade 2s ease forwards; pointer-events: none;
         }
-
         @keyframes toastFade {
             0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
             15% { opacity: 1; transform: translateX(-50%) translateY(0); }
             85% { opacity: 1; transform: translateX(-50%) translateY(0); }
             100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
         }
-
         .footer-stuff {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 25px;
-            font-size: 0.7rem;
-            color: #ff99cc;
-            border-top: 1px dashed rgba(255,105,180,0.3);
-            padding-top: 18px;
+            display: flex; justify-content: space-between; align-items: center;
+            margin-top: 25px; font-size: 0.7rem; color: #ff99cc;
+            border-top: 1px dashed rgba(255,105,180,0.3); padding-top: 18px;
         }
-
         @media (max-width: 550px) {
             .epic-card { padding: 25px 20px; }
             .name { font-size: 2rem; }
-            .avatar-section { width: 110px; height: 110px; }
-            .avatar { width: 110px; height: 110px; }
-            .setting-row { flex-direction: column; align-items: stretch; }
-            .setting-row label { margin-bottom: 5px; }
+            .avatar-section, .avatar { width: 110px; height: 110px; }
+            .sakura-branch { width: 100px; opacity: 0.4; }
         }
     </style>
 </head>
@@ -553,11 +385,14 @@
 
 <canvas id="bg-canvas"></canvas>
 <div class="overlay"></div>
+<!-- ДВЕ ВЕТКИ САКУРЫ ПО БОКАМ -->
+<div class="sakura-branch left"></div>
+<div class="sakura-branch right"></div>
 
 <div class="main-container">
     <div class="epic-card float-active" id="mainCard">
         <div class="lang-switcher">
-            <button class="lang-btn active" data-lang="ru">RU</button>
+            <button class="lang-btn" data-lang="ru">RU</button>
             <button class="lang-btn" data-lang="en">EN</button>
         </div>
 
@@ -577,25 +412,15 @@
             <span class="badge" id="badgeRole">💀 Sceleton Army</span>
         </div>
 
-        <div class="bio" id="bioText">
-            Должности: Sceleton Army - Curator, Support
-        </div>
+        <div class="bio" id="bioText">Должности: Sceleton Army - Curator, Support</div>
 
         <div class="social-links">
-            <div class="social-btn" id="discordBtn">
-                <i class="fab fa-discord"></i> <span id="discordText">vest_el</span>
-            </div>
-            <a href="https://www.roblox.com/users/2370186892/profile" class="social-btn" target="_blank" id="robloxLink">
-                <i class="fas fa-gamepad"></i> <span id="robloxText">Roblox</span>
-            </a>
-            <a href="https://t.me/vest_ell" class="social-btn" target="_blank" id="telegramLink">
-                <i class="fab fa-telegram"></i> <span id="telegramText">@vest_ell</span>
-            </a>
+            <div class="social-btn" id="discordBtn"><i class="fab fa-discord"></i> <span id="discordText">vest_el</span></div>
+            <a href="https://www.roblox.com/users/2370186892/profile" class="social-btn" target="_blank"><i class="fas fa-gamepad"></i> <span id="robloxText">Roblox</span></a>
+            <a href="https://t.me/vest_ell" class="social-btn" target="_blank"><i class="fab fa-telegram"></i> <span id="telegramText">@vest_ell</span></a>
         </div>
 
-        <div class="info-btn" id="infoBtn">
-            <i class="fas fa-info-circle"></i> <span id="infoText">INFO</span>
-        </div>
+        <div class="info-btn" id="infoBtn"><i class="fas fa-info-circle"></i> <span id="infoText">INFO</span></div>
 
         <div class="footer-stuff">
             <span>🌸 さくら</span>
@@ -604,82 +429,27 @@
     </div>
 </div>
 
-<!-- Скрытая админ-кнопка (почти невидимая) -->
-<div class="admin-trigger" id="adminTrigger">
-    <i class="fas fa-lock"></i>
-</div>
-
-<!-- Админ-панель -->
+<!-- Админ-панель и модальное окно -->
+<div class="admin-trigger" id="adminTrigger"><i class="fas fa-lock"></i></div>
 <div class="admin-panel" id="adminPanel">
-    <div class="admin-header">
-        <h3>🔐 АДМИН ПАНЕЛЬ</h3>
-        <button class="admin-close-x" id="closeAdminXBtn">✕</button>
-    </div>
+    <div class="admin-header"><h3>🔐 АДМИН ПАНЕЛЬ</h3><button class="admin-close-x" id="closeAdminXBtn">✕</button></div>
     <input type="password" id="adminPassword" placeholder="Введите пароль">
     <button id="adminLoginBtn">Войти</button>
     <div id="adminSettings" style="display: none;" class="admin-settings">
-        <h4>Основные настройки</h4>
-        <div class="setting-row">
-            <label>Имя:</label>
-            <input type="text" id="adminName" placeholder="Имя">
-        </div>
-        <div class="setting-row">
-            <label>Никнейм (@):</label>
-            <input type="text" id="adminNick" placeholder="@vestel">
-        </div>
-        <div class="setting-row">
-            <label>Должность:</label>
-            <input type="text" id="adminRole" placeholder="Должность">
-        </div>
-        <div class="setting-row">
-            <label>Возраст:</label>
-            <input type="text" id="adminAge" placeholder="17 лет">
-        </div>
-        <div class="setting-row">
-            <label>День рождения:</label>
-            <input type="text" id="adminBirth" placeholder="28 августа">
-        </div>
-        <div class="setting-row">
-            <label>Город:</label>
-            <input type="text" id="adminCity" placeholder="Пермь">
-        </div>
-        <h4>Визуальные эффекты</h4>
-        <div class="setting-row">
-            <label>Цвет акцента:</label>
-            <input type="color" id="adminColor" value="#ff69b4">
-        </div>
-        <div class="setting-row">
-            <label>Сакура (лепестки):</label>
-            <select id="adminSakura">
-                <option value="on">Включены</option>
-                <option value="off">Выключены</option>
-            </select>
-        </div>
-        <div class="setting-row">
-            <label>Скорость сакуры:</label>
-            <select id="adminSakuraSpeed">
-                <option value="slow">Медленно</option>
-                <option value="normal" selected>Нормально</option>
-                <option value="fast">Быстро</option>
-            </select>
-        </div>
-        <div class="setting-row">
-            <label>Анимация карточки:</label>
-            <select id="adminFloatAnim">
-                <option value="on">Включена</option>
-                <option value="off">Выключена</option>
-            </select>
-        </div>
-        <div class="setting-row">
-            <label>Свечение аватарки:</label>
-            <select id="adminGlowEffect">
-                <option value="on">Включено</option>
-                <option value="off">Выключено</option>
-            </select>
-        </div>
-        <button id="applySettingsBtn">✅ Применить изменения</button>
-        <button id="resetSettingsBtn" class="reset-btn">🔄 Сбросить все настройки</button>
-        <button id="logoutAdminBtn" class="admin-close" style="background: rgba(255,100,100,0.3); margin-top: 10px;">🚪 Выйти из админ-панели</button>
+        <h4>Настройки</h4>
+        <div class="setting-row"><label>Имя:</label><input type="text" id="adminName"></div>
+        <div class="setting-row"><label>Никнейм (@):</label><input type="text" id="adminNick"></div>
+        <div class="setting-row"><label>Должность:</label><input type="text" id="adminRole"></div>
+        <div class="setting-row"><label>Возраст:</label><input type="text" id="adminAge"></div>
+        <div class="setting-row"><label>День рождения:</label><input type="text" id="adminBirth"></div>
+        <div class="setting-row"><label>Город:</label><input type="text" id="adminCity"></div>
+        <div class="setting-row"><label>Цвет акцента:</label><input type="color" id="adminColor" value="#ff69b4"></div>
+        <div class="setting-row"><label>Сакура:</label><select id="adminSakura"><option value="on">Вкл</option><option value="off">Выкл</option></select></div>
+        <div class="setting-row"><label>Анимация карточки:</label><select id="adminFloatAnim"><option value="on">Вкл</option><option value="off">Выкл</option></select></div>
+        <div class="setting-row"><label>Свечение авы:</label><select id="adminGlowEffect"><option value="on">Вкл</option><option value="off">Выкл</option></select></div>
+        <button id="applySettingsBtn">✅ Применить</button>
+        <button id="resetSettingsBtn" class="reset-btn">🔄 Сброс</button>
+        <button id="logoutAdminBtn" style="background: rgba(255,100,100,0.3);">🚪 Выйти</button>
     </div>
 </div>
 
@@ -700,132 +470,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
     (function() {
-        // Глобальные переменные
-        let sakuraInterval;
-        let sakuraEnabled = true;
-        let sakuraSpeed = 'normal'; // slow, normal, fast
-        let audioContext = null;
-        
-        // Функция получения интервала сакуры
-        function getSakuraInterval() {
-            switch(sakuraSpeed) {
-                case 'slow': return 4000;
-                case 'fast': return 1500;
-                default: return 2500;
-            }
-        }
-        
-        function restartSakura() {
-            if (sakuraInterval) clearInterval(sakuraInterval);
-            if (!sakuraEnabled) return;
-            sakuraInterval = setInterval(() => {
-                if (sakuraEnabled) {
-                    const count = Math.random() > 0.7 ? 2 : 1;
-                    for(let i = 0; i < count; i++) setTimeout(createSakura, i * 100);
-                }
-            }, getSakuraInterval());
-        }
-        
-        // Загрузка сохранённых настроек
-        function loadSettings() {
-            const settings = JSON.parse(localStorage.getItem('adminSettings') || '{}');
-            if (settings.name) document.getElementById('userName').innerHTML = settings.name;
-            if (settings.nick) document.getElementById('userNick').innerHTML = '@' + settings.nick;
-            if (settings.role) document.getElementById('bioText').innerHTML = (currentLang === 'ru' ? 'Должности: ' : 'Roles: ') + settings.role;
-            if (settings.age) document.getElementById('userAge').innerHTML = '🎂 ' + settings.age;
-            if (settings.birth) document.getElementById('infoBirthValue').innerHTML = settings.birth;
-            if (settings.city) document.getElementById('infoCityValue').innerHTML = settings.city;
-            if (settings.accentColor) {
-                document.documentElement.style.setProperty('--accent-color', settings.accentColor);
-                document.querySelector('.avatar-pulse').style.background = settings.accentColor;
-                document.querySelector('.avatar').style.borderColor = settings.accentColor;
-                document.querySelector('.avatar').style.boxShadow = `0 0 30px ${settings.accentColor}`;
-            }
-            if (settings.sakura === 'off') sakuraEnabled = false;
-            else sakuraEnabled = true;
-            if (settings.sakuraSpeed) sakuraSpeed = settings.sakuraSpeed;
-            if (settings.floatAnim === 'off') {
-                document.getElementById('mainCard').classList.remove('float-active');
-            } else {
-                document.getElementById('mainCard').classList.add('float-active');
-            }
-            if (settings.glowEffect === 'off') {
-                document.getElementById('avatarPulse').classList.add('pulse-off');
-            } else {
-                document.getElementById('avatarPulse').classList.remove('pulse-off');
-            }
-            restartSakura();
-        }
-        
-        // Сохранение настроек
-        function saveSettings() {
-            const settings = {
-                name: document.getElementById('userName').innerHTML,
-                nick: document.getElementById('userNick').innerHTML.replace('@', ''),
-                role: document.getElementById('bioText').innerHTML.replace('Должности: ', '').replace('Roles: ', ''),
-                age: document.getElementById('userAge').innerHTML.replace('🎂 ', ''),
-                birth: document.getElementById('infoBirthValue').innerHTML,
-                city: document.getElementById('infoCityValue').innerHTML,
-                accentColor: getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim() || '#ff69b4',
-                sakura: sakuraEnabled ? 'on' : 'off',
-                sakuraSpeed: sakuraSpeed,
-                floatAnim: document.getElementById('mainCard').classList.contains('float-active') ? 'on' : 'off',
-                glowEffect: document.getElementById('avatarPulse').classList.contains('pulse-off') ? 'off' : 'on'
-            };
-            localStorage.setItem('adminSettings', JSON.stringify(settings));
-        }
-        
-        // Сброс всех настроек
-        function resetAllSettings() {
-            localStorage.removeItem('adminSettings');
-            document.getElementById('userName').innerHTML = 'Паша';
-            document.getElementById('userNick').innerHTML = '@vestel';
-            document.getElementById('bioText').innerHTML = (currentLang === 'ru' ? 'Должности: ' : 'Roles: ') + 'Sceleton Army - Curator, Support';
-            document.getElementById('userAge').innerHTML = '🎂 17 лет';
-            document.getElementById('infoBirthValue').innerHTML = '28 августа';
-            document.getElementById('infoCityValue').innerHTML = 'Пермь';
-            document.documentElement.style.setProperty('--accent-color', '#ff69b4');
-            document.querySelector('.avatar-pulse').style.background = '#ff69b4';
-            document.querySelector('.avatar').style.borderColor = '#ff69b4';
-            document.querySelector('.avatar').style.boxShadow = '0 0 30px #ff69b4';
-            sakuraEnabled = true;
-            sakuraSpeed = 'normal';
-            document.getElementById('mainCard').classList.add('float-active');
-            document.getElementById('avatarPulse').classList.remove('pulse-off');
-            restartSakura();
-            saveSettings();
-            showToast('✅ Все настройки сброшены!');
-            updateLanguage(currentLang);
-        }
-        
-        // Звук клика
-        function playClickSound() {
-            try {
-                if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                if (audioContext.state === 'suspended') audioContext.resume().then(() => playClickSoundInternal()).catch(()=>{});
-                else playClickSoundInternal();
-            } catch(e) {}
-        }
-        function playClickSoundInternal() {
-            try {
-                const now = audioContext.currentTime;
-                const gainNode = audioContext.createGain();
-                const oscillator = audioContext.createOscillator();
-                oscillator.type = 'sine';
-                oscillator.frequency.value = 880;
-                gainNode.gain.setValueAtTime(0.15, now);
-                gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 0.3);
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                oscillator.start(now);
-                oscillator.stop(now + 0.2);
-            } catch(e) {}
-        }
-        
-        // Перевод
+        // --- МУЛЬТИЯЗЫЧНОСТЬ (РУЧНАЯ РАБОТА) ---
         const translations = {
             ru: {
-                bio: "Должности: " + (JSON.parse(localStorage.getItem('adminSettings') || '{}').role || "Sceleton Army - Curator, Support"),
+                badgeRole: "💀 Sceleton Army",
+                bio: "Должности: Sceleton Army - Curator, Support",
+                infoText: "INFO",
+                footerQuote: "Sceleton Army",
                 modalTitle: "🌸 INFO",
                 infoNameLabel: "Имя:",
                 infoAgeLabel: "Возраст:",
@@ -833,14 +484,21 @@
                 infoCityLabel: "Город:",
                 infoRoleLabel: "Должность:",
                 closeText: "Закрыть",
-                infoNameValue: document.getElementById('userName')?.innerHTML || "Паша",
-                infoAgeValue: document.getElementById('userAge')?.innerHTML.replace('🎂 ', '') || "17 лет",
-                infoBirthValue: document.getElementById('infoBirthValue')?.innerHTML || "28 августа",
-                infoCityValue: document.getElementById('infoCityValue')?.innerHTML || "Пермь",
-                infoRoleValue: JSON.parse(localStorage.getItem('adminSettings') || '{}').role || "Sceleton Army - Curator, Support"
+                robloxText: "Roblox",
+                telegramText: "@vest_ell",
+                discordText: "vest_el",
+                name: "Паша",
+                nick: "vestel",
+                age: "17 лет",
+                birth: "28 августа",
+                city: "Пермь",
+                role: "Sceleton Army - Curator, Support"
             },
             en: {
-                bio: "Roles: " + (JSON.parse(localStorage.getItem('adminSettings') || '{}').role || "Sceleton Army - Curator, Support"),
+                badgeRole: "💀 Sceleton Army",
+                bio: "Roles: Sceleton Army - Curator, Support",
+                infoText: "INFO",
+                footerQuote: "Sceleton Army",
                 modalTitle: "🌸 INFO",
                 infoNameLabel: "Name:",
                 infoAgeLabel: "Age:",
@@ -848,19 +506,24 @@
                 infoCityLabel: "City:",
                 infoRoleLabel: "Role:",
                 closeText: "Close",
-                infoNameValue: document.getElementById('userName')?.innerHTML || "Pasha",
-                infoAgeValue: document.getElementById('userAge')?.innerHTML.replace('🎂 ', '') || "17 years old",
-                infoBirthValue: document.getElementById('infoBirthValue')?.innerHTML || "August 28",
-                infoCityValue: document.getElementById('infoCityValue')?.innerHTML || "Perm",
-                infoRoleValue: JSON.parse(localStorage.getItem('adminSettings') || '{}').role || "Sceleton Army - Curator, Support"
+                robloxText: "Roblox",
+                telegramText: "@vest_ell",
+                discordText: "vest_el",
+                name: "Pasha",
+                nick: "vestel",
+                age: "17 years old",
+                birth: "August 28",
+                city: "Perm",
+                role: "Sceleton Army - Curator, Support"
             }
         };
-        
         let currentLang = 'ru';
-        function updateLanguage(lang) {
-            currentLang = lang;
-            const t = translations[lang];
+        function updateUILanguage() {
+            const t = translations[currentLang];
+            document.getElementById('badgeRole').innerHTML = t.badgeRole;
             document.getElementById('bioText').innerHTML = t.bio;
+            document.getElementById('infoText').innerHTML = t.infoText;
+            document.getElementById('footerQuote').innerHTML = t.footerQuote;
             document.getElementById('modalTitle').innerHTML = t.modalTitle;
             document.getElementById('infoNameLabel').innerHTML = t.infoNameLabel;
             document.getElementById('infoAgeLabel').innerHTML = t.infoAgeLabel;
@@ -868,286 +531,76 @@
             document.getElementById('infoCityLabel').innerHTML = t.infoCityLabel;
             document.getElementById('infoRoleLabel').innerHTML = t.infoRoleLabel;
             document.getElementById('closeText').innerHTML = t.closeText;
-            document.getElementById('infoNameValue').innerHTML = t.infoNameValue;
-            document.getElementById('infoAgeValue').innerHTML = t.infoAgeValue;
-            document.getElementById('infoBirthValue').innerHTML = t.infoBirthValue;
-            document.getElementById('infoCityValue').innerHTML = t.infoCityValue;
-            document.getElementById('infoRoleValue').innerHTML = t.infoRoleValue;
+            document.getElementById('robloxText').innerHTML = t.robloxText;
+            document.getElementById('telegramText').innerHTML = t.telegramText;
+            document.getElementById('discordText').innerHTML = t.discordText;
+            document.getElementById('userName').innerHTML = t.name;
+            document.getElementById('userNick').innerHTML = '@' + t.nick;
+            document.getElementById('userAge').innerHTML = '🎂 ' + t.age;
+            document.getElementById('infoBirthValue').innerHTML = t.birth;
+            document.getElementById('infoCityValue').innerHTML = t.city;
+            document.getElementById('infoRoleValue').innerHTML = t.role;
+            document.getElementById('infoNameValue').innerHTML = t.name;
+            document.getElementById('infoAgeValue').innerHTML = t.age;
             document.querySelectorAll('.lang-btn').forEach(btn => {
-                if(btn.getAttribute('data-lang') === lang) btn.classList.add('active');
+                if(btn.getAttribute('data-lang') === currentLang) btn.classList.add('active');
                 else btn.classList.remove('active');
             });
         }
-        
-        // Админ-панель
-        const adminTrigger = document.getElementById('adminTrigger');
-        const adminPanel = document.getElementById('adminPanel');
-        const adminLoginBtn = document.getElementById('adminLoginBtn');
-        const adminPassword = document.getElementById('adminPassword');
-        const adminSettingsDiv = document.getElementById('adminSettings');
-        const applyBtn = document.getElementById('applySettingsBtn');
-        const resetBtn = document.getElementById('resetSettingsBtn');
-        const logoutBtn = document.getElementById('logoutAdminBtn');
-        const closeAdminXBtn = document.getElementById('closeAdminXBtn');
-        
-        let isAdminLoggedIn = false;
-        
-        adminTrigger.onclick = () => {
-            playClickSound();
-            adminPanel.classList.add('active');
-            adminPassword.value = '';
-            adminSettingsDiv.style.display = 'none';
-        };
-        
-        function closeAdminPanel() {
-            adminPanel.classList.remove('active');
-            isAdminLoggedIn = false;
-            adminSettingsDiv.style.display = 'none';
-        }
-        
+
+        // --- ЛОГИКА АДМИНКИ И 3D ФОНА (КАК БЫЛА, НО ЗАВОДИМ) ---
+        let sakuraEnabled = true, sakuraInterval, audioContext = null;
+        function restartSakura() { if(sakuraInterval) clearInterval(sakuraInterval); if(!sakuraEnabled) return; sakuraInterval = setInterval(() => { if(sakuraEnabled) for(let i=0;i<(Math.random()>0.7?2:1);i++) setTimeout(createSakura, i*100); }, 2500); }
+        function playClickSound() { try { if(!audioContext) audioContext = new (window.AudioContext||window.webkitAudioContext)(); if(audioContext.state==='suspended') audioContext.resume().then(()=>{let o=audioContext.createOscillator(),g=audioContext.createGain();o.type='sine';o.frequency.value=880;g.gain.setValueAtTime(0.15,audioContext.currentTime);g.gain.exponentialRampToValueAtTime(0.0001,audioContext.currentTime+0.3);o.connect(g);g.connect(audioContext.destination);o.start();o.stop(audioContext.currentTime+0.2);}).catch(()=>{}); else {let o=audioContext.createOscillator(),g=audioContext.createGain();o.type='sine';o.frequency.value=880;g.gain.setValueAtTime(0.15,audioContext.currentTime);g.gain.exponentialRampToValueAtTime(0.0001,audioContext.currentTime+0.3);o.connect(g);g.connect(audioContext.destination);o.start();o.stop(audioContext.currentTime+0.2);} } catch(e){} }
+        function showToast(msg) { let t=document.querySelector('.toast-notification'); if(t)t.remove(); let d=document.createElement('div'); d.className='toast-notification'; d.innerHTML=msg; document.body.appendChild(d); setTimeout(()=>d.remove(),2000); }
+        function loadSettings() { let s=JSON.parse(localStorage.getItem('adminSettings')||'{}'); if(s.accentColor) document.documentElement.style.setProperty('--accent-color', s.accentColor); if(s.sakura==='off') sakuraEnabled=false; else sakuraEnabled=true; if(s.floatAnim==='off') document.getElementById('mainCard').classList.remove('float-active'); else document.getElementById('mainCard').classList.add('float-active'); if(s.glowEffect==='off') document.getElementById('avatarPulse').classList.add('pulse-off'); else document.getElementById('avatarPulse').classList.remove('pulse-off'); restartSakura(); }
+        function saveSettings() { let s={accentColor:getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim()||'#ff69b4',sakura:sakuraEnabled?'on':'off',floatAnim:document.getElementById('mainCard').classList.contains('float-active')?'on':'off',glowEffect:document.getElementById('avatarPulse').classList.contains('pulse-off')?'off':'on'}; localStorage.setItem('adminSettings',JSON.stringify(s)); }
+
+        // Админка
+        const adminTrigger = document.getElementById('adminTrigger'), adminPanel = document.getElementById('adminPanel'), adminLoginBtn = document.getElementById('adminLoginBtn'), adminPassword = document.getElementById('adminPassword'), adminSettingsDiv = document.getElementById('adminSettings'), applyBtn = document.getElementById('applySettingsBtn'), resetBtn = document.getElementById('resetSettingsBtn'), logoutBtn = document.getElementById('logoutAdminBtn'), closeAdminXBtn = document.getElementById('closeAdminXBtn');
+        function closeAdminPanel() { adminPanel.classList.remove('active'); adminSettingsDiv.style.display = 'none'; }
+        adminTrigger.onclick = () => { playClickSound(); adminPanel.classList.add('active'); adminPassword.value=''; adminSettingsDiv.style.display='none'; };
         closeAdminXBtn.onclick = () => { playClickSound(); closeAdminPanel(); };
-        logoutBtn.onclick = () => { playClickSound(); closeAdminPanel(); showToast('🔒 Вы вышли из админ-панели'); };
-        
-        adminLoginBtn.onclick = () => {
-            playClickSound();
-            if (adminPassword.value === 'Pawel775577') {
-                isAdminLoggedIn = true;
-                adminSettingsDiv.style.display = 'block';
-                // Загружаем текущие настройки в поля
-                document.getElementById('adminName').value = document.getElementById('userName').innerHTML;
-                document.getElementById('adminNick').value = document.getElementById('userNick').innerHTML.replace('@', '');
-                document.getElementById('adminRole').value = document.getElementById('bioText').innerHTML.replace('Должности: ', '').replace('Roles: ', '');
-                document.getElementById('adminAge').value = document.getElementById('userAge').innerHTML.replace('🎂 ', '');
-                document.getElementById('adminBirth').value = document.getElementById('infoBirthValue').innerHTML;
-                document.getElementById('adminCity').value = document.getElementById('infoCityValue').innerHTML;
-                document.getElementById('adminColor').value = getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim() || '#ff69b4';
-                document.getElementById('adminSakura').value = sakuraEnabled ? 'on' : 'off';
-                document.getElementById('adminSakuraSpeed').value = sakuraSpeed;
-                document.getElementById('adminFloatAnim').value = document.getElementById('mainCard').classList.contains('float-active') ? 'on' : 'off';
-                document.getElementById('adminGlowEffect').value = document.getElementById('avatarPulse').classList.contains('pulse-off') ? 'off' : 'on';
-                showToast('✅ Добро пожаловать в админ-панель!');
-            } else {
-                showToast('❌ Неверный пароль!');
-                closeAdminPanel();
-            }
-        };
-        
-        applyBtn.onclick = () => {
-            playClickSound();
-            const newName = document.getElementById('adminName').value;
-            const newNick = document.getElementById('adminNick').value;
-            const newRole = document.getElementById('adminRole').value;
-            const newAge = document.getElementById('adminAge').value;
-            const newBirth = document.getElementById('adminBirth').value;
-            const newCity = document.getElementById('adminCity').value;
-            const newColor = document.getElementById('adminColor').value;
-            const sakuraState = document.getElementById('adminSakura').value;
-            const newSakuraSpeed = document.getElementById('adminSakuraSpeed').value;
-            const floatState = document.getElementById('adminFloatAnim').value;
-            const glowState = document.getElementById('adminGlowEffect').value;
-            
-            document.getElementById('userName').innerHTML = newName;
-            document.getElementById('userNick').innerHTML = '@' + newNick;
-            document.getElementById('bioText').innerHTML = (currentLang === 'ru' ? 'Должности: ' : 'Roles: ') + newRole;
-            document.getElementById('userAge').innerHTML = '🎂 ' + newAge;
-            document.getElementById('infoBirthValue').innerHTML = newBirth;
-            document.getElementById('infoCityValue').innerHTML = newCity;
-            document.getElementById('infoRoleValue').innerHTML = newRole;
-            
-            document.documentElement.style.setProperty('--accent-color', newColor);
-            document.querySelector('.avatar-pulse').style.background = newColor;
-            document.querySelector('.avatar').style.borderColor = newColor;
-            document.querySelector('.avatar').style.boxShadow = `0 0 30px ${newColor}`;
-            
-            sakuraEnabled = (sakuraState === 'on');
-            sakuraSpeed = newSakuraSpeed;
-            
-            if (floatState === 'off') document.getElementById('mainCard').classList.remove('float-active');
-            else document.getElementById('mainCard').classList.add('float-active');
-            
-            if (glowState === 'off') document.getElementById('avatarPulse').classList.add('pulse-off');
-            else document.getElementById('avatarPulse').classList.remove('pulse-off');
-            
-            restartSakura();
-            saveSettings();
-            
-            translations.ru.bio = 'Должности: ' + newRole;
-            translations.en.bio = 'Roles: ' + newRole;
-            translations.ru.infoRoleValue = newRole;
-            translations.en.infoRoleValue = newRole;
-            translations.ru.infoCityValue = newCity;
-            translations.en.infoCityValue = newCity;
-            translations.ru.infoAgeValue = newAge;
-            translations.en.infoAgeValue = newAge;
-            translations.ru.infoNameValue = newName;
-            translations.en.infoNameValue = newName;
-            translations.ru.infoBirthValue = newBirth;
-            translations.en.infoBirthValue = newBirth;
-            updateLanguage(currentLang);
-            showToast('✅ Настройки применены!');
-        };
-        
-        resetBtn.onclick = () => { playClickSound(); resetAllSettings(); };
-        
-        function showToast(message) {
-            const existing = document.querySelector('.toast-notification');
-            if(existing) existing.remove();
-            const toast = document.createElement('div');
-            toast.className = 'toast-notification';
-            toast.innerHTML = message;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 2000);
-        }
-        
-        // Модальное окно
-        const modal = document.getElementById('infoModal');
-        const infoBtn = document.getElementById('infoBtn');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        infoBtn.onclick = () => { playClickSound(); modal.classList.add('active'); };
-        closeModalBtn.onclick = () => { playClickSound(); modal.classList.remove('active'); };
-        modal.onclick = (e) => { if(e.target === modal) modal.classList.remove('active'); };
-        
-        // Копирование Discord
-        const discordBtn = document.getElementById('discordBtn');
-        discordBtn.onclick = async (e) => {
-            e.preventDefault();
-            playClickSound();
-            try {
-                await navigator.clipboard.writeText('vest_el');
-                showToast('✅ Discord скопирован: vest_el');
-                discordBtn.style.transform = 'scale(0.95)';
-                setTimeout(() => discordBtn.style.transform = '', 150);
-            } catch(err) { showToast('❌ Не удалось скопировать'); }
-        };
-        
-        // Курсор сакура
-        const cursor = document.createElement('div');
-        cursor.className = 'custom-cursor';
-        cursor.innerHTML = '🌸';
-        document.body.appendChild(cursor);
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-            const target = e.target.closest('.social-btn, .info-btn, .lang-btn, .modal-close, .admin-trigger');
-            if(target) { cursor.style.transform = 'translate(-50%, -50%) scale(1.3)'; cursor.style.filter = 'drop-shadow(0 0 8px #ff69b4)'; }
-            else { cursor.style.transform = 'translate(-50%, -50%) scale(1)'; cursor.style.filter = 'drop-shadow(0 0 4px #ff69b4)'; }
-        });
-        document.addEventListener('mouseleave', () => cursor.style.opacity = '0');
-        document.addEventListener('mouseenter', () => cursor.style.opacity = '1');
-        
-        // 3D фон
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x0a0a0a);
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 0, 35);
-        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), alpha: false });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        
-        const particlesCount = 3000;
-        const posArray = new Float32Array(particlesCount * 3);
-        for(let i = 0; i < particlesCount; i++) {
-            posArray[i*3] = (Math.random() - 0.5) * 200;
-            posArray[i*3+1] = (Math.random() - 0.5) * 120;
-            posArray[i*3+2] = (Math.random() - 0.5) * 100 - 30;
-        }
-        const particlesGeo = new THREE.BufferGeometry();
-        particlesGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-        const particlesMat = new THREE.PointsMaterial({ color: 0xff69b4, size: 0.18, transparent: true, opacity: 0.5 });
-        const particleSystem = new THREE.Points(particlesGeo, particlesMat);
-        scene.add(particleSystem);
-        
-        const ringGeo = new THREE.TorusGeometry(6, 0.12, 64, 300);
-        const ringMat = new THREE.MeshStandardMaterial({ color: 0xff69b4, emissive: 0xff3388, emissiveIntensity: 0.6 });
-        const ring = new THREE.Mesh(ringGeo, ringMat);
-        scene.add(ring);
-        const ring2Geo = new THREE.TorusGeometry(8, 0.08, 64, 300);
-        const ring2 = new THREE.Mesh(ring2Geo, ringMat);
-        scene.add(ring2);
-        
-        const sphereGroup = new THREE.Group();
-        for(let i = 0; i < 50; i++) {
-            const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.1, 8, 8), new THREE.MeshStandardMaterial({ color: 0xff88bb, emissive: 0xff3388 }));
-            const angle = (i / 50) * Math.PI * 2;
-            sphere.position.set(Math.cos(angle) * 5, Math.sin(angle * 2) * 1.5, Math.sin(angle) * 5);
-            sphereGroup.add(sphere);
-        }
-        scene.add(sphereGroup);
-        
-        const light1 = new THREE.PointLight(0xff69b4, 0.8);
-        light1.position.set(5, 5, 10);
-        scene.add(light1);
-        scene.add(new THREE.AmbientLight(0x222222));
-        
-        let time = 0;
-        function animateBackground() {
-            requestAnimationFrame(animateBackground);
-            time += 0.008;
-            particleSystem.rotation.y = time * 0.1;
-            particleSystem.rotation.x = Math.sin(time * 0.2) * 0.1;
-            ring.rotation.x = time * 0.3;
-            ring.rotation.z = time * 0.2;
-            ring2.rotation.y = time * 0.5;
-            ring2.rotation.x = time * 0.2;
-            sphereGroup.rotation.y = time * 0.2;
-            sphereGroup.rotation.x = Math.sin(time * 0.5) * 0.2;
-            camera.position.x = Math.sin(time * 0.2) * 1;
-            camera.position.y = Math.cos(time * 0.25) * 0.8;
-            camera.lookAt(0, 0, 0);
-            renderer.render(scene, camera);
-        }
-        animateBackground();
-        
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-        
-        // Сакура
-        const sakuraSymbols = ['🌸', '🌸', '💮', '🌸', '🌸', '✿', '❀', '🌸'];
-        function createSakura() {
-            const petal = document.createElement('div');
-            petal.innerHTML = sakuraSymbols[Math.floor(Math.random() * sakuraSymbols.length)];
-            petal.style.position = 'fixed';
-            petal.style.pointerEvents = 'none';
-            petal.style.zIndex = '9999';
-            petal.style.fontSize = (18 + Math.random() * 20) + 'px';
-            petal.style.left = Math.random() * 100 + '%';
-            petal.style.top = '-50px';
-            petal.style.opacity = 0.7;
-            petal.style.animation = `fall ${5 + Math.random() * 6}s linear forwards`;
-            document.body.appendChild(petal);
-            petal.addEventListener('animationend', () => petal.remove());
-        }
-        const style = document.createElement('style');
-        style.textContent = `@keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } }`;
-        document.head.appendChild(style);
-        
-        for(let i=0;i<12;i++) setTimeout(createSakura, i * 150);
-        restartSakura();
-        
-        // Параллакс
-        document.addEventListener('mousemove', (e) => {
-            const x = (e.clientX / window.innerWidth - 0.5) * 10;
-            const y = (e.clientY / window.innerHeight - 0.5) * 10;
-            document.getElementById('mainCard').style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
-        });
-        
-        // Звуки на кнопки
-        document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', playClickSound));
-        document.getElementById('robloxLink').addEventListener('click', playClickSound);
-        document.getElementById('telegramLink').addEventListener('click', playClickSound);
-        
-        function enableAudio() {
-            if(audioContext && audioContext.state === 'suspended') audioContext.resume();
-            document.removeEventListener('click', enableAudio);
-            document.removeEventListener('touchstart', enableAudio);
-        }
-        document.addEventListener('click', enableAudio);
-        document.addEventListener('touchstart', enableAudio);
-        
-        loadSettings();
-        updateLanguage('ru');
+        logoutBtn.onclick = () => { playClickSound(); closeAdminPanel(); showToast('🔒 Вы вышли'); };
+        adminLoginBtn.onclick = () => { playClickSound(); if(adminPassword.value==='Pawel775577') { adminSettingsDiv.style.display='block'; document.getElementById('adminName').value=document.getElementById('userName').innerHTML; document.getElementById('adminNick').value=document.getElementById('userNick').innerHTML.replace('@',''); document.getElementById('adminRole').value=document.getElementById('bioText').innerHTML.replace('Должности: ','').replace('Roles: ',''); document.getElementById('adminAge').value=document.getElementById('userAge').innerHTML.replace('🎂 ',''); document.getElementById('adminBirth').value=document.getElementById('infoBirthValue').innerHTML; document.getElementById('adminCity').value=document.getElementById('infoCityValue').innerHTML; document.getElementById('adminColor').value=getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim()||'#ff69b4'; document.getElementById('adminSakura').value=sakuraEnabled?'on':'off'; document.getElementById('adminFloatAnim').value=document.getElementById('mainCard').classList.contains('float-active')?'on':'off'; document.getElementById('adminGlowEffect').value=document.getElementById('avatarPulse').classList.contains('pulse-off')?'off':'on'; showToast('✅ Добро пожаловать!'); } else { showToast('❌ Неверный пароль!'); closeAdminPanel(); } };
+        applyBtn.onclick = () => { playClickSound(); let newColor=document.getElementById('adminColor').value; document.documentElement.style.setProperty('--accent-color', newColor); if(document.getElementById('adminSakura').value==='off') sakuraEnabled=false; else sakuraEnabled=true; if(document.getElementById('adminFloatAnim').value==='off') document.getElementById('mainCard').classList.remove('float-active'); else document.getElementById('mainCard').classList.add('float-active'); if(document.getElementById('adminGlowEffect').value==='off') document.getElementById('avatarPulse').classList.add('pulse-off'); else document.getElementById('avatarPulse').classList.remove('pulse-off'); restartSakura(); saveSettings(); showToast('✅ Настройки применены!'); };
+        resetBtn.onclick = () => { playClickSound(); localStorage.removeItem('adminSettings'); location.reload(); };
+
+        // --- 3D ФОН ---
+        const scene = new THREE.Scene(); scene.background = new THREE.Color(0x0a0a0a);
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000); camera.position.set(0,0,35);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), alpha: false }); renderer.setSize(window.innerWidth, window.innerHeight);
+        const pCount=3000, posArray=new Float32Array(pCount*3); for(let i=0;i<pCount;i++){ posArray[i*3]=(Math.random()-0.5)*200; posArray[i*3+1]=(Math.random()-0.5)*120; posArray[i*3+2]=(Math.random()-0.5)*100-30; }
+        const pGeo=new THREE.BufferGeometry(); pGeo.setAttribute('position',new THREE.BufferAttribute(posArray,3)); const pMat=new THREE.PointsMaterial({color:0xff69b4,size:0.18,transparent:true,opacity:0.5}); const pSys=new THREE.Points(pGeo,pMat); scene.add(pSys);
+        const ringGeo=new THREE.TorusGeometry(6,0.12,64,300), ringMat=new THREE.MeshStandardMaterial({color:0xff69b4,emissive:0xff3388,emissiveIntensity:0.6}); const ring=new THREE.Mesh(ringGeo,ringMat); scene.add(ring); const ring2=new THREE.Mesh(new THREE.TorusGeometry(8,0.08,64,300),ringMat); scene.add(ring2);
+        const sphereGroup=new THREE.Group(); for(let i=0;i<50;i++){ let s=new THREE.Mesh(new THREE.SphereGeometry(0.1,8,8),new THREE.MeshStandardMaterial({color:0xff88bb,emissive:0xff3388})); let a=(i/50)*Math.PI*2; s.position.set(Math.cos(a)*5,Math.sin(a*2)*1.5,Math.sin(a)*5); sphereGroup.add(s); } scene.add(sphereGroup);
+        const light=new THREE.PointLight(0xff69b4,0.8); light.position.set(5,5,10); scene.add(light); scene.add(new THREE.AmbientLight(0x222222));
+        let time=0; function animate(){ requestAnimationFrame(animate); time+=0.008; pSys.rotation.y=time*0.1; pSys.rotation.x=Math.sin(time*0.2)*0.1; ring.rotation.x=time*0.3; ring.rotation.z=time*0.2; ring2.rotation.y=time*0.5; ring2.rotation.x=time*0.2; sphereGroup.rotation.y=time*0.2; sphereGroup.rotation.x=Math.sin(time*0.5)*0.2; camera.position.x=Math.sin(time*0.2)*1; camera.position.y=Math.cos(time*0.25)*0.8; camera.lookAt(0,0,0); renderer.render(scene,camera); } animate();
+        window.addEventListener('resize',()=>{ camera.aspect=window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth,window.innerHeight); });
+
+        // --- САКУРА (лепестки) ---
+        const sakuraSymbols=['🌸','🌸','💮','🌸','🌸','✿','❀','🌸']; let style=document.createElement('style'); style.textContent='@keyframes fall{0%{transform:translateY(-10vh) rotate(0deg); opacity:1;}100%{transform:translateY(110vh) rotate(360deg); opacity:0;}}'; document.head.appendChild(style);
+        function createSakura(){ let p=document.createElement('div'); p.innerHTML=sakuraSymbols[Math.floor(Math.random()*sakuraSymbols.length)]; p.style.position='fixed'; p.style.pointerEvents='none'; p.style.zIndex='9999'; p.style.fontSize=(18+Math.random()*20)+'px'; p.style.left=Math.random()*100+'%'; p.style.top='-50px'; p.style.opacity=0.7; p.style.animation=`fall ${5+Math.random()*6}s linear forwards`; document.body.appendChild(p); p.addEventListener('animationend',()=>p.remove()); }
+        for(let i=0;i<12;i++) setTimeout(createSakura,i*150); restartSakura();
+
+        // --- КУРСОР ---
+        let cursorDiv=document.createElement('div'); cursorDiv.className='custom-cursor'; cursorDiv.innerHTML='🌸'; document.body.appendChild(cursorDiv);
+        document.addEventListener('mousemove',(e)=>{ cursorDiv.style.left=e.clientX+'px'; cursorDiv.style.top=e.clientY+'px'; let t=e.target.closest('.social-btn, .info-btn, .lang-btn, .modal-close, .admin-trigger'); if(t){ cursorDiv.style.transform='translate(-50%, -50%) scale(1.3)'; cursorDiv.style.filter='drop-shadow(0 0 8px #ff69b4)'; }else{ cursorDiv.style.transform='translate(-50%, -50%) scale(1)'; cursorDiv.style.filter='drop-shadow(0 0 4px #ff69b4)'; } });
+        document.addEventListener('mouseleave',()=>cursorDiv.style.opacity='0'); document.addEventListener('mouseenter',()=>cursorDiv.style.opacity='1');
+
+        // --- ОБРАБОТЧИКИ КНОПОК ---
+        document.getElementById('infoBtn').onclick=()=>{ playClickSound(); document.getElementById('infoModal').classList.add('active'); };
+        document.getElementById('closeModalBtn').onclick=()=>{ playClickSound(); document.getElementById('infoModal').classList.remove('active'); };
+        document.getElementById('infoModal').onclick=(e)=>{ if(e.target===document.getElementById('infoModal')) document.getElementById('infoModal').classList.remove('active'); };
+        document.getElementById('discordBtn').onclick=async(e)=>{ e.preventDefault(); playClickSound(); await navigator.clipboard.writeText('vest_el'); showToast('✅ Discord скопирован: vest_el'); };
+        document.querySelectorAll('.lang-btn').forEach(btn=>{ btn.onclick=()=>{ playClickSound(); currentLang=btn.getAttribute('data-lang'); updateUILanguage(); }; });
+        document.getElementById('robloxLink').addEventListener('click',playClickSound);
+        document.getElementById('telegramLink').addEventListener('click',playClickSound);
+
+        function enableAudio(){ if(audioContext&&audioContext.state==='suspended') audioContext.resume(); document.removeEventListener('click',enableAudio); document.removeEventListener('touchstart',enableAudio); }
+        document.addEventListener('click',enableAudio); document.addEventListener('touchstart',enableAudio);
+
+        loadSettings(); updateUILanguage();
     })();
 </script>
 </body>
