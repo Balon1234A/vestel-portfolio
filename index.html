@@ -49,88 +49,100 @@
             z-index: 0;
         }
 
-        /* РОЗОВАЯ ТРАВА ВНИЗУ (САКУРА-ГАРДЕН) */
-        .sakura-grass {
+        /* ПОЛЕ ЦВЕТУЩЕЙ САКУРЫ (ВМЕСТО ТРАВЫ) */
+        .sakura-field {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 120px;
-            background: linear-gradient(to top, rgba(255,105,180,0.25), rgba(255,105,180,0.05), transparent);
+            height: 140px;
             pointer-events: none;
             z-index: 6;
-            backdrop-filter: blur(1px);
-            border-top: 1px solid rgba(255,105,180,0.3);
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            gap: 8px;
+            padding: 0 15px;
         }
         
-        .grass-blade {
-            position: absolute;
-            bottom: 0;
-            width: 3px;
-            background: linear-gradient(to top, #ff69b4, #ffb7c5);
-            border-radius: 2px;
-            opacity: 0.6;
-            animation: sway 3s infinite ease-in-out;
+        .flower-stem {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: swayFlower 3s infinite ease-in-out;
+            transform-origin: bottom center;
         }
         
-        @keyframes sway {
+        .flower-stem:nth-child(even) { animation-duration: 3.5s; animation-delay: 0.5s; }
+        .flower-stem:nth-child(odd) { animation-duration: 2.8s; animation-delay: 0.2s; }
+        
+        @keyframes swayFlower {
             0%, 100% { transform: rotate(0deg); }
-            50% { transform: rotate(3deg); }
+            50% { transform: rotate(4deg); }
+        }
+        
+        .flower {
+            font-size: 1.1rem;
+            filter: drop-shadow(0 0 6px rgba(255,105,180,0.5));
+            transition: all 0.3s ease;
+            opacity: 0.85;
+        }
+        
+        .flower-stem:nth-child(3n) .flower { font-size: 1rem; opacity: 0.7; }
+        .flower-stem:nth-child(5n+2) .flower { font-size: 1.3rem; opacity: 0.9; }
+        
+        .stem-line {
+            width: 2px;
+            height: 25px;
+            background: linear-gradient(to top, #ff69b4, transparent);
+            margin-bottom: 3px;
+            opacity: 0.5;
         }
 
-        /* РЕАЛИСТИЧНЫЕ ВЕТКИ САКУРЫ С ЛИСТЬЯМИ */
+        /* РЕАЛИСТИЧНЫЕ ВЕТКИ САКУРЫ (без агрессивного свечения) */
         .real-branch {
             position: fixed;
             top: 0;
-            width: 280px;
+            width: 300px;
             height: 100%;
             pointer-events: none;
             z-index: 5;
-            opacity: 0.8;
+            opacity: 0.7;
         }
         
-        .real-branch.left {
-            left: 0;
-            background: linear-gradient(135deg, rgba(255,105,180,0.15) 0%, transparent 80%);
-        }
+        .real-branch.left { left: 0; }
+        .real-branch.right { right: 0; }
         
-        .real-branch.right {
-            right: 0;
-            background: linear-gradient(225deg, rgba(255,105,180,0.15) 0%, transparent 80%);
-        }
-        
-        /* Рисуем ветки через SVG */
         .branch-svg {
             position: absolute;
             top: 0;
             width: 100%;
             height: 100%;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.15));
         }
         
-        /* Анимация покачивания веток */
         @keyframes swayLeftReal {
             0%, 100% { transform: translateX(0) rotate(0deg); }
-            50% { transform: translateX(-5px) rotate(1deg); }
+            50% { transform: translateX(-3px) rotate(0.5deg); }
         }
         @keyframes swayRightReal {
             0%, 100% { transform: translateX(0) rotate(0deg); }
-            50% { transform: translateX(5px) rotate(-1deg); }
+            50% { transform: translateX(3px) rotate(-0.5deg); }
         }
         .real-branch.left { animation: swayLeftReal 7s ease-in-out infinite; }
         .real-branch.right { animation: swayRightReal 7s ease-in-out infinite; }
 
-        /* Приземлённый туман */
+        /* Лёгкий туман внизу */
         .ground-fog {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 200px;
-            background: radial-gradient(ellipse at center, rgba(255,105,180,0.12) 0%, transparent 70%);
+            height: 180px;
+            background: radial-gradient(ellipse at center, rgba(255,105,180,0.08) 0%, transparent 80%);
             pointer-events: none;
             z-index: 4;
-            filter: blur(15px);
+            filter: blur(20px);
         }
 
         .overlay {
@@ -139,7 +151,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, transparent, rgba(0,0,0,0.5));
+            background: radial-gradient(circle, transparent, rgba(0,0,0,0.55));
             pointer-events: none;
             z-index: 1;
         }
@@ -422,6 +434,9 @@
             .name { font-size: 2rem; }
             .avatar-section, .avatar { width: 110px; height: 110px; }
             .real-branch { width: 150px; opacity: 0.5; }
+            .sakura-field { height: 90px; gap: 4px; }
+            .flower { font-size: 0.8rem; }
+            .stem-line { height: 15px; }
         }
     </style>
 </head>
@@ -430,46 +445,38 @@
 <canvas id="bg-canvas"></canvas>
 <div class="overlay"></div>
 
-<!-- РЕАЛИСТИЧНЫЕ ВЕТКИ САКУРЫ (SVG) -->
+<!-- РЕАЛИСТИЧНЫЕ ВЕТКИ САКУРЫ (без агрессивного свечения) -->
 <div class="real-branch left">
-    <svg class="branch-svg" viewBox="0 0 280 800" preserveAspectRatio="none">
-        <path d="M50,0 Q60,150 30,300 Q10,450 50,600 Q70,700 30,800" stroke="#ff69b4" stroke-width="6" fill="none" opacity="0.7"/>
-        <path d="M45,150 Q100,180 120,220" stroke="#ff69b4" stroke-width="4" fill="none" opacity="0.6"/>
-        <path d="M40,320 Q-20,350 -10,400" stroke="#ff99cc" stroke-width="3" fill="none" opacity="0.5"/>
-        <path d="M48,500 Q90,530 110,580" stroke="#ff69b4" stroke-width="4" fill="none" opacity="0.6"/>
-        <!-- Цветы на ветках -->
-        <circle cx="120" cy="220" r="8" fill="#ffb7c5" opacity="0.8"/>
-        <circle cx="125" cy="215" r="5" fill="#ff69b4" opacity="0.9"/>
-        <circle cx="-10" cy="400" r="7" fill="#ffb7c5" opacity="0.8"/>
-        <circle cx="110" cy="580" r="9" fill="#ffb7c5" opacity="0.8"/>
-        <circle cx="115" cy="575" r="5" fill="#ff69b4" opacity="0.9"/>
-        <circle cx="65" cy="650" r="7" fill="#ffb7c5" opacity="0.7"/>
-        <!-- Листья -->
-        <ellipse cx="100" cy="180" rx="10" ry="4" fill="#90ee90" opacity="0.5" transform="rotate(-30 100 180)"/>
-        <ellipse cx="55" cy="420" rx="8" ry="3" fill="#90ee90" opacity="0.4" transform="rotate(20 55 420)"/>
+    <svg class="branch-svg" viewBox="0 0 300 800" preserveAspectRatio="none">
+        <path d="M30,0 Q40,120 20,250 Q0,380 30,500 Q50,600 20,750" stroke="#ff69b4" stroke-width="5" fill="none" opacity="0.6"/>
+        <path d="M25,120 Q80,150 100,200" stroke="#ff69b4" stroke-width="3" fill="none" opacity="0.5"/>
+        <path d="M22,280 Q-30,310 -10,360" stroke="#ff99cc" stroke-width="2.5" fill="none" opacity="0.4"/>
+        <path d="M28,450 Q70,480 90,530" stroke="#ff69b4" stroke-width="3" fill="none" opacity="0.5"/>
+        <circle cx="100" cy="200" r="7" fill="#ffb7c5" opacity="0.7"/>
+        <circle cx="105" cy="195" r="4" fill="#ff69b4" opacity="0.8"/>
+        <circle cx="-10" cy="360" r="6" fill="#ffb7c5" opacity="0.7"/>
+        <circle cx="90" cy="530" r="8" fill="#ffb7c5" opacity="0.7"/>
+        <ellipse cx="80" cy="160" rx="8" ry="3" fill="#98fb98" opacity="0.4" transform="rotate(-30 80 160)"/>
+        <ellipse cx="40" cy="380" rx="6" ry="2.5" fill="#98fb98" opacity="0.35" transform="rotate(20 40 380)"/>
     </svg>
 </div>
 <div class="real-branch right">
-    <svg class="branch-svg" viewBox="0 0 280 800" preserveAspectRatio="none">
-        <path d="M230,0 Q220,150 250,300 Q270,450 230,600 Q210,700 250,800" stroke="#ff69b4" stroke-width="6" fill="none" opacity="0.7"/>
-        <path d="M235,150 Q180,180 160,220" stroke="#ff69b4" stroke-width="4" fill="none" opacity="0.6"/>
-        <path d="M240,320 Q300,350 290,400" stroke="#ff99cc" stroke-width="3" fill="none" opacity="0.5"/>
-        <path d="M232,500 Q190,530 170,580" stroke="#ff69b4" stroke-width="4" fill="none" opacity="0.6"/>
-        <!-- Цветы на ветках -->
-        <circle cx="160" cy="220" r="8" fill="#ffb7c5" opacity="0.8"/>
-        <circle cx="155" cy="215" r="5" fill="#ff69b4" opacity="0.9"/>
-        <circle cx="290" cy="400" r="7" fill="#ffb7c5" opacity="0.8"/>
-        <circle cx="170" cy="580" r="9" fill="#ffb7c5" opacity="0.8"/>
-        <circle cx="165" cy="575" r="5" fill="#ff69b4" opacity="0.9"/>
-        <circle cx="215" cy="650" r="7" fill="#ffb7c5" opacity="0.7"/>
-        <!-- Листья -->
-        <ellipse cx="180" cy="180" rx="10" ry="4" fill="#90ee90" opacity="0.5" transform="rotate(30 180 180)"/>
-        <ellipse cx="225" cy="420" rx="8" ry="3" fill="#90ee90" opacity="0.4" transform="rotate(-20 225 420)"/>
+    <svg class="branch-svg" viewBox="0 0 300 800" preserveAspectRatio="none">
+        <path d="M270,0 Q260,120 280,250 Q300,380 270,500 Q250,600 280,750" stroke="#ff69b4" stroke-width="5" fill="none" opacity="0.6"/>
+        <path d="M275,120 Q220,150 200,200" stroke="#ff69b4" stroke-width="3" fill="none" opacity="0.5"/>
+        <path d="M278,280 Q330,310 310,360" stroke="#ff99cc" stroke-width="2.5" fill="none" opacity="0.4"/>
+        <path d="M272,450 Q230,480 210,530" stroke="#ff69b4" stroke-width="3" fill="none" opacity="0.5"/>
+        <circle cx="200" cy="200" r="7" fill="#ffb7c5" opacity="0.7"/>
+        <circle cx="195" cy="195" r="4" fill="#ff69b4" opacity="0.8"/>
+        <circle cx="310" cy="360" r="6" fill="#ffb7c5" opacity="0.7"/>
+        <circle cx="210" cy="530" r="8" fill="#ffb7c5" opacity="0.7"/>
+        <ellipse cx="220" cy="160" rx="8" ry="3" fill="#98fb98" opacity="0.4" transform="rotate(30 220 160)"/>
+        <ellipse cx="260" cy="380" rx="6" ry="2.5" fill="#98fb98" opacity="0.35" transform="rotate(-20 260 380)"/>
     </svg>
 </div>
 
-<!-- РОЗОВАЯ ТРАВА СНИЗУ -->
-<div class="sakura-grass" id="grassContainer"></div>
+<!-- ПОЛЕ ЦВЕТУЩЕЙ САКУРЫ (вместо травы) -->
+<div class="sakura-field" id="sakuraField"></div>
 <div class="ground-fog"></div>
 
 <div class="main-container">
@@ -661,22 +668,20 @@
         let time=0; function animate(){ requestAnimationFrame(animate); time+=0.008; pSys.rotation.y=time*0.05; pSys.rotation.x=Math.sin(time*0.1)*0.1; ring.rotation.x=time*0.3; ring.rotation.z=time*0.2; ring2.rotation.y=time*0.5; ring2.rotation.x=time*0.2; sphereGroup.rotation.y=time*0.15; sphereGroup.rotation.x=Math.sin(time*0.4)*0.2; camera.position.x=Math.sin(time*0.2)*1.5; camera.position.y=Math.cos(time*0.25)*1; camera.lookAt(0,0,0); renderer.render(scene,camera); } animate();
         window.addEventListener('resize',()=>{ camera.aspect=window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth,window.innerHeight); });
 
-        // --- СОЗДАНИЕ ТРАВИНОК СНИЗУ ---
-        const grassContainer = document.getElementById('grassContainer');
-        for (let i = 0; i < 60; i++) {
-            const blade = document.createElement('div');
-            blade.className = 'grass-blade';
-            const height = 30 + Math.random() * 50;
-            const left = Math.random() * 100;
-            const delay = Math.random() * 3;
-            const duration = 2 + Math.random() * 3;
-            blade.style.height = height + 'px';
-            blade.style.left = left + '%';
-            blade.style.bottom = '0px';
-            blade.style.animationDelay = delay + 's';
-            blade.style.animationDuration = duration + 's';
-            blade.style.width = (2 + Math.random() * 3) + 'px';
-            grassContainer.appendChild(blade);
+        // --- ПОЛЕ САКУРЫ (цветы вместо травы) ---
+        const fieldContainer = document.getElementById('sakuraField');
+        const flowersCount = window.innerWidth < 768 ? 30 : 55;
+        for (let i = 0; i < flowersCount; i++) {
+            const stem = document.createElement('div');
+            stem.className = 'flower-stem';
+            const flower = document.createElement('div');
+            flower.className = 'flower';
+            flower.innerHTML = '🌸';
+            const stemLine = document.createElement('div');
+            stemLine.className = 'stem-line';
+            stem.appendChild(stemLine);
+            stem.appendChild(flower);
+            fieldContainer.appendChild(stem);
         }
 
         // --- ЛЕПЕСТКИ САКУРЫ ---
