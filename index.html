@@ -410,11 +410,11 @@
         <!-- АУДИОПЛЕЕР С ТРЕКОМ "ВОСЬМАЯ МИЛЯ" -->
         <div class="music-player">
             <div class="track-title">
-                <span class="track-name">madk1d, VILLIAN – 8 миля</span>
+                <span class="track-name">🎵 madk1d, VILLIAN – 8 миля</span>
                 <span class="time-display" id="timeDisplay">0:00 / 0:00</span>
             </div>
             <div class="player-controls">
-                <button class="play-btn" id="playBtn">▶</button>
+                <button class="play-btn" id="playBtn">⏸</button>
                 <div class="progress-bar" id="progressBar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
@@ -442,8 +442,7 @@
     </div>
 </div>
 
-<audio id="audioPlayer" preload="auto">
-    <!-- ⚠️ ЗАМЕНИ ЭТУ ССЫЛКУ НА РЕАЛЬНЫЙ MP3-ФАЙЛ ⚠️ -->
+<audio id="audioPlayer" preload="auto" autoplay loop>
     <source src="https://cdn.discordapp.com/attachments/1498720837694525580/1503395527969079387/madk1d_VILLIAN_-_8_.mp3?ex=6a0331b1&is=6a01e031&hm=8d0a75dba1338dd597c1d064a05f6500c14210a039d5ec9eb8cf433632c7d8d5&" type="audio/mpeg">
     Ваш браузер не поддерживает аудио.
 </audio>
@@ -518,7 +517,7 @@
         
         document.body.style.background = 'radial-gradient(circle at 30% 40%, #121212, #000000)';
         
-        // ----- АУДИОПЛЕЕР -----
+        // ----- АУДИОПЛЕЕР С АВТОМАТИЧЕСКИМ ВОСПРОИЗВЕДЕНИЕМ -----
         const audio = document.getElementById('audioPlayer');
         const playBtn = document.getElementById('playBtn');
         const progressBar = document.getElementById('progressBar');
@@ -527,7 +526,8 @@
         const volumeSlider = document.getElementById('volumeSlider');
         const volumeIcon = document.getElementById('volumeIcon');
         
-        let isPlaying = false;
+        let isPlaying = true;
+        let autoPlayAttempts = 0;
         
         // Форматирование времени (сек -> мм:сс)
         function formatTime(seconds) {
@@ -559,13 +559,13 @@
         // Обновление во время воспроизведения
         audio.addEventListener('timeupdate', updateProgress);
         
-        // Когда трек закончился
+        // Когда трек закончился — перезапускаем (loop)
         audio.addEventListener('ended', () => {
-            isPlaying = false;
-            playBtn.textContent = '▶';
-            progressFill.style.width = '0%';
-            timeDisplay.textContent = `0:00 / ${formatTime(audio.duration)}`;
             audio.currentTime = 0;
+            audio.play().catch(() => {
+                isPlaying = false;
+                playBtn.textContent = '▶';
+            });
         });
         
         // Play/Pause
@@ -573,26 +573,15 @@
             if (isPlaying) {
                 audio.pause();
                 playBtn.textContent = '▶';
+                isPlaying = false;
             } else {
-                // Пытаемся запустить (браузер может блокировать автозапуск)
-                const playPromise = audio.play();
-                if (playPromise !== undefined) {
-                    playPromise.then(() => {
-                        playBtn.textContent = '⏸';
-                        isPlaying = true;
-                    }).catch(() => {
-                        // Автозапуск заблокирован — показываем кнопку
-                        playBtn.textContent = '▶';
-                        isPlaying = false;
-                        alert('Нажмите Play ещё раз — браузер заблокировал автозапуск');
-                    });
-                }
-            }
-            isPlaying = !isPlaying;
-            if (isPlaying) {
-                playBtn.textContent = '⏸';
-            } else {
-                playBtn.textContent = '▶';
+                audio.play().then(() => {
+                    playBtn.textContent = '⏸';
+                    isPlaying = true;
+                }).catch(() => {
+                    playBtn.textContent = '▶';
+                    isPlaying = false;
+                });
             }
         });
         
@@ -635,18 +624,46 @@
         audio.volume = 0.7;
         volumeSlider.value = 0.7;
         
-        // Пытаемся запустить музыку при первом касании/клике по странице (обходит блокировку)
-        function tryAutoPlay() {
+        // МОЩНАЯ ФУНКЦИЯ ДЛЯ АВТОВОСПРОИЗВЕДЕНИЯ
+        function forceAutoPlay() {
             audio.play().then(() => {
                 playBtn.textContent = '⏸';
                 isPlaying = true;
-                document.removeEventListener('click', tryAutoPlay);
-                document.removeEventListener('touchstart', tryAutoPlay);
-            }).catch(() => {});
+                console.log('✅ Музыка играет автоматически!');
+            }).catch((error) => {
+                console.log('⚠️ Автовоспроизведение заблокировано:', error);
+                autoPlayAttempts++;
+                
+                if (autoPlayAttempts < 5) {
+                    setTimeout(forceAutoPlay, 500);
+                } else {
+                    playBtn.textContent = '▶';
+                    isPlaying = false;
+                }
+            });
         }
         
-        document.addEventListener('click', tryAutoPlay);
-        document.addEventListener('touchstart', tryAutoPlay);
+        // Запускаем автовоспроизведение при загрузке страницы
+        setTimeout(() => {
+            forceAutoPlay();
+        }, 100);
+        
+        // Дублируем на любое взаимодействие с пользователем
+        const startMusicOnInteraction = () => {
+            if (!isPlaying) {
+                audio.play().then(() => {
+                    playBtn.textContent = '⏸';
+                    isPlaying = true;
+                }).catch(() => {});
+            }
+            document.removeEventListener('click', startMusicOnInteraction);
+            document.removeEventListener('touchstart', startMusicOnInteraction);
+            document.removeEventListener('keydown', startMusicOnInteraction);
+        };
+        
+        document.addEventListener('click', startMusicOnInteraction);
+        document.addEventListener('touchstart', startMusicOnInteraction);
+        document.addEventListener('keydown', startMusicOnInteraction);
     })();
 </script>
 </body>
