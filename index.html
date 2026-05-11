@@ -20,7 +20,6 @@
             overflow-x: hidden;
             background: #0a0a0a;
             color: #fff;
-            transition: background-color 0.3s ease;
             position: relative;
         }
 
@@ -50,72 +49,88 @@
             z-index: 0;
         }
 
-        /* ДЕКОРАТИВНЫЕ ВЕТКИ САКУРЫ ПО БОКАМ */
-        .sakura-branch {
+        /* РОЗОВАЯ ТРАВА ВНИЗУ (САКУРА-ГАРДЕН) */
+        .sakura-grass {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 120px;
+            background: linear-gradient(to top, rgba(255,105,180,0.25), rgba(255,105,180,0.05), transparent);
+            pointer-events: none;
+            z-index: 6;
+            backdrop-filter: blur(1px);
+            border-top: 1px solid rgba(255,105,180,0.3);
+        }
+        
+        .grass-blade {
+            position: absolute;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to top, #ff69b4, #ffb7c5);
+            border-radius: 2px;
+            opacity: 0.6;
+            animation: sway 3s infinite ease-in-out;
+        }
+        
+        @keyframes sway {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(3deg); }
+        }
+
+        /* РЕАЛИСТИЧНЫЕ ВЕТКИ САКУРЫ С ЛИСТЬЯМИ */
+        .real-branch {
             position: fixed;
             top: 0;
-            width: 220px;
+            width: 280px;
             height: 100%;
             pointer-events: none;
             z-index: 5;
-            background-repeat: no-repeat;
-            background-position: top center;
-            background-size: contain;
-            opacity: 0.7;
-            transition: opacity 1s ease;
+            opacity: 0.8;
         }
-
-        .sakura-branch.left {
+        
+        .real-branch.left {
             left: 0;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 800"><path fill="none" stroke="%23ff69b4" stroke-width="4" d="M50,0 L70,100 L40,150 L90,220 L60,280 L120,350 L80,400 L140,480 L100,550 L160,650 L120,750 L180,800" /><path fill="none" stroke="%23ff99cc" stroke-width="2" d="M70,100 L130,130 L90,150" /><path fill="none" stroke="%23ff69b4" stroke-width="3" d="M90,220 L160,250 L110,280" /><path fill="none" stroke="%23ff99cc" stroke-width="2" d="M120,350 L180,370 L130,400" /><circle cx="70" cy="100" r="6" fill="%23ffb7c5" opacity="0.9"/><circle cx="130" cy="130" r="5" fill="%23ffb7c5" opacity="0.9"/><circle cx="90" cy="150" r="6" fill="%23ffb7c5" opacity="0.9"/><circle cx="160" cy="250" r="6" fill="%23ffb7c5" opacity="0.9"/><circle cx="110" cy="280" r="5" fill="%23ffb7c5" opacity="0.9"/><circle cx="180" cy="370" r="6" fill="%23ffb7c5" opacity="0.9"/><circle cx="130" cy="400" r="5" fill="%23ffb7c5" opacity="0.9"/></svg>');
-            background-position: left center;
+            background: linear-gradient(135deg, rgba(255,105,180,0.15) 0%, transparent 80%);
         }
-
-        .sakura-branch.right {
+        
+        .real-branch.right {
             right: 0;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 800"><path fill="none" stroke="%23ff69b4" stroke-width="4" d="M200,0 L180,100 L210,180 L160,250 L190,320 L130,380 L170,460 L120,530 L160,620 L110,700 L150,780" /><path fill="none" stroke="%23ff99cc" stroke-width="2" d="M180,100 L120,140 L170,170" /><path fill="none" stroke="%23ff69b4" stroke-width="3" d="M160,250 L90,280 L140,310" /><path fill="none" stroke="%23ff99cc" stroke-width="2" d="M130,380 L70,400 L120,430" /><circle cx="180" cy="100" r="6" fill="%23ffb7c5" opacity="0.9"/><circle cx="120" cy="140" r="5" fill="%23ffb7c5" opacity="0.9"/><circle cx="170" cy="170" r="6" fill="%23ffb7c5" opacity="0.9"/><circle cx="90" cy="280" r="6" fill="%23ffb7c5" opacity="0.9"/><circle cx="140" cy="310" r="5" fill="%23ffb7c5" opacity="0.9"/><circle cx="70" cy="400" r="6" fill="%23ffb7c5" opacity="0.9"/><circle cx="120" cy="430" r="5" fill="%23ffb7c5" opacity="0.9"/></svg>');
-            background-position: right center;
+            background: linear-gradient(225deg, rgba(255,105,180,0.15) 0%, transparent 80%);
         }
-
-        /* Анимация покачивания веток */
-        @keyframes swayLeft {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(-10px); }
-        }
-        @keyframes swayRight {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(10px); }
-        }
-        .sakura-branch.left { animation: swayLeft 6s ease-in-out infinite; }
-        .sakura-branch.right { animation: swayRight 6s ease-in-out infinite; }
-
-        /* Плавающие фонарики (дополнительный декор) */
-        .floating-lantern {
-            position: fixed;
-            pointer-events: none;
-            z-index: 3;
-            font-size: 1.8rem;
-            opacity: 0.5;
-            animation: floatLantern 10s infinite ease-in-out;
-            filter: blur(0.5px);
-        }
-        @keyframes floatLantern {
-            0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.5; }
-            90% { opacity: 0.5; }
-            100% { transform: translateY(-10vh) translateX(20px) rotate(10deg); opacity: 0; }
-        }
-
-        /* Эффект тумана */
-        .fog-layer {
-            position: fixed;
+        
+        /* Рисуем ветки через SVG */
+        .branch-svg {
+            position: absolute;
             top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 20% 40%, rgba(255,105,180,0.05) 0%, rgba(0,0,0,0) 70%);
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+        
+        /* Анимация покачивания веток */
+        @keyframes swayLeftReal {
+            0%, 100% { transform: translateX(0) rotate(0deg); }
+            50% { transform: translateX(-5px) rotate(1deg); }
+        }
+        @keyframes swayRightReal {
+            0%, 100% { transform: translateX(0) rotate(0deg); }
+            50% { transform: translateX(5px) rotate(-1deg); }
+        }
+        .real-branch.left { animation: swayLeftReal 7s ease-in-out infinite; }
+        .real-branch.right { animation: swayRightReal 7s ease-in-out infinite; }
+
+        /* Приземлённый туман */
+        .ground-fog {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: radial-gradient(ellipse at center, rgba(255,105,180,0.12) 0%, transparent 70%);
             pointer-events: none;
-            z-index: 2;
+            z-index: 4;
+            filter: blur(15px);
         }
 
         .overlay {
@@ -124,7 +139,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, transparent, rgba(0,0,0,0.6));
+            background: radial-gradient(circle, transparent, rgba(0,0,0,0.5));
             pointer-events: none;
             z-index: 1;
         }
@@ -143,7 +158,7 @@
         .epic-card {
             max-width: 500px;
             width: 100%;
-            background: rgba(0, 0, 0, 0.65);
+            background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(20px);
             border-radius: 50px;
             border: 1px solid rgba(255, 105, 180, 0.6);
@@ -406,19 +421,56 @@
             .epic-card { padding: 25px 20px; }
             .name { font-size: 2rem; }
             .avatar-section, .avatar { width: 110px; height: 110px; }
-            .sakura-branch { width: 100px; opacity: 0.4; }
+            .real-branch { width: 150px; opacity: 0.5; }
         }
     </style>
 </head>
 <body>
 
 <canvas id="bg-canvas"></canvas>
-<div class="fog-layer"></div>
 <div class="overlay"></div>
 
-<!-- ДЕКОРАТИВНЫЕ ВЕТКИ САКУРЫ -->
-<div class="sakura-branch left"></div>
-<div class="sakura-branch right"></div>
+<!-- РЕАЛИСТИЧНЫЕ ВЕТКИ САКУРЫ (SVG) -->
+<div class="real-branch left">
+    <svg class="branch-svg" viewBox="0 0 280 800" preserveAspectRatio="none">
+        <path d="M50,0 Q60,150 30,300 Q10,450 50,600 Q70,700 30,800" stroke="#ff69b4" stroke-width="6" fill="none" opacity="0.7"/>
+        <path d="M45,150 Q100,180 120,220" stroke="#ff69b4" stroke-width="4" fill="none" opacity="0.6"/>
+        <path d="M40,320 Q-20,350 -10,400" stroke="#ff99cc" stroke-width="3" fill="none" opacity="0.5"/>
+        <path d="M48,500 Q90,530 110,580" stroke="#ff69b4" stroke-width="4" fill="none" opacity="0.6"/>
+        <!-- Цветы на ветках -->
+        <circle cx="120" cy="220" r="8" fill="#ffb7c5" opacity="0.8"/>
+        <circle cx="125" cy="215" r="5" fill="#ff69b4" opacity="0.9"/>
+        <circle cx="-10" cy="400" r="7" fill="#ffb7c5" opacity="0.8"/>
+        <circle cx="110" cy="580" r="9" fill="#ffb7c5" opacity="0.8"/>
+        <circle cx="115" cy="575" r="5" fill="#ff69b4" opacity="0.9"/>
+        <circle cx="65" cy="650" r="7" fill="#ffb7c5" opacity="0.7"/>
+        <!-- Листья -->
+        <ellipse cx="100" cy="180" rx="10" ry="4" fill="#90ee90" opacity="0.5" transform="rotate(-30 100 180)"/>
+        <ellipse cx="55" cy="420" rx="8" ry="3" fill="#90ee90" opacity="0.4" transform="rotate(20 55 420)"/>
+    </svg>
+</div>
+<div class="real-branch right">
+    <svg class="branch-svg" viewBox="0 0 280 800" preserveAspectRatio="none">
+        <path d="M230,0 Q220,150 250,300 Q270,450 230,600 Q210,700 250,800" stroke="#ff69b4" stroke-width="6" fill="none" opacity="0.7"/>
+        <path d="M235,150 Q180,180 160,220" stroke="#ff69b4" stroke-width="4" fill="none" opacity="0.6"/>
+        <path d="M240,320 Q300,350 290,400" stroke="#ff99cc" stroke-width="3" fill="none" opacity="0.5"/>
+        <path d="M232,500 Q190,530 170,580" stroke="#ff69b4" stroke-width="4" fill="none" opacity="0.6"/>
+        <!-- Цветы на ветках -->
+        <circle cx="160" cy="220" r="8" fill="#ffb7c5" opacity="0.8"/>
+        <circle cx="155" cy="215" r="5" fill="#ff69b4" opacity="0.9"/>
+        <circle cx="290" cy="400" r="7" fill="#ffb7c5" opacity="0.8"/>
+        <circle cx="170" cy="580" r="9" fill="#ffb7c5" opacity="0.8"/>
+        <circle cx="165" cy="575" r="5" fill="#ff69b4" opacity="0.9"/>
+        <circle cx="215" cy="650" r="7" fill="#ffb7c5" opacity="0.7"/>
+        <!-- Листья -->
+        <ellipse cx="180" cy="180" rx="10" ry="4" fill="#90ee90" opacity="0.5" transform="rotate(30 180 180)"/>
+        <ellipse cx="225" cy="420" rx="8" ry="3" fill="#90ee90" opacity="0.4" transform="rotate(-20 225 420)"/>
+    </svg>
+</div>
+
+<!-- РОЗОВАЯ ТРАВА СНИЗУ -->
+<div class="sakura-grass" id="grassContainer"></div>
+<div class="ground-fog"></div>
 
 <div class="main-container">
     <div class="epic-card float-active" id="mainCard">
@@ -609,10 +661,25 @@
         let time=0; function animate(){ requestAnimationFrame(animate); time+=0.008; pSys.rotation.y=time*0.05; pSys.rotation.x=Math.sin(time*0.1)*0.1; ring.rotation.x=time*0.3; ring.rotation.z=time*0.2; ring2.rotation.y=time*0.5; ring2.rotation.x=time*0.2; sphereGroup.rotation.y=time*0.15; sphereGroup.rotation.x=Math.sin(time*0.4)*0.2; camera.position.x=Math.sin(time*0.2)*1.5; camera.position.y=Math.cos(time*0.25)*1; camera.lookAt(0,0,0); renderer.render(scene,camera); } animate();
         window.addEventListener('resize',()=>{ camera.aspect=window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth,window.innerHeight); });
 
-        // --- ПЛАВАЮЩИЕ ФОНАРИКИ (ДОП. ДЕКОР) ---
-        for(let i=0;i<25;i++){ let lantern=document.createElement('div'); lantern.className='floating-lantern'; lantern.innerHTML=['🌸','✨','🌟','🍃','🌙','⭐'][Math.floor(Math.random()*6)]; let leftPos=Math.random()*100; let duration=8+Math.random()*12; let delay=Math.random()*15; lantern.style.left=leftPos+'%'; lantern.style.animationDuration=duration+'s'; lantern.style.animationDelay=delay+'s'; lantern.style.fontSize=(1+Math.random()*1.5)+'rem'; document.body.appendChild(lantern); }
+        // --- СОЗДАНИЕ ТРАВИНОК СНИЗУ ---
+        const grassContainer = document.getElementById('grassContainer');
+        for (let i = 0; i < 60; i++) {
+            const blade = document.createElement('div');
+            blade.className = 'grass-blade';
+            const height = 30 + Math.random() * 50;
+            const left = Math.random() * 100;
+            const delay = Math.random() * 3;
+            const duration = 2 + Math.random() * 3;
+            blade.style.height = height + 'px';
+            blade.style.left = left + '%';
+            blade.style.bottom = '0px';
+            blade.style.animationDelay = delay + 's';
+            blade.style.animationDuration = duration + 's';
+            blade.style.width = (2 + Math.random() * 3) + 'px';
+            grassContainer.appendChild(blade);
+        }
 
-        // --- САКУРА (лепестки) ---
+        // --- ЛЕПЕСТКИ САКУРЫ ---
         const sakuraSymbols=['🌸','🌸','💮','🌸','🌸','✿','❀','🌸']; let style=document.createElement('style'); style.textContent='@keyframes fall{0%{transform:translateY(-10vh) rotate(0deg); opacity:1;}100%{transform:translateY(110vh) rotate(360deg); opacity:0;}}'; document.head.appendChild(style);
         function createSakura(){ let p=document.createElement('div'); p.innerHTML=sakuraSymbols[Math.floor(Math.random()*sakuraSymbols.length)]; p.style.position='fixed'; p.style.pointerEvents='none'; p.style.zIndex='9999'; p.style.fontSize=(18+Math.random()*20)+'px'; p.style.left=Math.random()*100+'%'; p.style.top='-50px'; p.style.opacity=0.8; p.style.animation=`fall ${5+Math.random()*6}s linear forwards`; document.body.appendChild(p); p.addEventListener('animationend',()=>p.remove()); }
         for(let i=0;i<15;i++) setTimeout(createSakura,i*150); restartSakura();
