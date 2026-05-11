@@ -110,7 +110,6 @@
             object-fit: cover;
         }
 
-        /* Имя прямо под аватаркой */
         .name {
             font-size: 2.5rem;
             font-weight: 900;
@@ -390,6 +389,9 @@
             <div class="social-btn" id="discordBtn">
                 <i class="fab fa-discord"></i> vest_el
             </div>
+            <a href="https://www.roblox.com/users/2370186892/profile" class="social-btn" target="_blank">
+                <i class="fas fa-gamepad"></i> Roblox
+            </a>
             <a href="https://t.me/vest_ell" class="social-btn" target="_blank">
                 <i class="fab fa-telegram"></i> @vest_ell
             </a>
@@ -470,7 +472,7 @@
                 const discordNick = 'vest_el';
                 try {
                     await navigator.clipboard.writeText(discordNick);
-                    showToast('🌺Discord скопирован: ' + discordNick);
+                    showToast('✅ Discord скопирован: ' + discordNick);
                     discordBtn.style.transform = 'scale(0.95)';
                     setTimeout(() => { discordBtn.style.transform = ''; }, 150);
                 } catch (err) {
