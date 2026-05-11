@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Vestel | Sceleton Army | Sakura Garden</title>
+    <title>Vestel | Sceleton Army</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -49,56 +49,6 @@
             z-index: 0;
         }
 
-        /* ПОЛЕ ЦВЕТУЩЕЙ САКУРЫ (ВМЕСТО ТРАВЫ) */
-        .sakura-field {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 140px;
-            pointer-events: none;
-            z-index: 6;
-            display: flex;
-            justify-content: space-around;
-            align-items: flex-end;
-            gap: 8px;
-            padding: 0 15px;
-        }
-        
-        .flower-stem {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            animation: swayFlower 3s infinite ease-in-out;
-            transform-origin: bottom center;
-        }
-        
-        .flower-stem:nth-child(even) { animation-duration: 3.5s; animation-delay: 0.5s; }
-        .flower-stem:nth-child(odd) { animation-duration: 2.8s; animation-delay: 0.2s; }
-        
-        @keyframes swayFlower {
-            0%, 100% { transform: rotate(0deg); }
-            50% { transform: rotate(4deg); }
-        }
-        
-        .flower {
-            font-size: 1.1rem;
-            filter: drop-shadow(0 0 6px rgba(255,105,180,0.5));
-            transition: all 0.3s ease;
-            opacity: 0.85;
-        }
-        
-        .flower-stem:nth-child(3n) .flower { font-size: 1rem; opacity: 0.7; }
-        .flower-stem:nth-child(5n+2) .flower { font-size: 1.3rem; opacity: 0.9; }
-        
-        .stem-line {
-            width: 2px;
-            height: 25px;
-            background: linear-gradient(to top, #ff69b4, transparent);
-            margin-bottom: 3px;
-            opacity: 0.5;
-        }
-
         /* РЕАЛИСТИЧНЫЕ ВЕТКИ САКУРЫ (без агрессивного свечения) */
         .real-branch {
             position: fixed;
@@ -139,7 +89,7 @@
             left: 0;
             width: 100%;
             height: 180px;
-            background: radial-gradient(ellipse at center, rgba(255,105,180,0.08) 0%, transparent 80%);
+            background: radial-gradient(ellipse at center, rgba(255,105,180,0.06) 0%, transparent 80%);
             pointer-events: none;
             z-index: 4;
             filter: blur(20px);
@@ -249,24 +199,11 @@
         }
         .avatar img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Текст */
-        .name {
-            font-size: 2.5rem;
-            font-weight: 900;
-            text-align: center;
-            background: linear-gradient(135deg, #fff, var(--accent-color, #ff69b4), #ff99cc, var(--accent-color, #ff69b4));
-            background-size: 300% 300%;
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            animation: gradientShift 4s ease infinite;
-            margin-bottom: 10px;
+        /* Имя скрыто на главной, но остаётся в INFO */
+        .hidden-name {
+            display: none;
         }
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+
         .nick {
             text-align: center;
             font-size: 1rem;
@@ -279,7 +216,9 @@
             margin-bottom: 25px;
             letter-spacing: 0.5px;
         }
-        .nick-wrapper { text-align: center; }
+        .nick-wrapper {
+            text-align: center;
+        }
         .badge {
             display: inline-flex;
             align-items: center;
@@ -431,12 +370,8 @@
         }
         @media (max-width: 550px) {
             .epic-card { padding: 25px 20px; }
-            .name { font-size: 2rem; }
             .avatar-section, .avatar { width: 110px; height: 110px; }
             .real-branch { width: 150px; opacity: 0.5; }
-            .sakura-field { height: 90px; gap: 4px; }
-            .flower { font-size: 0.8rem; }
-            .stem-line { height: 15px; }
         }
     </style>
 </head>
@@ -445,7 +380,7 @@
 <canvas id="bg-canvas"></canvas>
 <div class="overlay"></div>
 
-<!-- РЕАЛИСТИЧНЫЕ ВЕТКИ САКУРЫ (без агрессивного свечения) -->
+<!-- РЕАЛИСТИЧНЫЕ ВЕТКИ САКУРЫ -->
 <div class="real-branch left">
     <svg class="branch-svg" viewBox="0 0 300 800" preserveAspectRatio="none">
         <path d="M30,0 Q40,120 20,250 Q0,380 30,500 Q50,600 20,750" stroke="#ff69b4" stroke-width="5" fill="none" opacity="0.6"/>
@@ -475,8 +410,7 @@
     </svg>
 </div>
 
-<!-- ПОЛЕ ЦВЕТУЩЕЙ САКУРЫ (вместо травы) -->
-<div class="sakura-field" id="sakuraField"></div>
+<!-- Лёгкий туман внизу -->
 <div class="ground-fog"></div>
 
 <div class="main-container">
@@ -493,7 +427,9 @@
             </div>
         </div>
 
-        <div class="name" id="userName">Паша</div>
+        <!-- Имя Паша скрыто на главной странице -->
+        <div class="hidden-name" id="userName">Паша</div>
+
         <div class="nick-wrapper">
             <span class="nick" id="userNick">@vestel</span>
         </div>
@@ -527,7 +463,6 @@
     <button id="adminLoginBtn">Войти</button>
     <div id="adminSettings" style="display: none;" class="admin-settings">
         <h4>Настройки</h4>
-        <div class="setting-row"><label>Имя:</label><input type="text" id="adminName"></div>
         <div class="setting-row"><label>Никнейм (@):</label><input type="text" id="adminNick"></div>
         <div class="setting-row"><label>Должность:</label><input type="text" id="adminRole"></div>
         <div class="setting-row"><label>Возраст:</label><input type="text" id="adminAge"></div>
@@ -577,7 +512,6 @@
                 robloxText: "Roblox",
                 telegramText: "@vest_ell",
                 discordText: "vest_el",
-                name: "Паша",
                 nick: "vestel",
                 age: "17 лет",
                 birth: "28 августа",
@@ -599,7 +533,6 @@
                 robloxText: "Roblox",
                 telegramText: "@vest_ell",
                 discordText: "vest_el",
-                name: "Pasha",
                 nick: "vestel",
                 age: "17 years old",
                 birth: "August 28",
@@ -624,13 +557,12 @@
             document.getElementById('robloxText').innerHTML = t.robloxText;
             document.getElementById('telegramText').innerHTML = t.telegramText;
             document.getElementById('discordText').innerHTML = t.discordText;
-            document.getElementById('userName').innerHTML = t.name;
             document.getElementById('userNick').innerHTML = '@' + t.nick;
             document.getElementById('userAge').innerHTML = '🎂 ' + t.age;
             document.getElementById('infoBirthValue').innerHTML = t.birth;
             document.getElementById('infoCityValue').innerHTML = t.city;
             document.getElementById('infoRoleValue').innerHTML = t.role;
-            document.getElementById('infoNameValue').innerHTML = t.name;
+            document.getElementById('infoNameValue').innerHTML = "Паша";
             document.getElementById('infoAgeValue').innerHTML = t.age;
             document.querySelectorAll('.lang-btn').forEach(btn => {
                 if(btn.getAttribute('data-lang') === currentLang) btn.classList.add('active');
@@ -638,7 +570,7 @@
             });
         }
 
-        // --- ЛОГИКА АДМИНКИ И ФОНА ---
+        // --- ЛОГИКА АДМИНКИ ---
         let sakuraEnabled = true, sakuraInterval, audioContext = null;
         function restartSakura() { if(sakuraInterval) clearInterval(sakuraInterval); if(!sakuraEnabled) return; sakuraInterval = setInterval(() => { if(sakuraEnabled) for(let i=0;i<(Math.random()>0.7?2:1);i++) setTimeout(createSakura, i*100); }, 2500); }
         function playClickSound() { try { if(!audioContext) audioContext = new (window.AudioContext||window.webkitAudioContext)(); if(audioContext.state==='suspended') audioContext.resume().then(()=>{let o=audioContext.createOscillator(),g=audioContext.createGain();o.type='sine';o.frequency.value=880;g.gain.setValueAtTime(0.15,audioContext.currentTime);g.gain.exponentialRampToValueAtTime(0.0001,audioContext.currentTime+0.3);o.connect(g);g.connect(audioContext.destination);o.start();o.stop(audioContext.currentTime+0.2);}).catch(()=>{}); else {let o=audioContext.createOscillator(),g=audioContext.createGain();o.type='sine';o.frequency.value=880;g.gain.setValueAtTime(0.15,audioContext.currentTime);g.gain.exponentialRampToValueAtTime(0.0001,audioContext.currentTime+0.3);o.connect(g);g.connect(audioContext.destination);o.start();o.stop(audioContext.currentTime+0.2);} } catch(e){} }
@@ -652,7 +584,7 @@
         adminTrigger.onclick = () => { playClickSound(); adminPanel.classList.add('active'); adminPassword.value=''; adminSettingsDiv.style.display='none'; };
         closeAdminXBtn.onclick = () => { playClickSound(); closeAdminPanel(); };
         logoutBtn.onclick = () => { playClickSound(); closeAdminPanel(); showToast('🔒 Вы вышли'); };
-        adminLoginBtn.onclick = () => { playClickSound(); if(adminPassword.value==='Pawel775577') { adminSettingsDiv.style.display='block'; document.getElementById('adminName').value=document.getElementById('userName').innerHTML; document.getElementById('adminNick').value=document.getElementById('userNick').innerHTML.replace('@',''); document.getElementById('adminRole').value=document.getElementById('bioText').innerHTML.replace('Должности: ','').replace('Roles: ',''); document.getElementById('adminAge').value=document.getElementById('userAge').innerHTML.replace('🎂 ',''); document.getElementById('adminBirth').value=document.getElementById('infoBirthValue').innerHTML; document.getElementById('adminCity').value=document.getElementById('infoCityValue').innerHTML; document.getElementById('adminColor').value=getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim()||'#ff69b4'; document.getElementById('adminSakura').value=sakuraEnabled?'on':'off'; document.getElementById('adminFloatAnim').value=document.getElementById('mainCard').classList.contains('float-active')?'on':'off'; document.getElementById('adminGlowEffect').value=document.getElementById('avatarPulse').classList.contains('pulse-off')?'off':'on'; showToast('✅ Добро пожаловать!'); } else { showToast('❌ Неверный пароль!'); closeAdminPanel(); } };
+        adminLoginBtn.onclick = () => { playClickSound(); if(adminPassword.value==='Pawel775577') { adminSettingsDiv.style.display='block'; document.getElementById('adminNick').value=document.getElementById('userNick').innerHTML.replace('@',''); document.getElementById('adminRole').value=document.getElementById('bioText').innerHTML.replace('Должности: ','').replace('Roles: ',''); document.getElementById('adminAge').value=document.getElementById('userAge').innerHTML.replace('🎂 ',''); document.getElementById('adminBirth').value=document.getElementById('infoBirthValue').innerHTML; document.getElementById('adminCity').value=document.getElementById('infoCityValue').innerHTML; document.getElementById('adminColor').value=getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim()||'#ff69b4'; document.getElementById('adminSakura').value=sakuraEnabled?'on':'off'; document.getElementById('adminFloatAnim').value=document.getElementById('mainCard').classList.contains('float-active')?'on':'off'; document.getElementById('adminGlowEffect').value=document.getElementById('avatarPulse').classList.contains('pulse-off')?'off':'on'; showToast('✅ Добро пожаловать!'); } else { showToast('❌ Неверный пароль!'); closeAdminPanel(); } };
         applyBtn.onclick = () => { playClickSound(); let newColor=document.getElementById('adminColor').value; document.documentElement.style.setProperty('--accent-color', newColor); if(document.getElementById('adminSakura').value==='off') sakuraEnabled=false; else sakuraEnabled=true; if(document.getElementById('adminFloatAnim').value==='off') document.getElementById('mainCard').classList.remove('float-active'); else document.getElementById('mainCard').classList.add('float-active'); if(document.getElementById('adminGlowEffect').value==='off') document.getElementById('avatarPulse').classList.add('pulse-off'); else document.getElementById('avatarPulse').classList.remove('pulse-off'); restartSakura(); saveSettings(); showToast('✅ Настройки применены!'); };
         resetBtn.onclick = () => { playClickSound(); localStorage.removeItem('adminSettings'); location.reload(); };
 
@@ -667,22 +599,6 @@
         const light=new THREE.PointLight(0xff69b4,0.8); light.position.set(5,5,10); scene.add(light); scene.add(new THREE.AmbientLight(0x222222));
         let time=0; function animate(){ requestAnimationFrame(animate); time+=0.008; pSys.rotation.y=time*0.05; pSys.rotation.x=Math.sin(time*0.1)*0.1; ring.rotation.x=time*0.3; ring.rotation.z=time*0.2; ring2.rotation.y=time*0.5; ring2.rotation.x=time*0.2; sphereGroup.rotation.y=time*0.15; sphereGroup.rotation.x=Math.sin(time*0.4)*0.2; camera.position.x=Math.sin(time*0.2)*1.5; camera.position.y=Math.cos(time*0.25)*1; camera.lookAt(0,0,0); renderer.render(scene,camera); } animate();
         window.addEventListener('resize',()=>{ camera.aspect=window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth,window.innerHeight); });
-
-        // --- ПОЛЕ САКУРЫ (цветы вместо травы) ---
-        const fieldContainer = document.getElementById('sakuraField');
-        const flowersCount = window.innerWidth < 768 ? 30 : 55;
-        for (let i = 0; i < flowersCount; i++) {
-            const stem = document.createElement('div');
-            stem.className = 'flower-stem';
-            const flower = document.createElement('div');
-            flower.className = 'flower';
-            flower.innerHTML = '🌸';
-            const stemLine = document.createElement('div');
-            stemLine.className = 'stem-line';
-            stem.appendChild(stemLine);
-            stem.appendChild(flower);
-            fieldContainer.appendChild(stem);
-        }
 
         // --- ЛЕПЕСТКИ САКУРЫ ---
         const sakuraSymbols=['🌸','🌸','💮','🌸','🌸','✿','❀','🌸']; let style=document.createElement('style'); style.textContent='@keyframes fall{0%{transform:translateY(-10vh) rotate(0deg); opacity:1;}100%{transform:translateY(110vh) rotate(360deg); opacity:0;}}'; document.head.appendChild(style);
