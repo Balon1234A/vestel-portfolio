@@ -174,6 +174,115 @@
             letter-spacing: 0.3px;
         }
 
+        /* СТИЛИ ДЛЯ АУДИОПЛЕЕРА */
+        .music-player {
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 60px;
+            padding: 12px 18px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 105, 180, 0.3);
+            backdrop-filter: blur(8px);
+        }
+
+        .track-title {
+            font-size: 0.8rem;
+            color: #ff99cc;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .track-name {
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .time-display {
+            font-family: monospace;
+            font-size: 0.75rem;
+            background: rgba(255,255,255,0.1);
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .play-btn {
+            background: #ff69b4;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #0a0a0a;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.05);
+            background: #ff3388;
+            box-shadow: 0 0 12px #ff69b4;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: #ff69b4;
+            border-radius: 4px;
+            transition: width 0.1s linear;
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+            justify-content: flex-end;
+        }
+
+        .volume-icon {
+            font-size: 0.7rem;
+            color: #ff99cc;
+            cursor: pointer;
+        }
+
+        .volume-slider {
+            width: 70px;
+            height: 3px;
+            -webkit-appearance: none;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ff69b4;
+            cursor: pointer;
+        }
+
         .links {
             display: flex;
             flex-direction: column;
@@ -272,7 +381,7 @@
 <body>
 
 <div class="black-card">
-    <!-- БОЛЬШОЙ БАННЕР (шапка) — ЗАМЕНИ ССЫЛКУ НА СВОЮ -->
+    <!-- БОЛЬШОЙ БАННЕР (шапка) -->
     <img class="hero-banner" 
          src="https://media.discordapp.net/attachments/1498720837694525580/1503383694960885872/transparent-Photoroom_1.png?ex=6a0326ac&is=6a01d52c&hm=f445c61c4495c69f2fa60e8f2fdd20c06d37413c07ed1582bf4d6910b9ff2d32&=&format=webp&quality=lossless&width=1712&height=856" 
          alt="banner"
@@ -297,12 +406,31 @@
         <div class="bio">
             Должности: Sceleton Army - Curator, Support
         </div>
+
+        <!-- АУДИОПЛЕЕР С ТРЕКОМ "ВОСЬМАЯ МИЛЯ" -->
+        <div class="music-player">
+            <div class="track-title">
+                <span class="track-name">🎵 Eminem - Lose Yourself (8 Mile)</span>
+                <span class="time-display" id="timeDisplay">0:00 / 0:00</span>
+            </div>
+            <div class="player-controls">
+                <button class="play-btn" id="playBtn">▶</button>
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+            <div class="volume-control">
+                <span class="volume-icon" id="volumeIcon">🔊</span>
+                <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.01" value="0.7">
+            </div>
+        </div>
+
         <div class="links">
             <a href="#" class="link-btn" target="_blank">
-                </i> Discord: vest_el
+                🎮 Discord: vest_el
             </a>
             <a href="https://t.me/vest_ell" class="link-btn" target="_blank">
-                </i> Telegram: @vest_ell
+                📱 Telegram: @vest_ell
             </a>
         </div>
         <div class="sakura-icon">
@@ -314,8 +442,15 @@
     </div>
 </div>
 
+<audio id="audioPlayer" preload="auto">
+    <!-- ⚠️ ЗАМЕНИ ЭТУ ССЫЛКУ НА РЕАЛЬНЫЙ MP3-ФАЙЛ ⚠️ -->
+    <source src="https://cdn.discordapp.com/attachments/1498720837694525580/1503395527969079387/madk1d_VILLIAN_-_8_.mp3?ex=6a0331b1&is=6a01e031&hm=8d0a75dba1338dd597c1d064a05f6500c14210a039d5ec9eb8cf433632c7d8d5&" type="audio/mpeg">
+    Ваш браузер не поддерживает аудио.
+</audio>
+
 <script>
     (function() {
+        // ----- ЛЕПЕСТКИ САКУРЫ -----
         const sakuraSymbols = ['🌸', '🌸', '🌸', '💮', '🌸', '✿', '❀', '🌸', '🌺'];
         
         function createPetal() {
@@ -382,6 +517,136 @@
         });
         
         document.body.style.background = 'radial-gradient(circle at 30% 40%, #121212, #000000)';
+        
+        // ----- АУДИОПЛЕЕР -----
+        const audio = document.getElementById('audioPlayer');
+        const playBtn = document.getElementById('playBtn');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+        const timeDisplay = document.getElementById('timeDisplay');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const volumeIcon = document.getElementById('volumeIcon');
+        
+        let isPlaying = false;
+        
+        // Форматирование времени (сек -> мм:сс)
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "0:00";
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        // Обновление дисплея времени и прогресс-бара
+        function updateProgress() {
+            if (audio.duration && !isNaN(audio.duration)) {
+                const current = audio.currentTime;
+                const duration = audio.duration;
+                const percent = (current / duration) * 100;
+                progressFill.style.width = percent + '%';
+                timeDisplay.textContent = `${formatTime(current)} / ${formatTime(duration)}`;
+            } else {
+                timeDisplay.textContent = "0:00 / 0:00";
+            }
+        }
+        
+        // Когда метаданные загружены
+        audio.addEventListener('loadedmetadata', () => {
+            updateProgress();
+            timeDisplay.textContent = `0:00 / ${formatTime(audio.duration)}`;
+        });
+        
+        // Обновление во время воспроизведения
+        audio.addEventListener('timeupdate', updateProgress);
+        
+        // Когда трек закончился
+        audio.addEventListener('ended', () => {
+            isPlaying = false;
+            playBtn.textContent = '▶';
+            progressFill.style.width = '0%';
+            timeDisplay.textContent = `0:00 / ${formatTime(audio.duration)}`;
+            audio.currentTime = 0;
+        });
+        
+        // Play/Pause
+        playBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                playBtn.textContent = '▶';
+            } else {
+                // Пытаемся запустить (браузер может блокировать автозапуск)
+                const playPromise = audio.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        playBtn.textContent = '⏸';
+                        isPlaying = true;
+                    }).catch(() => {
+                        // Автозапуск заблокирован — показываем кнопку
+                        playBtn.textContent = '▶';
+                        isPlaying = false;
+                        alert('Нажмите Play ещё раз — браузер заблокировал автозапуск');
+                    });
+                }
+            }
+            isPlaying = !isPlaying;
+            if (isPlaying) {
+                playBtn.textContent = '⏸';
+            } else {
+                playBtn.textContent = '▶';
+            }
+        });
+        
+        // Клик по прогресс-бару
+        progressBar.addEventListener('click', (e) => {
+            if (audio.duration && !isNaN(audio.duration)) {
+                const rect = progressBar.getBoundingClientRect();
+                const percent = (e.clientX - rect.left) / rect.width;
+                audio.currentTime = percent * audio.duration;
+                updateProgress();
+            }
+        });
+        
+        // Громкость
+        volumeSlider.addEventListener('input', (e) => {
+            const vol = parseFloat(e.target.value);
+            audio.volume = vol;
+            if (vol === 0) {
+                volumeIcon.textContent = '🔇';
+            } else if (vol < 0.5) {
+                volumeIcon.textContent = '🔉';
+            } else {
+                volumeIcon.textContent = '🔊';
+            }
+        });
+        
+        volumeIcon.addEventListener('click', () => {
+            if (audio.volume > 0) {
+                audio.volume = 0;
+                volumeSlider.value = 0;
+                volumeIcon.textContent = '🔇';
+            } else {
+                audio.volume = 0.7;
+                volumeSlider.value = 0.7;
+                volumeIcon.textContent = '🔊';
+            }
+        });
+        
+        // Установка начальной громкости
+        audio.volume = 0.7;
+        volumeSlider.value = 0.7;
+        
+        // Пытаемся запустить музыку при первом касании/клике по странице (обходит блокировку)
+        function tryAutoPlay() {
+            audio.play().then(() => {
+                playBtn.textContent = '⏸';
+                isPlaying = true;
+                document.removeEventListener('click', tryAutoPlay);
+                document.removeEventListener('touchstart', tryAutoPlay);
+            }).catch(() => {});
+        }
+        
+        document.addEventListener('click', tryAutoPlay);
+        document.addEventListener('touchstart', tryAutoPlay);
     })();
 </script>
 </body>
