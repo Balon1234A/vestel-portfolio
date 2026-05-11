@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Vestel | Sceleton Army</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -51,7 +50,6 @@
             padding: 20px;
         }
 
-        /* Анимированная карточка */
         .epic-card {
             max-width: 560px;
             width: 100%;
@@ -71,7 +69,6 @@
             100% { transform: translateY(0px); }
         }
 
-        /* Аватар с эффектом свечения */
         .avatar-section {
             position: relative;
             width: 150px;
@@ -141,7 +138,6 @@
             margin: 0 5px;
         }
 
-        /* Статистика */
         .stats {
             display: flex;
             justify-content: center;
@@ -155,16 +151,26 @@
             background: rgba(0,0,0,0.5);
             padding: 10px 15px;
             border-radius: 30px;
-            min-width: 80px;
+            min-width: 90px;
+        }
+
+        .stat-icon {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
         }
 
         .stat-number {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 800;
             color: #ff69b4;
         }
 
-        /* Социальные кнопки */
+        .stat-label {
+            font-size: 0.7rem;
+            color: #aaa;
+            margin-top: 3px;
+        }
+
         .social-links {
             display: flex;
             gap: 15px;
@@ -202,7 +208,6 @@
             gap: 10px;
         }
 
-        /* Кнопка INFO */
         .info-btn {
             background: rgba(255,255,255,0.08);
             border: 1px solid rgba(255,105,180,0.3);
@@ -226,7 +231,6 @@
             box-shadow: 0 10px 25px rgba(255,105,180,0.4);
         }
 
-        /* МОДАЛЬНОЕ ОКНО (поверх всего) */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -260,7 +264,6 @@
             box-shadow: 0 0 50px rgba(255,105,180,0.5);
             transform: scale(0.9);
             transition: transform 0.3s ease;
-            position: relative;
         }
 
         .modal-overlay.active .modal-window {
@@ -279,12 +282,12 @@
         .modal-info {
             text-align: left;
             margin: 20px 0;
-            font-size: 1.1rem;
+            font-size: 1rem;
             line-height: 2;
         }
 
         .modal-info i {
-            width: 30px;
+            width: 28px;
             color: #ff69b4;
             margin-right: 10px;
         }
@@ -307,7 +310,6 @@
             box-shadow: 0 0 20px #ff69b4;
         }
 
-        /* Уведомление о копировании */
         .toast-notification {
             position: fixed;
             bottom: 30px;
@@ -332,17 +334,16 @@
             100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
         }
 
-        /* Нижняя панель упрощённая */
         .footer-stuff {
             display: flex;
             justify-content: center;
             align-items: center;
             margin-top: 20px;
-            font-size: 0.7rem;
-            color: #aaa;
+            font-size: 0.8rem;
+            color: #ff99cc;
             border-top: 1px dashed rgba(255,105,180,0.3);
             padding-top: 18px;
-            gap: 15px;
+            letter-spacing: 2px;
         }
 
         @media (max-width: 550px) {
@@ -353,6 +354,7 @@
             .stats { gap: 12px; }
             .stat-item { padding: 6px 12px; min-width: 70px; }
             .stat-number { font-size: 1.2rem; }
+            .stat-icon { font-size: 1.2rem; }
         }
     </style>
 </head>
@@ -363,7 +365,6 @@
 
 <div class="main-container">
     <div class="epic-card" id="mainCard">
-        <!-- Аватарка -->
         <div class="avatar-section">
             <div class="avatar-pulse"></div>
             <div class="avatar">
@@ -378,41 +379,41 @@
             <span class="badge">💀 Sceleton Army</span>
         </div>
 
-        <!-- Статистика -->
+        <!-- Статистика с кастомными иконками -->
         <div class="stats">
             <div class="stat-item">
+                <div class="stat-icon">👁️‍🗨️</div>
                 <div class="stat-number" id="viewsCount">0</div>
-                <div>👁️ просмотров</div>
+                <div class="stat-label">просмотры</div>
             </div>
             <div class="stat-item">
+                <div class="stat-icon">❤️‍🔥</div>
                 <div class="stat-number" id="likesCount">0</div>
-                <div class="like-btn" id="likeButton">❤️ лайк</div>
+                <div class="stat-label">лайки</div>
             </div>
             <div class="stat-item">
+                <div class="stat-icon">⏣</div>
                 <div class="stat-number" id="clock">--:--</div>
-                <div>🕒 время</div>
+                <div class="stat-label">время</div>
             </div>
         </div>
 
-        <!-- Социальные сети -->
         <div class="social-links">
             <div class="social-btn" id="discordBtn">
                 <i class="fab fa-discord"></i> vest_el
             </div>
-            <a href="https://t.me/vest_ell" class="social-btn" target="_blank" id="telegramLink">
+            <a href="https://t.me/vest_ell" class="social-btn" target="_blank">
                 <i class="fab fa-telegram"></i> @vest_ell
             </a>
         </div>
 
-        <!-- Кнопка INFO -->
         <div class="info-btn" id="infoBtn">
-            <i class="fas fa-info-circle"></i> INFO
+            <span>ℹ️</span> INFO
         </div>
 
-        <!-- Нижняя панель (упрощена) -->
+        <!-- Нижняя панель: только китайские символы -->
         <div class="footer-stuff">
             <span>🌸 さくら</span>
-            <span>💀 Sceleton Army</span>
         </div>
     </div>
 </div>
@@ -422,18 +423,18 @@
     <div class="modal-window">
         <h2>🌸 INFO</h2>
         <div class="modal-info">
-            <p><i class="fas fa-user"></i> <strong>Имя:</strong> Паша</p>
-            <p><i class="fas fa-calendar-alt"></i> <strong>Возраст:</strong> 17 лет</p>
-            <p><i class="fas fa-birthday-cake"></i> <strong>День рождения:</strong> 28 августа</p>
-            <p><i class="fas fa-city"></i> <strong>Город:</strong> Пермь</p>
-            <p><i class="fas fa-skull"></i> <strong>Должность:</strong> Sceleton Army - Curator, Support</p>
+            <p><span>👤</span> <strong>Имя:</strong> Паша</p>
+            <p><span>🎂</span> <strong>Возраст:</strong> 17 лет</p>
+            <p><span>🎉</span> <strong>День рождения:</strong> 28 августа</p>
+            <p><span>🏙️</span> <strong>Город:</strong> Пермь</p>
+            <p><span>💀</span> <strong>Должность:</strong> Sceleton Army - Curator, Support</p>
         </div>
         <button class="modal-close" id="closeModalBtn">✨ Закрыть ✨</button>
     </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 <script>
     (function() {
         // ========== МОДАЛЬНОЕ ОКНО ==========
@@ -473,7 +474,7 @@
             }, 2000);
         }
 
-        // ========== КОПИРОВАНИЕ DISCORD НИКА ==========
+        // ========== КОПИРОВАНИЕ DISCORD ==========
         const discordBtn = document.getElementById('discordBtn');
         if(discordBtn) {
             discordBtn.addEventListener('click', async (e) => {
@@ -490,7 +491,7 @@
             });
         }
 
-        // ========== ТРЕХМЕРНЫЙ ФОН ==========
+        // ========== 3D ФОН ==========
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x0a0a0a);
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -498,7 +499,6 @@
         const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), alpha: false });
         renderer.setSize(window.innerWidth, window.innerHeight);
         
-        // Частицы
         const particlesCount = 3000;
         const posArray = new Float32Array(particlesCount * 3);
         for(let i = 0; i < particlesCount; i++) {
@@ -512,7 +512,6 @@
         const particleSystem = new THREE.Points(particlesGeo, particlesMat);
         scene.add(particleSystem);
         
-        // Неоновые кольца
         const ringGeo = new THREE.TorusGeometry(6, 0.12, 64, 300);
         const ringMat = new THREE.MeshStandardMaterial({ color: 0xff69b4, emissive: 0xff3388, emissiveIntensity: 0.6 });
         const ring = new THREE.Mesh(ringGeo, ringMat);
@@ -522,7 +521,6 @@
         const ring2 = new THREE.Mesh(ring2Geo, ringMat);
         scene.add(ring2);
         
-        // Плавающие сферы
         const sphereGroup = new THREE.Group();
         for(let i = 0; i < 50; i++) {
             const sphereGeo = new THREE.SphereGeometry(0.1, 8, 8);
@@ -567,7 +565,7 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
         
-        // ========== ПАДАЮЩИЕ ЛЕПЕСТКИ САКУРЫ (автоматически) ==========
+        // ========== ПАДАЮЩАЯ САКУРА ==========
         const sakuraSymbols = ['🌸', '🌸', '💮', '🌸', '🌸', '✿', '❀', '🌸'];
         function createSakura() {
             const petal = document.createElement('div');
@@ -587,7 +585,6 @@
         style.textContent = `@keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } }`;
         document.head.appendChild(style);
         
-        // Запускаем лепестки автоматически каждые 2-3 секунды
         for(let i=0;i<12;i++) setTimeout(createSakura, i * 150);
         setInterval(() => {
             const count = Math.random() > 0.7 ? 2 : 1;
@@ -597,12 +594,12 @@
         }, 2500);
         
         // ========== СЧЁТЧИКИ ==========
-        // Просмотры: начальные 54
+        // Просмотры: начинаются с 54
         let views = localStorage.getItem('views') ? parseInt(localStorage.getItem('views')) + 1 : 54;
         localStorage.setItem('views', views);
         document.getElementById('viewsCount').innerText = views;
         
-        // Лайки: начальные 11, каждый может поставить только 1 лайк
+        // Лайки: начинаются с 11, каждый может поставить только 1
         let likes = localStorage.getItem('likes') ? parseInt(localStorage.getItem('likes')) : 11;
         let hasLiked = localStorage.getItem('hasLiked') === 'true';
         
@@ -612,7 +609,7 @@
         if(hasLiked) {
             likeButton.style.opacity = '0.5';
             likeButton.style.cursor = 'not-allowed';
-            likeButton.innerHTML = '❤️ лайк поставлен';
+            likeButton.innerHTML = '❤️‍🔥 лайк поставлен';
         }
         
         likeButton.onclick = () => {
@@ -627,9 +624,9 @@
             localStorage.setItem('hasLiked', 'true');
             likeButton.style.opacity = '0.5';
             likeButton.style.cursor = 'not-allowed';
-            likeButton.innerHTML = '❤️ лайк поставлен';
+            likeButton.innerHTML = '❤️‍🔥 лайк поставлен';
             likeButton.classList.add('liked');
-            showToast('❤️ Спасибо за лайк!');
+            showToast('❤️‍🔥 Спасибо за лайк!');
             setTimeout(() => likeButton.classList.remove('liked'), 300);
         };
         
