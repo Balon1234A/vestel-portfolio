@@ -75,22 +75,21 @@
             pointer-events: none;
         }
 
-        .avatar {
+        /* Стиль для реальной аватарки (картинка) */
+        .avatar-img {
             width: 110px;
             height: 110px;
             margin: 0 auto 20px;
-            background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            object-fit: cover;
             border: 2px solid #ff69b4;
             box-shadow: 0 0 18px rgba(255, 105, 180, 0.4);
+            display: block;
         }
 
-        .avatar span {
-            font-size: 3.5rem;
-            filter: drop-shadow(0 2px 6px rgba(255,105,180,0.5));
+        /* Если картинка не загрузилась — показываем эмодзи */
+        .avatar-fallback {
+            display: none;
         }
 
         .name {
@@ -222,12 +221,9 @@
             .name {
                 font-size: 2rem;
             }
-            .avatar {
+            .avatar-img {
                 width: 85px;
                 height: 85px;
-            }
-            .avatar span {
-                font-size: 2.6rem;
             }
         }
     </style>
@@ -235,9 +231,17 @@
 <body>
 
 <div class="black-card">
-    <div class="avatar">
+    <!-- ЗДЕСЬ ТВОЯ АВАТАРКА! ЗАМЕНИ ССЫЛКУ НА ТВОЮ КАРТИНКУ -->
+    <img src="https://media.discordapp.net/attachments/1498720837694525580/1503369701840126102/5064BD7E-D3CE-4EAA-824B-103E9FF890CE.png?ex=6a0319a4&is=6a01c824&hm=b0fd716490103bde51d7aec9d4350081b0020b546f97509a1d9e23e2732bff01&=&format=webp&quality=lossless&width=925&height=960" 
+         class="avatar-img" 
+         alt="avatar"
+         onerror="this.style.display='none'; document.getElementById('avatarFallback').style.display='flex';">
+    
+    <!-- Запасной вариант (если картинка не загрузится) -->
+    <div id="avatarFallback" class="avatar" style="display: none;">
         <span>💀🌸</span>
     </div>
+
     <div class="name">Паша</div>
     <div class="nick">@vestel</div>
     <div class="age">
@@ -250,8 +254,8 @@
         <a href="#" class="link-btn" target="_blank">
             <i>🎮</i> Discord: vestel_17
         </a>
-        <a href="#" class="link-btn" target="_blank">
-            <i>💀</i> Sceleton Army Hub
+        <a href="https://t.me/vest_ell" class="link-btn" target="_blank">
+            <i>📱</i> Telegram: @vest_ell
         </a>
     </div>
     <div class="sakura-icon">
@@ -273,23 +277,17 @@
             const randomIndex = Math.floor(Math.random() * sakuraSymbols.length);
             petal.innerHTML = sakuraSymbols[randomIndex];
             
-            // случайный размер от 14px до 32px
             const size = 14 + Math.random() * 18;
             petal.style.fontSize = size + 'px';
-            // случайная позиция по горизонтали
             petal.style.left = Math.random() * 100 + '%';
-            // длительность падения от 5 до 12 секунд
             const duration = 5 + Math.random() * 7;
             petal.style.animationDuration = duration + 's';
-            // небольшая задержка
             petal.style.animationDelay = Math.random() * 0.5 + 's';
-            // прозрачность
             petal.style.opacity = 0.4 + Math.random() * 0.5;
             petal.style.filter = 'drop-shadow(0 0 2px rgba(255,105,180,0.4))';
             
             document.body.appendChild(petal);
             
-            // удаляем после анимации
             petal.addEventListener('animationend', function() {
                 if (petal && petal.remove) {
                     petal.remove();
@@ -297,14 +295,12 @@
             });
         }
         
-        // запускаем несколько лепестков при загрузке
         function initPetals(count) {
             for (let i = 0; i < count; i++) {
                 setTimeout(() => createPetal(), i * 200);
             }
         }
         
-        // добавить много лепестков (взрыв)
         function burstPetals(amount) {
             let created = 0;
             const interval = setInterval(() => {
@@ -317,10 +313,8 @@
             }, 60);
         }
         
-        // начальные 10 лепестков
         initPetals(12);
         
-        // каждые 6-8 секунд добавляем 1-2 лепестка для атмосферы
         setInterval(() => {
             const randomCount = Math.random() > 0.7 ? 2 : 1;
             for (let i = 0; i < randomCount; i++) {
@@ -328,15 +322,12 @@
             }
         }, 6000);
         
-        // кнопка "+ лепестки"
         const btn = document.getElementById('addPetalsBtn');
         if (btn) {
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                // взрыв из 20 лепестков
                 burstPetals(22);
-                // визуальный фидбек
                 btn.style.transform = 'scale(0.9)';
                 setTimeout(() => {
                     btn.style.transform = '';
@@ -344,20 +335,13 @@
             });
         }
         
-        // динамический градиент фона при движении мыши
         document.body.addEventListener('mousemove', function(e) {
             const x = (e.clientX / window.innerWidth) * 100;
             const y = (e.clientY / window.innerHeight) * 100;
             document.body.style.background = `radial-gradient(circle at ${x}% ${y}%, #121212 0%, #030303 100%)`;
         });
         
-        // начальный фон
         document.body.style.background = 'radial-gradient(circle at 30% 40%, #121212, #000000)';
-        
-        // защита от дублирования на мобильных
-        if ('ontouchstart' in window) {
-            // на мобильных тоже всё ок
-        }
     })();
 </script>
 </body>
