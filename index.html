@@ -77,6 +77,7 @@
             justify-content: center;
             gap: 12px;
             margin-bottom: 25px;
+            flex-wrap: wrap;
         }
 
         .theme-btn {
@@ -172,6 +173,7 @@
             justify-content: center;
             gap: 25px;
             margin: 25px 0;
+            flex-wrap: wrap;
         }
 
         .stat-item {
@@ -204,6 +206,7 @@
             gap: 3px;
             height: 60px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
         .viz-bar {
@@ -240,6 +243,7 @@
             align-items: center;
             gap: 20px;
             margin: 15px 0;
+            flex-wrap: wrap;
         }
 
         .play-btn {
@@ -285,6 +289,7 @@
             gap: 15px;
             justify-content: center;
             margin: 25px 0;
+            flex-wrap: wrap;
         }
 
         .social-btn {
@@ -299,12 +304,38 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
+            cursor: pointer;
         }
 
         .social-btn:hover {
             background: #ff69b4;
             transform: translateY(-3px);
             box-shadow: 0 10px 25px rgba(255,105,180,0.4);
+        }
+
+        /* Уведомление о копировании */
+        .toast-notification {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #ff69b4, #ff3388);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            z-index: 10000;
+            box-shadow: 0 0 20px rgba(255,105,180,0.5);
+            animation: toastFade 2s ease forwards;
+            pointer-events: none;
+        }
+
+        @keyframes toastFade {
+            0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            15% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            85% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
         }
 
         /* Нижняя панель */
@@ -317,6 +348,8 @@
             color: #aaa;
             border-top: 1px dashed rgba(255,105,180,0.3);
             padding-top: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .sakura-trigger {
@@ -332,6 +365,16 @@
             transition: 0.2s;
         }
         .like-btn.liked { color: #ff69b4; text-shadow: 0 0 5px #ff69b4; }
+
+        @media (max-width: 550px) {
+            .epic-card { padding: 25px 20px; }
+            .name { font-size: 2.2rem; }
+            .avatar-section { width: 110px; height: 110px; }
+            .avatar { width: 110px; height: 110px; }
+            .stats { gap: 12px; }
+            .stat-item { padding: 6px 12px; min-width: 70px; }
+            .stat-number { font-size: 1.2rem; }
+        }
     </style>
 </head>
 <body>
@@ -402,10 +445,14 @@
             </div>
         </div>
 
-        <!-- Социальные сети -->
+        <!-- Социальные сети (ОБНОВЛЕНО: Discord копирует, Telegram ведёт на страницу) -->
         <div class="social-links">
-            <a href="#" class="social-btn" id="discordBtn"><i class="fab fa-discord"></i> vest_el</a>
-            <a href="https://t.me/vest_ell" class="social-btn" target="_blank"><i class="fab fa-telegram"></i> @vest_ell</a>
+            <div class="social-btn" id="discordBtn">
+                <i class="fab fa-discord"></i> vest_el <span style="font-size: 0.7rem;">📋 копировать</span>
+            </div>
+            <a href="https://t.me/vest_ell" class="social-btn" target="_blank" id="telegramLink">
+                <i class="fab fa-telegram"></i> @vest_ell
+            </a>
         </div>
 
         <!-- Нижняя панель -->
@@ -423,7 +470,38 @@
 
 <script>
     (function() {
-        // ========== 1. ТРЕХМЕРНЫЙ ФОН С ЭФФЕКТАМИ ==========
+        // Функция показа уведомления
+        function showToast(message) {
+            const existingToast = document.querySelector('.toast-notification');
+            if(existingToast) existingToast.remove();
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            toast.innerHTML = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                if(toast && toast.remove) toast.remove();
+            }, 2000);
+        }
+
+        // ========== 1. КОПИРОВАНИЕ DISCORD НИКА ==========
+        const discordBtn = document.getElementById('discordBtn');
+        if(discordBtn) {
+            discordBtn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                const discordNick = 'vest_el';
+                try {
+                    await navigator.clipboard.writeText(discordNick);
+                    showToast('✅ Discord скопирован: ' + discordNick);
+                    // Визуальный фидбек на кнопке
+                    discordBtn.style.transform = 'scale(0.95)';
+                    setTimeout(() => { discordBtn.style.transform = ''; }, 150);
+                } catch (err) {
+                    showToast('❌ Не удалось скопировать');
+                }
+            });
+        }
+
+        // ========== 2. ТРЕХМЕРНЫЙ ФОН С ЭФФЕКТАМИ ==========
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x050510);
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -431,7 +509,7 @@
         const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), alpha: false });
         renderer.setSize(window.innerWidth, window.innerHeight);
         
-        // Галактика частиц (огромное количество)
+        // Галактика частиц
         const particlesCount = 4000;
         const posArray = new Float32Array(particlesCount * 3);
         for(let i = 0; i < particlesCount; i++) {
@@ -494,7 +572,7 @@
         }
         animateBackground();
         
-        // ========== 2. ПАДАЮЩИЕ ЛЕПЕСТКИ САКУРЫ ==========
+        // ========== 3. ПАДАЮЩИЕ ЛЕПЕСТКИ САКУРЫ ==========
         const sakuraSymbols = ['🌸', '🌸', '💮', '🌸', '🌸', '✿', '❀', '🌸'];
         function createSakura() {
             const petal = document.createElement('div');
@@ -520,7 +598,7 @@
             for(let i=0;i<50;i++) setTimeout(createSakura, i*30);
         };
         
-        // ========== 3. МУЗЫКА + ВИЗУАЛИЗАЦИЯ ==========
+        // ========== 4. МУЗЫКА + ВИЗУАЛИЗАЦИЯ ==========
         const audio = document.getElementById('bgMusic');
         const playBtn = document.getElementById('playPauseBtn');
         const progressFill = document.getElementById('progressFill');
@@ -616,7 +694,7 @@
             }).catch(()=>{});
         }, 500);
         
-        // ========== 4. СЧЁТЧИКИ И ЧАСЫ ==========
+        // ========== 5. СЧЁТЧИКИ И ЧАСЫ ==========
         let views = localStorage.getItem('views') ? parseInt(localStorage.getItem('views')) + 1 : 1000;
         localStorage.setItem('views', views);
         document.getElementById('viewsCount').innerText = views;
@@ -639,7 +717,7 @@
         setInterval(updateClock, 1000);
         updateClock();
         
-        // ========== 5. СМЕНА ТЕМ ==========
+        // ========== 6. СМЕНА ТЕМ ==========
         const themes = {
             dark: { bg: '#050510', cardBg: 'rgba(0,0,0,0.7)', border: '#ff69b4', glow: '#ff69b4' },
             sakura: { bg: '#2a0f1f', cardBg: 'rgba(30,10,20,0.8)', border: '#ff99cc', glow: '#ff99cc' },
@@ -658,7 +736,7 @@
             };
         });
         
-        // ========== 6. СЛУЧАЙНЫЕ ЦИТАТЫ ==========
+        // ========== 7. СЛУЧАЙНЫЕ ЦИТАТЫ ==========
         const quotes = [
             "🎤 Lose yourself in the music...",
             "💀 Sceleton Army forever",
@@ -666,7 +744,8 @@
             "8 миля — мой дом",
             "Паша на связи, vestel в деле",
             "Никогда не сдавайся",
-            "Этот бит создан для нас"
+            "Этот бит создан для нас",
+            "📋 Discord скопирован, Telegram открыт"
         ];
         setInterval(() => {
             const q = quotes[Math.floor(Math.random() * quotes.length)];
