@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Vestel | Sceleton Army</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -51,7 +52,7 @@
         }
 
         .epic-card {
-            max-width: 560px;
+            max-width: 500px;
             width: 100%;
             background: rgba(0, 0, 0, 0.75);
             backdrop-filter: blur(20px);
@@ -71,9 +72,9 @@
 
         .avatar-section {
             position: relative;
-            width: 150px;
-            height: 150px;
-            margin: 0 auto 20px;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 15px;
         }
 
         .avatar-pulse {
@@ -94,8 +95,8 @@
 
         .avatar {
             position: relative;
-            width: 150px;
-            height: 150px;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
             overflow: hidden;
             border: 3px solid #ff69b4;
@@ -109,22 +110,41 @@
             object-fit: cover;
         }
 
+        /* Имя прямо под аватаркой */
         .name {
-            font-size: 3rem;
+            font-size: 2.5rem;
             font-weight: 900;
+            text-align: center;
             background: linear-gradient(135deg, #fff, #ff69b4, #ff99cc, #ff69b4);
             background-size: 300% 300%;
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             animation: gradientShift 4s ease infinite;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
 
         @keyframes gradientShift {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
+        }
+
+        .nick {
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #ff99cc;
+            background: rgba(255, 105, 180, 0.12);
+            display: inline-block;
+            padding: 4px 16px;
+            border-radius: 60px;
+            margin-bottom: 25px;
+            letter-spacing: 0.5px;
+        }
+
+        .nick-wrapper {
+            text-align: center;
         }
 
         .badge {
@@ -138,37 +158,16 @@
             margin: 0 5px;
         }
 
-        .stats {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            margin: 25px 0;
-            flex-wrap: wrap;
-        }
-
-        .stat-item {
+        .bio {
+            font-size: 0.95rem;
+            color: #eaeaea;
+            margin-bottom: 25px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 28px;
+            padding: 12px 18px;
+            line-height: 1.5;
+            border-left: 2px solid #ff69b4;
             text-align: center;
-            background: rgba(0,0,0,0.5);
-            padding: 10px 15px;
-            border-radius: 30px;
-            min-width: 90px;
-        }
-
-        .stat-icon {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-        }
-
-        .stat-number {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #ff69b4;
-        }
-
-        .stat-label {
-            font-size: 0.7rem;
-            color: #aaa;
-            margin-top: 3px;
         }
 
         .social-links {
@@ -222,7 +221,7 @@
             cursor: pointer;
             width: 100%;
             justify-content: center;
-            margin-top: 10px;
+            margin-top: 5px;
         }
 
         .info-btn:hover {
@@ -338,7 +337,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 20px;
+            margin-top: 25px;
             font-size: 0.8rem;
             color: #ff99cc;
             border-top: 1px dashed rgba(255,105,180,0.3);
@@ -348,13 +347,9 @@
 
         @media (max-width: 550px) {
             .epic-card { padding: 25px 20px; }
-            .name { font-size: 2.2rem; }
+            .name { font-size: 2rem; }
             .avatar-section { width: 110px; height: 110px; }
             .avatar { width: 110px; height: 110px; }
-            .stats { gap: 12px; }
-            .stat-item { padding: 6px 12px; min-width: 70px; }
-            .stat-number { font-size: 1.2rem; }
-            .stat-icon { font-size: 1.2rem; }
         }
     </style>
 </head>
@@ -365,6 +360,7 @@
 
 <div class="main-container">
     <div class="epic-card" id="mainCard">
+        <!-- Аватарка -->
         <div class="avatar-section">
             <div class="avatar-pulse"></div>
             <div class="avatar">
@@ -372,32 +368,24 @@
             </div>
         </div>
 
+        <!-- Имя прямо под аватаркой -->
         <div class="name">Паша</div>
-        <div style="margin-top: -5px; margin-bottom: 15px;">
-            <span class="badge">@vestel</span>
+
+        <!-- Никнейм и бейджи -->
+        <div class="nick-wrapper">
+            <span class="nick">@vestel</span>
+        </div>
+        <div style="text-align: center; margin-bottom: 20px;">
             <span class="badge">🎂 17 лет</span>
             <span class="badge">💀 Sceleton Army</span>
         </div>
 
-        <!-- Статистика с кастомными иконками -->
-        <div class="stats">
-            <div class="stat-item">
-                <div class="stat-icon">👁️‍🗨️</div>
-                <div class="stat-number" id="viewsCount">0</div>
-                <div class="stat-label">просмотры</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-icon">❤️‍🔥</div>
-                <div class="stat-number" id="likesCount">0</div>
-                <div class="stat-label">лайки</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-icon">⏣</div>
-                <div class="stat-number" id="clock">--:--</div>
-                <div class="stat-label">время</div>
-            </div>
+        <!-- Био -->
+        <div class="bio">
+            Должности: Sceleton Army - Curator, Support
         </div>
 
+        <!-- Социальные сети (с иконками FontAwesome) -->
         <div class="social-links">
             <div class="social-btn" id="discordBtn">
                 <i class="fab fa-discord"></i> vest_el
@@ -407,8 +395,9 @@
             </a>
         </div>
 
+        <!-- Кнопка INFO -->
         <div class="info-btn" id="infoBtn">
-            <span>ℹ️</span> INFO
+            <i class="fas fa-info-circle"></i> INFO
         </div>
 
         <!-- Нижняя панель: только китайские символы -->
@@ -423,18 +412,17 @@
     <div class="modal-window">
         <h2>🌸 INFO</h2>
         <div class="modal-info">
-            <p><span>👤</span> <strong>Имя:</strong> Паша</p>
-            <p><span>🎂</span> <strong>Возраст:</strong> 17 лет</p>
-            <p><span>🎉</span> <strong>День рождения:</strong> 28 августа</p>
-            <p><span>🏙️</span> <strong>Город:</strong> Пермь</p>
-            <p><span>💀</span> <strong>Должность:</strong> Sceleton Army - Curator, Support</p>
+            <p><i class="fas fa-user"></i> <strong>Имя:</strong> Паша</p>
+            <p><i class="fas fa-calendar-alt"></i> <strong>Возраст:</strong> 17 лет</p>
+            <p><i class="fas fa-birthday-cake"></i> <strong>День рождения:</strong> 28 августа</p>
+            <p><i class="fas fa-city"></i> <strong>Город:</strong> Пермь</p>
+            <p><i class="fas fa-skull"></i> <strong>Должность:</strong> Sceleton Army - Curator, Support</p>
         </div>
         <button class="modal-close" id="closeModalBtn">✨ Закрыть ✨</button>
     </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 <script>
     (function() {
         // ========== МОДАЛЬНОЕ ОКНО ==========
@@ -592,51 +580,6 @@
                 setTimeout(createSakura, i * 100);
             }
         }, 2500);
-        
-        // ========== СЧЁТЧИКИ ==========
-        // Просмотры: начинаются с 54
-        let views = localStorage.getItem('views') ? parseInt(localStorage.getItem('views')) + 1 : 54;
-        localStorage.setItem('views', views);
-        document.getElementById('viewsCount').innerText = views;
-        
-        // Лайки: начинаются с 11, каждый может поставить только 1
-        let likes = localStorage.getItem('likes') ? parseInt(localStorage.getItem('likes')) : 11;
-        let hasLiked = localStorage.getItem('hasLiked') === 'true';
-        
-        document.getElementById('likesCount').innerText = likes;
-        
-        const likeButton = document.getElementById('likeButton');
-        if(hasLiked) {
-            likeButton.style.opacity = '0.5';
-            likeButton.style.cursor = 'not-allowed';
-            likeButton.innerHTML = '❤️‍🔥 лайк поставлен';
-        }
-        
-        likeButton.onclick = () => {
-            if(hasLiked) {
-                showToast('❌ Вы уже поставили лайк!');
-                return;
-            }
-            likes++;
-            hasLiked = true;
-            document.getElementById('likesCount').innerText = likes;
-            localStorage.setItem('likes', likes);
-            localStorage.setItem('hasLiked', 'true');
-            likeButton.style.opacity = '0.5';
-            likeButton.style.cursor = 'not-allowed';
-            likeButton.innerHTML = '❤️‍🔥 лайк поставлен';
-            likeButton.classList.add('liked');
-            showToast('❤️‍🔥 Спасибо за лайк!');
-            setTimeout(() => likeButton.classList.remove('liked'), 300);
-        };
-        
-        // ========== ЧАСЫ ==========
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('clock').innerText = now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
         
         // ========== ПАРАЛЛАКС ==========
         document.addEventListener('mousemove', (e) => {
