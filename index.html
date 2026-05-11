@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Vestel | Sceleton Army</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a0a;
+            font-family: 'Segoe UI', system-ui, -apple-system, 'Inter', 'Helvetica Neue', sans-serif;
+            color: #f0f0f0;
+            line-height: 1.4;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* падающие лепестки сакуры */
+        .sakura-petal {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            font-size: 1.2rem;
+            opacity: 0.7;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10vh) rotate(0deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* главная карточка — черный матовый блок */
+        .black-card {
+            max-width: 500px;
+            width: 100%;
+            background: rgba(8, 8, 8, 0.92);
+            backdrop-filter: blur(12px);
+            border-radius: 48px;
+            border: 1px solid rgba(255, 105, 180, 0.35);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 105, 180, 0.15), 0 0 25px rgba(255, 105, 180, 0.25);
+            padding: 36px 28px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* свечение по краям */
+        .black-card::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 48px;
+            padding: 1px;
+            background: radial-gradient(circle at 30% 20%, rgba(255, 140, 200, 0.5), transparent 80%);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            -webkit-mask-composite: xor;
+            pointer-events: none;
+        }
+
+        .avatar {
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #ff69b4;
+            box-shadow: 0 0 18px rgba(255, 105, 180, 0.4);
+        }
+
+        .avatar span {
+            font-size: 3.5rem;
+            filter: drop-shadow(0 2px 6px rgba(255,105,180,0.5));
+        }
+
+        .name {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff, #ffb6c1);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 6px;
+        }
+
+        .nick {
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: #ff99cc;
+            background: rgba(255, 105, 180, 0.12);
+            display: inline-block;
+            padding: 4px 16px;
+            border-radius: 60px;
+            margin-bottom: 24px;
+            letter-spacing: 0.5px;
+        }
+
+        .age {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(20, 20, 20, 0.7);
+            border-radius: 100px;
+            padding: 6px 18px;
+            font-size: 0.9rem;
+            color: #ffb7c5;
+            margin-bottom: 28px;
+            border: 0.5px solid rgba(255,105,180,0.4);
+        }
+
+        .bio {
+            font-size: 1rem;
+            color: #eaeaea;
+            margin-bottom: 32px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 28px;
+            padding: 14px 18px;
+            line-height: 1.5;
+            border-left: 2px solid #ff69b4;
+            text-align: center;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 30px;
+        }
+
+        .link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: rgba(20, 20, 20, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid #2e2e2e;
+            border-radius: 60px;
+            padding: 12px 18px;
+            text-decoration: none;
+            color: #f0f0f0;
+            font-weight: 500;
+            transition: all 0.25s;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+
+        .link-btn i {
+            font-size: 1.2rem;
+            color: #ff99cc;
+        }
+
+        .link-btn:hover {
+            background: rgba(255, 105, 180, 0.2);
+            border-color: #ff69b4;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(255,105,180,0.2);
+            color: white;
+        }
+
+        .sakura-icon {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #ff80b3;
+            opacity: 0.8;
+        }
+
+        .footer-note {
+            margin-top: 32px;
+            font-size: 0.7rem;
+            color: #6a6a6a;
+            letter-spacing: 0.3px;
+            border-top: 1px dashed rgba(255,105,180,0.3);
+            padding-top: 18px;
+        }
+
+        .petal-trigger {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #ff99cc;
+            margin-left: 6px;
+            transition: 0.2s;
+        }
+
+        .petal-trigger:hover {
+            color: #ff69b4;
+            text-shadow: 0 0 4px #ff69b4;
+        }
+
+        @media (max-width: 480px) {
+            .black-card {
+                padding: 28px 20px;
+            }
+            .name {
+                font-size: 2rem;
+            }
+            .avatar {
+                width: 85px;
+                height: 85px;
+            }
+            .avatar span {
+                font-size: 2.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="black-card">
+    <div class="avatar">
+        <span>💀🌸</span>
+    </div>
+    <div class="name">Паша</div>
+    <div class="nick">@vestel</div>
+    <div class="age">
+        <i>🌸</i> 17 лет
+    </div>
+    <div class="bio">
+        Должности: Sceleton Army - Curator
+    </div>
+    <div class="links">
+        <a href="#" class="link-btn" target="_blank">
+            <i>🎮</i> Discord: vestel_17
+        </a>
+        <a href="#" class="link-btn" target="_blank">
+            <i>💀</i> Sceleton Army Hub
+        </a>
+    </div>
+    <div class="sakura-icon">
+        <span>🌸</span> <span>✦</span> <span>🌙</span> <span>🍃</span> <span>🌸</span>
+    </div>
+    <div class="footer-note">
+        ✦ さくら & ブラック ✦ <button class="petal-trigger" id="addPetalsBtn">+ лепестки</button>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // лепестки сакуры
+        const sakuraSymbols = ['🌸', '🌸', '🌸', '💮', '🌸', '✿', '❀', '🌸', '🌺'];
+        
+        function createPetal() {
+            const petal = document.createElement('div');
+            petal.classList.add('sakura-petal');
+            const randomIndex = Math.floor(Math.random() * sakuraSymbols.length);
+            petal.innerHTML = sakuraSymbols[randomIndex];
+            
+            // случайный размер от 14px до 32px
+            const size = 14 + Math.random() * 18;
+            petal.style.fontSize = size + 'px';
+            // случайная позиция по горизонтали
+            petal.style.left = Math.random() * 100 + '%';
+            // длительность падения от 5 до 12 секунд
+            const duration = 5 + Math.random() * 7;
+            petal.style.animationDuration = duration + 's';
+            // небольшая задержка
+            petal.style.animationDelay = Math.random() * 0.5 + 's';
+            // прозрачность
+            petal.style.opacity = 0.4 + Math.random() * 0.5;
+            petal.style.filter = 'drop-shadow(0 0 2px rgba(255,105,180,0.4))';
+            
+            document.body.appendChild(petal);
+            
+            // удаляем после анимации
+            petal.addEventListener('animationend', function() {
+                if (petal && petal.remove) {
+                    petal.remove();
+                }
+            });
+        }
+        
+        // запускаем несколько лепестков при загрузке
+        function initPetals(count) {
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => createPetal(), i * 200);
+            }
+        }
+        
+        // добавить много лепестков (взрыв)
+        function burstPetals(amount) {
+            let created = 0;
+            const interval = setInterval(() => {
+                if (created >= amount) {
+                    clearInterval(interval);
+                    return;
+                }
+                createPetal();
+                created++;
+            }, 60);
+        }
+        
+        // начальные 10 лепестков
+        initPetals(12);
+        
+        // каждые 6-8 секунд добавляем 1-2 лепестка для атмосферы
+        setInterval(() => {
+            const randomCount = Math.random() > 0.7 ? 2 : 1;
+            for (let i = 0; i < randomCount; i++) {
+                setTimeout(() => createPetal(), i * 100);
+            }
+        }, 6000);
+        
+        // кнопка "+ лепестки"
+        const btn = document.getElementById('addPetalsBtn');
+        if (btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                // взрыв из 20 лепестков
+                burstPetals(22);
+                // визуальный фидбек
+                btn.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    btn.style.transform = '';
+                }, 150);
+            });
+        }
+        
+        // динамический градиент фона при движении мыши
+        document.body.addEventListener('mousemove', function(e) {
+            const x = (e.clientX / window.innerWidth) * 100;
+            const y = (e.clientY / window.innerHeight) * 100;
+            document.body.style.background = `radial-gradient(circle at ${x}% ${y}%, #121212 0%, #030303 100%)`;
+        });
+        
+        // начальный фон
+        document.body.style.background = 'radial-gradient(circle at 30% 40%, #121212, #000000)';
+        
+        // защита от дублирования на мобильных
+        if ('ontouchstart' in window) {
+            // на мобильных тоже всё ок
+        }
+    })();
+</script>
+</body>
+</html>
