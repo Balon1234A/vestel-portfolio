@@ -11,7 +11,6 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            /* стандартный курсор */
             cursor: auto;
         }
 
@@ -20,10 +19,8 @@
             overflow: hidden;
             background: #000;
             color: #fff;
-            cursor: auto;
         }
 
-        /* THREE.JS КАНВАС */
         canvas#webgl-canvas {
             position: fixed;
             top: 0;
@@ -33,7 +30,6 @@
             z-index: 0;
         }
 
-        /* СЛОЙ С ЭФФЕКТАМИ */
         .overlay-gradient {
             position: fixed;
             top: 0;
@@ -45,7 +41,6 @@
             pointer-events: none;
         }
 
-        /* ГЛИТЧ-ЛАЙНЫ */
         .glitch-lines {
             position: fixed;
             top: 0;
@@ -63,92 +58,62 @@
             100% { transform: translateY(4px); opacity: 0.4; }
         }
 
-        /* ========== НОВАЯ ВЕРХНЯЯ ПАНЕЛЬ (СТИЛЬ БРАУЗЕРНЫХ ВКЛАДОК) ========== */
+        /* ========== КОМПАКТНАЯ ВЕРХНЯЯ ПАНЕЛЬ ========== */
         .browser-bar {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             z-index: 100;
-            background: rgba(20, 10, 30, 0.55);
+            background: rgba(10, 5, 20, 0.6);
             backdrop-filter: blur(20px) saturate(180%);
-            border-bottom: 1px solid rgba(255, 46, 110, 0.4);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-            padding: 10px 20px;
+            border-bottom: 1px solid rgba(255, 46, 110, 0.5);
+            padding: 8px 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 12px;
-            font-family: 'Space Grotesk', monospace;
         }
 
-        /* левая часть — имитация вкладок */
-        .browser-tabs {
+        /* одна компактная вкладка */
+        .compact-tab {
             display: flex;
-            gap: 4px;
-            overflow-x: auto;
-            scrollbar-width: none;
-            flex: 1;
-        }
-        .browser-tabs::-webkit-scrollbar {
-            display: none;
-        }
-        .tab-item {
-            background: rgba(30, 20, 45, 0.7);
-            backdrop-filter: blur(8px);
-            padding: 6px 18px;
-            border-radius: 20px 20px 12px 12px;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 46, 110, 0.15);
+            padding: 5px 18px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 46, 110, 0.5);
             font-size: 0.8rem;
-            font-weight: 500;
-            color: #ffccdd;
-            border: 1px solid rgba(255, 46, 110, 0.4);
-            border-bottom: none;
-            white-space: nowrap;
-            transition: 0.2s;
-            letter-spacing: 0.5px;
+            font-weight: 600;
+            letter-spacing: 1px;
         }
-        .tab-item.active-tab {
-            background: rgba(255, 46, 110, 0.25);
-            color: white;
-            border-color: #ff2e6e;
-            box-shadow: 0 -2px 10px rgba(255,46,110,0.3);
-        }
-        .tab-item i {
-            margin-right: 6px;
-            font-size: 0.75rem;
+        .compact-tab i {
             color: #ff2e6e;
+            font-size: 0.9rem;
         }
 
-        /* правая часть — виджеты (погода + дни до др) */
         .widget-area {
             display: flex;
             gap: 20px;
             background: rgba(0,0,0,0.4);
             backdrop-filter: blur(12px);
-            padding: 6px 20px;
+            padding: 5px 20px;
             border-radius: 40px;
-            border: 1px solid rgba(255, 46, 110, 0.5);
+            border: 1px solid rgba(255, 46, 110, 0.4);
         }
         .weather-widget, .birthday-widget {
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 0.85rem;
-            font-weight: 600;
+            font-size: 0.8rem;
+            font-weight: 500;
             color: #fff0f5;
         }
         .weather-widget i, .birthday-widget i {
             color: #ff2e6e;
-            font-size: 1rem;
-            text-shadow: 0 0 5px #ff2e6e;
-        }
-        .weather-temp {
-            font-weight: 700;
-            background: linear-gradient(135deg, #ffccdd, #ff8a5c);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
+            font-size: 0.85rem;
         }
         .countdown-number {
             font-weight: 800;
@@ -157,10 +122,9 @@
             -webkit-background-clip: text;
             color: transparent;
             margin-left: 4px;
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
 
-        /* ОСНОВНОЙ КОНТЕНТ (сдвинут вниз, чтобы не перекрывать панель) */
         .main-content {
             position: relative;
             z-index: 10;
@@ -171,33 +135,31 @@
             justify-content: center;
             overflow-y: auto;
             padding: 20px;
-            padding-top: 85px;  /* чтобы контент не уходил под панель */
+            padding-top: 75px;
         }
 
-        /* NEON CYBER КАРД */
         .cyber-card {
-            max-width: 550px;
+            max-width: 520px;
             width: 100%;
             background: rgba(8, 8, 20, 0.55);
             backdrop-filter: blur(20px) saturate(180%);
             border-radius: 40px;
             border: 1px solid rgba(255, 46, 110, 0.5);
-            box-shadow: 0 25px 45px rgba(0,0,0,0.5), 0 0 30px rgba(255,46,110,0.2), inset 0 0 30px rgba(255,46,110,0.1);
-            padding: 45px 35px;
+            box-shadow: 0 25px 45px rgba(0,0,0,0.5), 0 0 30px rgba(255,46,110,0.2);
+            padding: 40px 30px;
             transition: 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             animation: floatCard 4s ease-in-out infinite;
         }
         @keyframes floatCard {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-12px); }
+            50% { transform: translateY(-10px); }
         }
         .cyber-card:hover {
             border-color: #ff2e6e;
             box-shadow: 0 30px 55px rgba(0,0,0,0.6), 0 0 50px rgba(255,46,110,0.4);
-            transform: scale(1.02);
+            transform: scale(1.01);
         }
 
-        /* ЛЕНГВИЧ */
         .lang-wrap {
             display: flex;
             justify-content: flex-end;
@@ -208,25 +170,23 @@
             background: rgba(255,46,110,0.15);
             border: 1px solid rgba(255,46,110,0.5);
             border-radius: 30px;
-            padding: 6px 18px;
+            padding: 5px 16px;
             font-weight: 600;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             cursor: pointer;
             transition: 0.2s;
             color: #ff99bb;
-            letter-spacing: 1px;
         }
         .lang-btn.active {
             background: #ff2e6e;
             color: white;
-            box-shadow: 0 0 15px #ff2e6e;
+            box-shadow: 0 0 12px #ff2e6e;
         }
 
-        /* АВАТАР С ГЛОУ */
         .avatar-cyber {
             position: relative;
-            width: 140px;
-            height: 140px;
+            width: 130px;
+            height: 130px;
             margin: 0 auto 20px;
         }
         .avatar-ring {
@@ -247,8 +207,7 @@
             border-radius: 50%;
             overflow: hidden;
             border: 3px solid #ff2e6e;
-            box-shadow: 0 0 40px #ff2e6e;
-            transition: 0.3s;
+            box-shadow: 0 0 30px #ff2e6e;
         }
         .avatar-img img {
             width: 100%;
@@ -256,24 +215,23 @@
             object-fit: cover;
         }
 
-        /* ТИПОГРАФИКА */
         .nick-glitch {
             text-align: center;
-            font-size: 2.2rem;
+            font-size: 2rem;
             font-weight: 800;
             background: linear-gradient(135deg, #fff, #ff2e6e, #ff8a5c);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
             text-shadow: 0 0 10px rgba(255,46,110,0.5);
-            letter-spacing: 2px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
+
         .badges {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 12px;
+            margin-bottom: 18px;
             flex-wrap: wrap;
         }
         .badge-cyber {
@@ -281,55 +239,53 @@
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255,46,110,0.5);
             border-radius: 50px;
-            padding: 5px 20px;
-            font-size: 0.8rem;
+            padding: 4px 18px;
+            font-size: 0.75rem;
             font-weight: 600;
-            letter-spacing: 0.5px;
         }
+
         .bio-cyber {
             background: rgba(0,0,0,0.6);
             border-left: 4px solid #ff2e6e;
             border-radius: 20px;
-            padding: 15px 20px;
-            margin: 20px 0;
+            padding: 12px 18px;
+            margin: 18px 0;
             text-align: center;
             font-weight: 500;
-            backdrop-filter: blur(4px);
+            font-size: 0.9rem;
         }
 
-        /* КНОПКИ НЕОНОВЫЕ */
         .social-grid {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             justify-content: center;
             flex-wrap: wrap;
-            margin: 25px 0;
+            margin: 20px 0;
         }
         .cyber-btn {
             background: rgba(10,10,20,0.8);
             border: 1.5px solid rgba(255,46,110,0.6);
             border-radius: 60px;
-            padding: 12px 28px;
+            padding: 10px 24px;
             font-weight: 700;
             display: inline-flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             transition: 0.2s;
             cursor: pointer;
             text-decoration: none;
             color: white;
             backdrop-filter: blur(8px);
+            font-size: 0.85rem;
         }
         .cyber-btn i {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             color: #ff2e6e;
-            transition: 0.2s;
         }
         .cyber-btn:hover {
             background: #ff2e6e;
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(255,46,110,0.5);
-            border-color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255,46,110,0.5);
         }
         .cyber-btn:hover i {
             color: white;
@@ -337,16 +293,14 @@
         .info-btn-full {
             width: 100%;
             justify-content: center;
-            margin-top: 10px;
         }
 
-        /* АДМИН ПАНЕЛЬ FUTURISTIC */
         .admin-trigger {
             position: fixed;
-            bottom: 25px;
-            right: 25px;
-            width: 48px;
-            height: 48px;
+            bottom: 20px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
             background: rgba(0,0,0,0.7);
             backdrop-filter: blur(10px);
             border-radius: 30px;
@@ -361,8 +315,8 @@
         .admin-trigger:hover {
             background: #ff2e6e;
             transform: scale(1.1);
-            box-shadow: 0 0 20px #ff2e6e;
         }
+
         .admin-modal {
             position: fixed;
             top: 50%;
@@ -370,15 +324,15 @@
             transform: translate(-50%, -50%) scale(0.9);
             background: linear-gradient(135deg, #0a0a1a, #000000);
             border-radius: 35px;
-            padding: 30px;
-            max-width: 480px;
+            padding: 28px;
+            max-width: 450px;
             width: 90%;
             z-index: 10001;
             border: 2px solid #ff2e6e;
             opacity: 0;
             visibility: hidden;
             transition: 0.3s;
-            box-shadow: 0 0 60px rgba(255,46,110,0.3);
+            box-shadow: 0 0 50px rgba(255,46,110,0.3);
         }
         .admin-modal.active {
             opacity: 1;
@@ -388,13 +342,13 @@
         .admin-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             color: #ff2e6e;
         }
         .admin-input, .admin-select {
             width: 100%;
-            padding: 12px;
-            margin: 10px 0;
+            padding: 10px;
+            margin: 8px 0;
             background: rgba(255,255,255,0.1);
             border: 1px solid #ff2e6e;
             border-radius: 30px;
@@ -412,7 +366,6 @@
             margin-top: 10px;
         }
 
-        /* МОДАЛКА ИНФО */
         .info-modal {
             position: fixed;
             top: 0;
@@ -436,15 +389,15 @@
         .info-window {
             background: linear-gradient(145deg, #111122, #050510);
             border-radius: 50px;
-            padding: 40px;
-            max-width: 400px;
+            padding: 35px;
+            max-width: 380px;
             width: 90%;
             border: 2px solid #ff2e6e;
             text-align: center;
         }
         .info-window h2 {
-            font-size: 2rem;
-            margin-bottom: 20px;
+            font-size: 1.8rem;
+            margin-bottom: 18px;
             background: linear-gradient(135deg, #ff2e6e, #ffaa66);
             background-clip: text;
             -webkit-background-clip: text;
@@ -452,52 +405,42 @@
         }
         .info-row {
             text-align: left;
-            margin: 15px 0;
-            font-size: 1rem;
+            margin: 12px 0;
+            font-size: 0.9rem;
         }
         .info-row i {
-            width: 30px;
+            width: 28px;
             color: #ff2e6e;
         }
         .close-info {
             background: #ff2e6e;
             border: none;
-            padding: 12px 25px;
+            padding: 10px 22px;
             border-radius: 40px;
             color: white;
             font-weight: bold;
-            margin-top: 20px;
+            margin-top: 18px;
             cursor: pointer;
         }
 
         .footer-cyber {
             display: flex;
             justify-content: space-between;
-            margin-top: 25px;
-            font-size: 0.7rem;
+            margin-top: 20px;
+            font-size: 0.65rem;
             color: #ff99bb;
             border-top: 1px dashed rgba(255,46,110,0.4);
-            padding-top: 18px;
+            padding-top: 15px;
         }
 
-        @media (max-width: 760px) {
-            .browser-bar {
-                flex-direction: column;
-                align-items: stretch;
-                padding: 8px 15px;
-            }
-            .widget-area {
-                justify-content: space-between;
-            }
-            .main-content {
-                padding-top: 130px;
-            }
-        }
-        @media (max-width: 550px) {
+        @media (max-width: 650px) {
+            .browser-bar { padding: 6px 15px; }
+            .widget-area { gap: 12px; padding: 4px 12px; }
+            .weather-widget, .birthday-widget { font-size: 0.7rem; }
             .cyber-card { padding: 25px 18px; }
-            .nick-glitch { font-size: 1.6rem; }
-            .avatar-cyber { width: 110px; height: 110px; }
-            .widget-area { font-size: 0.7rem; gap: 12px; padding: 5px 12px; }
+            .nick-glitch { font-size: 1.5rem; }
+            .avatar-cyber { width: 100px; height: 100px; }
+            .compact-tab { font-size: 0.7rem; padding: 4px 12px; }
         }
     </style>
 </head>
@@ -507,12 +450,11 @@
 <div class="overlay-gradient"></div>
 <div class="glitch-lines"></div>
 
-<!-- ========== НОВАЯ ВЕРХНЯЯ ПАНЕЛЬ СТИЛЬ БРАУЗЕР ========== -->
+<!-- КОМПАКТНАЯ ВЕРХНЯЯ ПАНЕЛЬ -->
 <div class="browser-bar">
-    <div class="browser-tabs">
-        <div class="tab-item active-tab"><i class="fas fa-skull"></i> SCELETON ARMY</div>
-        <div class="tab-item"><i class="fas fa-terminal"></i> DASHBOARD</div>
-        <div class="tab-item"><i class="fas fa-shield-alt"></i> ELITE ZONE</div>
+    <div class="compact-tab">
+        <i class="fas fa-skull"></i>
+        <span>SCELETON ARMY // ELITE</span>
     </div>
     <div class="widget-area">
         <div class="weather-widget" id="weatherWidget">
@@ -521,9 +463,9 @@
         </div>
         <div class="birthday-widget">
             <i class="fas fa-cake-candles"></i>
-            <span>До 28 августа:</span>
+            <span>До 28 авг:</span>
             <span class="countdown-number" id="birthdayCountdown">--</span>
-            <span>дней</span>
+            <span>дн.</span>
         </div>
     </div>
 </div>
@@ -566,23 +508,19 @@
     </div>
 </div>
 
-<!-- АДМИН ПАНЕЛЬ -->
+<!-- АДМИНКА -->
 <div class="admin-trigger" id="adminTrigger"><i class="fas fa-shield-alt"></i></div>
 <div class="admin-modal" id="adminPanel">
     <div class="admin-header"><h3>🔐 ADMIN ACCESS</h3><button id="closeAdminBtn" style="background:none; border:none; color:#ff2e6e; font-size:24px; cursor:pointer;">✕</button></div>
     <input type="password" id="adminPass" class="admin-input" placeholder="пароль">
     <button id="adminLoginBtn" class="admin-btn">ВОЙТИ</button>
-    <div id="adminSettingsArea" style="display:none; margin-top:20px;">
+    <div id="adminSettingsArea" style="display:none; margin-top:18px;">
         <input type="text" id="setNick" class="admin-input" placeholder="Ник">
         <input type="text" id="setBio" class="admin-input" placeholder="Должность">
         <input type="text" id="setAge" class="admin-input" placeholder="Возраст">
         <input type="text" id="setBirth" class="admin-input" placeholder="ДР">
         <input type="text" id="setCity" class="admin-input" placeholder="Город">
-        <input type="color" id="setColor" class="admin-input" style="height:45px;" value="#ff2e6e">
-        <select id="setGlow" class="admin-select">
-            <option value="on">🎨 Свечение АВАТАРА (вкл)</option>
-            <option value="off">❌ Выкл</option>
-        </select>
+        <input type="color" id="setColor" class="admin-input" style="height:40px;" value="#ff2e6e">
         <button id="applyAdmin" class="admin-btn">✅ ПРИМЕНИТЬ</button>
         <button id="resetAdmin" class="admin-btn" style="background:#333;">🔄 СБРОС</button>
         <button id="logoutAdmin" class="admin-btn" style="background:#550000;">🚪 ВЫЙТИ</button>
@@ -602,7 +540,6 @@
     </div>
 </div>
 
-<!-- THREE.JS + 3D ЭФФЕКТЫ -->
 <script type="importmap">
     {
         "imports": {
@@ -617,102 +554,168 @@
     const canvas = document.getElementById('webgl-canvas');
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x000000);
-    scene.fog = new THREE.FogExp2(0x000000, 0.008);
+    scene.fog = new THREE.FogExp2(0x000000, 0.006);
 
     const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 1.5, 12);
-    camera.lookAt(0, 0, 0);
+    camera.position.set(0, 1.8, 13);
+    camera.lookAt(0, 0.5, 0);
 
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: false, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
 
-    const ambientLight = new THREE.AmbientLight(0x111111);
+    // Свет
+    const ambientLight = new THREE.AmbientLight(0x111122);
     scene.add(ambientLight);
-    const mainLight = new THREE.DirectionalLight(0xff3366, 1);
-    mainLight.position.set(2, 3, 4);
+    const mainLight = new THREE.DirectionalLight(0xff4488, 1.2);
+    mainLight.position.set(3, 4, 5);
     scene.add(mainLight);
-    const backLight = new THREE.PointLight(0xff2e6e, 0.8);
-    backLight.position.set(-2, 1, -3);
+    const backLight = new THREE.PointLight(0xff2e6e, 0.9);
+    backLight.position.set(-2, 1.5, -4);
     scene.add(backLight);
-    const fillLight = new THREE.PointLight(0xffaa88, 0.5);
-    fillLight.position.set(1, 2, 2);
-    scene.add(fillLight);
+    const rimLight = new THREE.PointLight(0xffaa88, 0.7);
+    rimLight.position.set(1, 2, 3);
+    scene.add(rimLight);
 
-    const particleCount = 2500;
+    // Частицы
+    const particleCount = 2000;
     const particlesGeometry = new THREE.BufferGeometry();
     const particlesPos = [];
     for (let i = 0; i < particleCount; i++) {
-        particlesPos.push((Math.random() - 0.5) * 40);
-        particlesPos.push((Math.random() - 0.5) * 25);
-        particlesPos.push((Math.random() - 0.5) * 30 - 15);
+        particlesPos.push((Math.random() - 0.5) * 45);
+        particlesPos.push((Math.random() - 0.5) * 30);
+        particlesPos.push((Math.random() - 0.5) * 35 - 15);
     }
     particlesGeometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(particlesPos), 3));
-    const particlesMat = new THREE.PointsMaterial({ color: 0xff4d8c, size: 0.08, transparent: true, opacity: 0.4 });
+    const particlesMat = new THREE.PointsMaterial({ color: 0xff4d8c, size: 0.07, transparent: true, opacity: 0.4 });
     const particleSystem = new THREE.Points(particlesGeometry, particlesMat);
     scene.add(particleSystem);
 
+    // Кольца
     const ringGroup = new THREE.Group();
-    const ringGeo = new THREE.TorusGeometry(2.2, 0.05, 64, 300);
-    const ringMat = new THREE.MeshStandardMaterial({ color: 0xff2e6e, emissive: 0xff1155, emissiveIntensity: 0.8 });
-    const ring1 = new THREE.Mesh(ringGeo, ringMat);
+    const ringMat = new THREE.MeshStandardMaterial({ color: 0xff2e6e, emissive: 0xff1155, emissiveIntensity: 0.7 });
+    const ring1 = new THREE.Mesh(new THREE.TorusGeometry(2.0, 0.05, 64, 300), ringMat);
     ring1.rotation.x = Math.PI / 2;
     ringGroup.add(ring1);
-    const ring2 = new THREE.Mesh(new THREE.TorusGeometry(2.7, 0.04, 64, 300), ringMat);
+    const ring2 = new THREE.Mesh(new THREE.TorusGeometry(2.5, 0.04, 64, 300), ringMat);
     ring2.rotation.z = Math.PI / 3;
     ringGroup.add(ring2);
-    const ring3 = new THREE.Mesh(new THREE.TorusGeometry(3.2, 0.06, 64, 400), ringMat);
-    ring3.rotation.x = Math.PI / 2.5;
-    ringGroup.add(ring3);
     scene.add(ringGroup);
 
-    const orbGroup = new THREE.Group();
-    for (let i = 0; i < 60; i++) {
-        const orb = new THREE.Mesh(new THREE.SphereGeometry(0.08, 8, 8), new THREE.MeshStandardMaterial({ color: 0xff66aa, emissive: 0xff2e6e, emissiveIntensity: 0.5 }));
-        const angle = (i / 60) * Math.PI * 2;
-        const radius = 3.8;
-        orb.position.set(Math.cos(angle) * radius, Math.sin(angle * 2) * 1.2, Math.sin(angle) * radius);
-        orbGroup.add(orb);
+    // ========== НОВЫЙ КРАСИВЫЙ ПЕРСОНАЖ (кибер-воин/андроид) ==========
+    const characterGroup = new THREE.Group();
+    
+    // Тело (броня)
+    const bodyGeo = new THREE.CylinderGeometry(0.55, 0.5, 1.2, 12);
+    const bodyMat = new THREE.MeshStandardMaterial({ color: 0xcc2266, emissive: 0x331133, metalness: 0.7, roughness: 0.3 });
+    const body = new THREE.Mesh(bodyGeo, bodyMat);
+    body.position.y = 0;
+    characterGroup.add(body);
+    
+    // Голова (шлем)
+    const headGeo = new THREE.SphereGeometry(0.48, 32, 32);
+    const headMat = new THREE.MeshStandardMaterial({ color: 0xdd44aa, emissive: 0x441133, metalness: 0.8 });
+    const head = new THREE.Mesh(headGeo, headMat);
+    head.position.y = 0.85;
+    characterGroup.add(head);
+    
+    // Визор (светящийся)
+    const visorGeo = new THREE.BoxGeometry(0.65, 0.2, 0.1);
+    const visorMat = new THREE.MeshStandardMaterial({ color: 0xff2e6e, emissive: 0xff2e6e, emissiveIntensity: 1.2 });
+    const visor = new THREE.Mesh(visorGeo, visorMat);
+    visor.position.set(0, 0.9, 0.48);
+    characterGroup.add(visor);
+    
+    // Плечи-наплечники
+    const shoulderGeo = new THREE.SphereGeometry(0.28, 8, 8);
+    const shoulderMat = new THREE.MeshStandardMaterial({ color: 0xaa3366, metalness: 0.9 });
+    const leftShoulder = new THREE.Mesh(shoulderGeo, shoulderMat);
+    leftShoulder.position.set(-0.65, 0.55, 0);
+    const rightShoulder = new THREE.Mesh(shoulderGeo, shoulderMat);
+    rightShoulder.position.set(0.65, 0.55, 0);
+    characterGroup.add(leftShoulder);
+    characterGroup.add(rightShoulder);
+    
+    // Руки (цилиндры)
+    const armMat = new THREE.MeshStandardMaterial({ color: 0xbb4488, metalness: 0.6 });
+    const leftArm = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.16, 0.9, 6), armMat);
+    leftArm.position.set(-0.7, 0.15, 0);
+    const rightArm = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.16, 0.9, 6), armMat);
+    rightArm.position.set(0.7, 0.15, 0);
+    characterGroup.add(leftArm);
+    characterGroup.add(rightArm);
+    
+    // Плащ/шлейф (энергетический)
+    const capeGeo = new THREE.ConeGeometry(0.7, 0.9, 8);
+    const capeMat = new THREE.MeshStandardMaterial({ color: 0x882244, emissive: 0x221111, transparent: true, opacity: 0.7 });
+    const cape = new THREE.Mesh(capeGeo, capeMat);
+    cape.position.set(0, -0.3, -0.55);
+    characterGroup.add(cape);
+    
+    // Крылья/энергетические лопасти (стильно)
+    const wingMat = new THREE.MeshStandardMaterial({ color: 0xff4488, emissive: 0xff2e6e, emissiveIntensity: 0.5 });
+    const leftWing = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.08, 0.4), wingMat);
+    leftWing.position.set(-0.9, 0.4, -0.2);
+    leftWing.rotation.z = 0.4;
+    const rightWing = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.08, 0.4), wingMat);
+    rightWing.position.set(0.9, 0.4, -0.2);
+    rightWing.rotation.z = -0.4;
+    characterGroup.add(leftWing);
+    characterGroup.add(rightWing);
+    
+    // Светящиеся точки на груди
+    const coreGlow = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 16), new THREE.MeshStandardMaterial({ color: 0xff2e6e, emissive: 0xff2e6e, emissiveIntensity: 1.0 }));
+    coreGlow.position.set(0, 0.2, 0.55);
+    characterGroup.add(coreGlow);
+    
+    characterGroup.position.set(0, -0.9, -2.2);
+    characterGroup.scale.set(0.85, 0.85, 0.85);
+    scene.add(characterGroup);
+    
+    // Добавим летающие искры вокруг персонажа
+    const sparkleCount = 300;
+    const sparkleGeo = new THREE.BufferGeometry();
+    const sparklePos = [];
+    for (let i = 0; i < sparkleCount; i++) {
+        sparklePos.push((Math.random() - 0.5) * 3.5);
+        sparklePos.push((Math.random() - 0.5) * 3 + 0.5);
+        sparklePos.push((Math.random() - 0.5) * 3 - 1.5);
     }
-    scene.add(orbGroup);
-
-    const skullGroup = new THREE.Group();
-    const skullMat = new THREE.MeshStandardMaterial({ color: 0xdd88aa, emissive: 0x552233, roughness: 0.3, metalness: 0.7 });
-    const mainSkull = new THREE.Mesh(new THREE.SphereGeometry(0.65, 32, 32), skullMat);
-    mainSkull.scale.set(0.9, 0.95, 0.8);
-    skullGroup.add(mainSkull);
-    const jaw = new THREE.Mesh(new THREE.SphereGeometry(0.45, 32, 32), skullMat);
-    jaw.position.set(0, -0.5, 0.3);
-    jaw.scale.set(0.9, 0.5, 0.7);
-    skullGroup.add(jaw);
-    const eyeL = new THREE.Mesh(new THREE.SphereGeometry(0.18, 24, 24), new THREE.MeshStandardMaterial({ color: 0xff0000, emissive: 0xff2e6e, emissiveIntensity: 1.2 }));
-    eyeL.position.set(-0.28, 0.15, 0.65);
-    skullGroup.add(eyeL);
-    const eyeR = new THREE.Mesh(new THREE.SphereGeometry(0.18, 24, 24), new THREE.MeshStandardMaterial({ color: 0xff0000, emissive: 0xff2e6e, emissiveIntensity: 1.2 }));
-    eyeR.position.set(0.28, 0.15, 0.65);
-    skullGroup.add(eyeR);
-    skullGroup.position.set(0, -0.8, -2.5);
-    skullGroup.scale.set(0.9, 0.9, 0.9);
-    scene.add(skullGroup);
-
+    sparkleGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(sparklePos), 3));
+    const sparkleMat = new THREE.PointsMaterial({ color: 0xff77aa, size: 0.04, transparent: true, blending: THREE.AdditiveBlending });
+    const sparkles = new THREE.Points(sparkleGeo, sparkleMat);
+    scene.add(sparkles);
+    
+    // Анимация
     let time = 0;
     function animate3D() {
         requestAnimationFrame(animate3D);
-        time += 0.012;
+        time += 0.014;
+        
         ringGroup.rotation.x = time * 0.2;
-        ringGroup.rotation.y = time * 0.15;
+        ringGroup.rotation.y = time * 0.18;
         ringGroup.rotation.z = time * 0.1;
-        orbGroup.rotation.y = time * 0.2;
-        orbGroup.rotation.x = Math.sin(time * 0.3) * 0.2;
+        
         particleSystem.rotation.y = time * 0.03;
-        skullGroup.position.y = -0.8 + Math.sin(time * 1.5) * 0.05;
-        skullGroup.rotation.y = Math.sin(time * 0.6) * 0.2;
-        const glowIntensity = 0.8 + Math.sin(time * 5) * 0.3;
-        eyeL.material.emissiveIntensity = glowIntensity;
-        eyeR.material.emissiveIntensity = glowIntensity;
-        camera.position.x += (0 - camera.position.x) * 0.05;
-        camera.position.y += (1.4 - camera.position.y) * 0.05;
-        camera.lookAt(0, 0.2, 0);
+        particleSystem.rotation.x = Math.sin(time * 0.1) * 0.1;
+        
+        // Анимация персонажа
+        characterGroup.position.y = -0.9 + Math.sin(time * 1.2) * 0.03;
+        characterGroup.rotation.y = Math.sin(time * 0.5) * 0.15;
+        // пульсация визора
+        const intensity = 0.8 + Math.sin(time * 8) * 0.5;
+        visor.material.emissiveIntensity = intensity;
+        coreGlow.material.emissiveIntensity = 0.7 + Math.sin(time * 6) * 0.4;
+        
+        // вращение искр
+        sparkles.rotation.y = time * 0.2;
+        sparkles.rotation.x = Math.sin(time * 0.3) * 0.2;
+        
+        // плавное движение камеры
+        camera.position.x += (0 - camera.position.x) * 0.04;
+        camera.position.y += (1.6 - camera.position.y) * 0.04;
+        camera.lookAt(0, 0.3, 0);
+        
         renderer.render(scene, camera);
     }
     animate3D();
@@ -725,41 +728,36 @@
 </script>
 
 <script type="text/javascript">
-    // ----- ОСНОВНАЯ ЛОГИКА + ПОГОДА И ОТСЧЁТ -----
-    // Функция для получения погоды (имитация, но с реальными данными через API, для красоты симуляция с запросом)
+    // Погода и обратный отсчёт
     async function updateWeather() {
         const weatherSpan = document.getElementById('weatherText');
         try {
-            // Используем бесплатный API wttr.in для Перми (краткий формат)
             const res = await fetch('https://wttr.in/Perm?format=%t&lang=ru');
             if (res.ok) {
                 let temp = await res.text();
                 temp = temp.trim();
                 weatherSpan.innerHTML = `Пермь: ${temp}`;
             } else {
-                weatherSpan.innerHTML = `Пермь: ❄️ -8°C`;
+                weatherSpan.innerHTML = `Пермь: ❄️ -7°C`;
             }
         } catch(e) {
-            weatherSpan.innerHTML = `Пермь: 🌙 -6°C`;
+            weatherSpan.innerHTML = `Пермь: 🌙 -5°C`;
         }
     }
     
     function updateBirthdayCountdown() {
         const today = new Date();
         const currentYear = today.getFullYear();
-        let birthday = new Date(currentYear, 7, 28); // август — месяц 7 (0-индекс)
-        if (today > birthday) {
-            birthday = new Date(currentYear + 1, 7, 28);
-        }
-        const diffTime = birthday - today;
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        let birthday = new Date(currentYear, 7, 28);
+        if (today > birthday) birthday = new Date(currentYear + 1, 7, 28);
+        const diffDays = Math.ceil((birthday - today) / (1000 * 60 * 60 * 24));
         document.getElementById('birthdayCountdown').innerText = diffDays;
     }
     
     updateWeather();
     updateBirthdayCountdown();
-    setInterval(updateBirthdayCountdown, 3600000); // обновление каждый час
-    setInterval(updateWeather, 1800000); // погода每30 минут
+    setInterval(updateBirthdayCountdown, 3600000);
+    setInterval(updateWeather, 1800000);
     
     // Переводы
     const translations = {
@@ -796,19 +794,17 @@
         });
     }
     
-    function playSound() { /* без звука, опционально */ }
     function showToast(msg) {
         let div = document.createElement('div');
         div.style.position = 'fixed'; div.style.bottom = '30px'; div.style.left = '50%';
         div.style.transform = 'translateX(-50%)'; div.style.background = '#ff2e6e';
-        div.style.color = 'white'; div.style.padding = '12px 28px'; div.style.borderRadius = '50px';
-        div.style.zIndex = '20000'; div.style.fontWeight = 'bold'; div.style.fontSize = '0.9rem';
+        div.style.color = 'white'; div.style.padding = '10px 24px'; div.style.borderRadius = '50px';
+        div.style.zIndex = '20000'; div.style.fontWeight = 'bold'; div.style.fontSize = '0.85rem';
         div.innerText = msg; document.body.appendChild(div);
         setTimeout(() => div.remove(), 2000);
     }
     
     // Админка
-    let adminLogged = false;
     const adminPanel = document.getElementById('adminPanel');
     const adminTrigger = document.getElementById('adminTrigger');
     const closeAdminBtn = document.getElementById('closeAdminBtn');
@@ -835,30 +831,26 @@
     applyAdmin.onclick = () => {
         let newColor = document.getElementById('setColor').value;
         document.documentElement.style.setProperty('--accent-color', newColor);
-        document.querySelectorAll('.cyber-btn, .lang-btn, .admin-trigger, .close-info').forEach(el => el.style.setProperty('border-color', newColor));
-        let glowMode = document.getElementById('setGlow').value;
-        if(glowMode === 'off') document.querySelector('.avatar-ring').style.opacity = '0.3';
-        else document.querySelector('.avatar-ring').style.opacity = '1';
+        document.querySelectorAll('.cyber-btn, .lang-btn, .admin-trigger, .compact-tab').forEach(el => el.style.setProperty('border-color', newColor));
         showToast('✅ Стиль обновлён!');
         localStorage.setItem('neonColor', newColor);
-        localStorage.setItem('glowMode', glowMode);
     };
     resetAdmin.onclick = () => { localStorage.clear(); location.reload(); };
     logoutAdmin.onclick = () => { adminPanel.classList.remove('active'); showToast('🔒 Выход'); };
-    
-    // Модалка инфо
-    const infoModal = document.getElementById('infoModal');
-    const infoBtn = document.getElementById('infoBtn');
-    const closeInfoBtn = document.getElementById('closeInfoBtn');
-    infoBtn.onclick = () => { infoModal.classList.add('active'); };
-    closeInfoBtn.onclick = () => { infoModal.classList.remove('active'); };
-    infoModal.onclick = (e) => { if(e.target === infoModal) infoModal.classList.remove('active'); };
     
     // Discord copy
     document.getElementById('discordBtn').onclick = async () => {
         await navigator.clipboard.writeText('vest_el');
         showToast('✅ Discord скопирован: vest_el');
     };
+    
+    // Модалка
+    const infoModal = document.getElementById('infoModal');
+    const infoBtn = document.getElementById('infoBtn');
+    const closeInfoBtn = document.getElementById('closeInfoBtn');
+    infoBtn.onclick = () => { infoModal.classList.add('active'); };
+    closeInfoBtn.onclick = () => { infoModal.classList.remove('active'); };
+    infoModal.onclick = (e) => { if(e.target === infoModal) infoModal.classList.remove('active'); };
     
     document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.onclick = () => { currentLang = btn.dataset.lang; updateLang(); };
