@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Vestel | Sceleton Army — Elite Cyber Profile</title>
+    <title>Vestel | Sceleton Army — CyberNET</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -21,11 +21,11 @@
             color: #fff;
         }
 
-        /* КРУТОЙ КАСТОМНЫЙ КУРСОР */
+        /* КАСТОМНЫЙ КУРСОР С ЭФФЕКТОМ СЛЕДА */
         .cursor {
             position: fixed;
-            width: 30px;
-            height: 30px;
+            width: 28px;
+            height: 28px;
             border: 2px solid #ff2e6e;
             border-radius: 50%;
             pointer-events: none;
@@ -46,13 +46,12 @@
             transition: 0.05s ease;
         }
         .cursor.active {
-            width: 50px;
-            height: 50px;
+            width: 48px;
+            height: 48px;
             background: rgba(255, 46, 110, 0.2);
             backdrop-filter: blur(4px);
         }
 
-        /* THREE.JS КАНВАС */
         canvas#webgl-canvas {
             position: fixed;
             top: 0;
@@ -62,111 +61,46 @@
             z-index: 0;
         }
 
-        /* СЛОЙ С ЭФФЕКТАМИ */
-        .overlay-gradient {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%);
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        /* ГЛИТЧ-ЛАЙНЫ */
-        .glitch-lines {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2;
-            pointer-events: none;
-            opacity: 0.3;
-            background: repeating-linear-gradient(0deg, rgba(255,0,100,0.1) 0px, rgba(255,0,100,0.1) 2px, transparent 2px, transparent 6px);
-            animation: glitchMove 0.2s infinite;
-        }
-        @keyframes glitchMove {
-            0% { transform: translateY(0); opacity: 0.2; }
-            100% { transform: translateY(4px); opacity: 0.4; }
-        }
-
-        /* ОСНОВНОЙ КОНТЕНТ */
-        .main-content {
+        /* СВЕРХПРОЗРАЧНАЯ КАРТОЧКА — почти невидимое стекло */
+        .glass-card {
             position: relative;
-            z-index: 10;
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow-y: auto;
-            padding: 20px;
-        }
-
-        /* NEON CYBER КАРД */
-        .cyber-card {
-            max-width: 550px;
-            width: 100%;
-            background: rgba(8, 8, 20, 0.55);
-            backdrop-filter: blur(20px) saturate(180%);
-            border-radius: 40px;
-            border: 1px solid rgba(255, 46, 110, 0.5);
-            box-shadow: 0 25px 45px rgba(0,0,0,0.5), 0 0 30px rgba(255,46,110,0.2), inset 0 0 30px rgba(255,46,110,0.1);
-            padding: 45px 35px;
-            transition: 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            animation: floatCard 4s ease-in-out infinite;
+            z-index: 20;
+            max-width: 580px;
+            width: 90%;
+            background: rgba(8, 8, 20, 0.25);
+            backdrop-filter: blur(12px) saturate(150%);
+            border-radius: 48px;
+            border: 1px solid rgba(255, 46, 110, 0.4);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(255,46,110,0.15);
+            padding: 40px 35px;
+            transition: 0.4s;
+            animation: floatCard 5s ease-in-out infinite;
         }
         @keyframes floatCard {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-12px); }
+            50% { transform: translateY(-8px); }
         }
-        .cyber-card:hover {
-            border-color: #ff2e6e;
-            box-shadow: 0 30px 55px rgba(0,0,0,0.6), 0 0 50px rgba(255,46,110,0.4);
-            transform: scale(1.02);
-        }
-
-        /* ЛЕНГВИЧ */
-        .lang-wrap {
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-        .lang-btn {
-            background: rgba(255,46,110,0.15);
-            border: 1px solid rgba(255,46,110,0.5);
-            border-radius: 30px;
-            padding: 6px 18px;
-            font-weight: 600;
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: 0.2s;
-            color: #ff99bb;
-            letter-spacing: 1px;
-        }
-        .lang-btn.active {
-            background: #ff2e6e;
-            color: white;
-            box-shadow: 0 0 15px #ff2e6e;
+        .glass-card:hover {
+            border-color: rgba(255, 46, 110, 0.8);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4), 0 0 45px rgba(255,46,110,0.3);
+            background: rgba(8, 8, 20, 0.35);
         }
 
-        /* АВАТАР С ГЛОУ */
-        .avatar-cyber {
+        /* АВАТАР С НЕОНОВЫМ КОЛЬЦОМ */
+        .avatar-neon {
             position: relative;
-            width: 140px;
-            height: 140px;
+            width: 130px;
+            height: 130px;
             margin: 0 auto 20px;
         }
-        .avatar-ring {
+        .avatar-ring-pulse {
             position: absolute;
             inset: -8px;
             border-radius: 50%;
-            background: conic-gradient(from 0deg, #ff2e6e, #ff8a5c, #ff2e6e);
+            background: conic-gradient(from 0deg, #ff2e6e, #ffaa66, #ff2e6e);
             animation: spinRing 3s linear infinite;
-            filter: blur(8px);
+            filter: blur(10px);
+            opacity: 0.7;
         }
         @keyframes spinRing {
             100% { transform: rotate(360deg); }
@@ -177,9 +111,8 @@
             height: 100%;
             border-radius: 50%;
             overflow: hidden;
-            border: 3px solid #ff2e6e;
-            box-shadow: 0 0 40px #ff2e6e;
-            transition: 0.3s;
+            border: 2px solid rgba(255,46,110,0.8);
+            box-shadow: 0 0 25px rgba(255,46,110,0.5);
         }
         .avatar-img img {
             width: 100%;
@@ -187,58 +120,86 @@
             object-fit: cover;
         }
 
-        /* ТИПОГРАФИКА */
-        .nick-glitch {
+        /* НИКНЕЙМ С ГЛИТЧ-ЭФФЕКТОМ */
+        .glitch-nick {
             text-align: center;
-            font-size: 2.2rem;
+            font-size: 2.3rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #fff, #ff2e6e, #ff8a5c);
+            background: linear-gradient(135deg, #fff, #ff2e6e, #ffaa66);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
-            text-shadow: 0 0 10px rgba(255,46,110,0.5);
             letter-spacing: 2px;
             margin-bottom: 15px;
+            position: relative;
         }
-        .badges {
+
+        /* СТАТУС ОНЛАЙН (новая фича) */
+        .online-status {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-bottom: 20px;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        .status-led {
+            width: 10px;
+            height: 10px;
+            background: #0f0;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #0f0;
+            animation: pulseGreen 1.2s infinite;
+        }
+        @keyframes pulseGreen {
+            0%, 100% { opacity: 1; box-shadow: 0 0 5px #0f0; }
+            50% { opacity: 0.5; box-shadow: 0 0 12px #0f0; }
+        }
+        .status-text {
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #0f0;
+            text-shadow: 0 0 4px #0f0;
+        }
+
+        .badge-cluster {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
             flex-wrap: wrap;
+            margin-bottom: 20px;
         }
         .badge-cyber {
             background: rgba(255,46,110,0.2);
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(4px);
             border: 1px solid rgba(255,46,110,0.5);
-            border-radius: 50px;
-            padding: 5px 20px;
-            font-size: 0.8rem;
+            border-radius: 40px;
+            padding: 6px 18px;
+            font-size: 0.75rem;
             font-weight: 600;
-            letter-spacing: 0.5px;
         }
-        .bio-cyber {
-            background: rgba(0,0,0,0.6);
-            border-left: 4px solid #ff2e6e;
+        .bio {
+            background: rgba(0,0,0,0.4);
+            border-left: 3px solid #ff2e6e;
             border-radius: 20px;
-            padding: 15px 20px;
+            padding: 12px 18px;
             margin: 20px 0;
             text-align: center;
-            font-weight: 500;
+            font-size: 0.9rem;
             backdrop-filter: blur(4px);
         }
 
-        /* КНОПКИ НЕОНОВЫЕ */
-        .social-grid {
+        /* НЕОНОВЫЕ КНОПКИ */
+        .social-row {
             display: flex;
             gap: 15px;
             justify-content: center;
             flex-wrap: wrap;
-            margin: 25px 0;
+            margin: 20px 0;
         }
-        .cyber-btn {
-            background: rgba(10,10,20,0.8);
-            border: 1.5px solid rgba(255,46,110,0.6);
+        .neon-btn {
+            background: rgba(10,10,20,0.6);
+            border: 1.5px solid rgba(255,46,110,0.7);
             border-radius: 60px;
             padding: 12px 28px;
             font-weight: 700;
@@ -251,36 +212,95 @@
             color: white;
             backdrop-filter: blur(8px);
         }
-        .cyber-btn i {
-            font-size: 1.3rem;
+        .neon-btn i {
+            font-size: 1.2rem;
             color: #ff2e6e;
-            transition: 0.2s;
         }
-        .cyber-btn:hover {
+        .neon-btn:hover {
             background: #ff2e6e;
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(255,46,110,0.5);
-            border-color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255,46,110,0.5);
         }
-        .cyber-btn:hover i {
+        .neon-btn:hover i {
             color: white;
         }
-        .info-btn-full {
-            width: 100%;
-            justify-content: center;
-            margin-top: 10px;
+
+        /* МУЗЫКАЛЬНЫЙ ПЛЕЕР (новая крутая фича) */
+        .music-player {
+            background: rgba(0,0,0,0.5);
+            border-radius: 60px;
+            padding: 8px 15px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,46,110,0.4);
+        }
+        .track-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.8rem;
+        }
+        .track-info i {
+            color: #ff2e6e;
+            font-size: 1rem;
+        }
+        .play-btn {
+            background: rgba(255,46,110,0.3);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .play-btn:hover {
+            background: #ff2e6e;
+            transform: scale(1.1);
         }
 
-        /* АДМИН ПАНЕЛЬ FUTURISTIC */
+        /* ДОСТИЖЕНИЯ (коллекция кликабельных ачивок) */
+        .achievements {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        .achievement {
+            background: rgba(0,0,0,0.5);
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            border: 1px solid #ffaa66;
+            cursor: pointer;
+            transition: 0.2s;
+            backdrop-filter: blur(4px);
+        }
+        .achievement:hover {
+            background: #ffaa66;
+            color: black;
+            transform: scale(1.05);
+        }
+        .achievement.earned {
+            border-color: #ff2e6e;
+            background: rgba(255,46,110,0.3);
+            color: #ffccdd;
+        }
+
+        /* АДМИН ПАНЕЛЬ стильная */
         .admin-trigger {
             position: fixed;
-            bottom: 25px;
-            right: 25px;
-            width: 48px;
-            height: 48px;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 30px;
+            bottom: 20px;
+            right: 20px;
+            width: 45px;
+            height: 45px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -289,12 +309,7 @@
             cursor: pointer;
             transition: 0.2s;
         }
-        .admin-trigger:hover {
-            background: #ff2e6e;
-            transform: scale(1.1);
-            box-shadow: 0 0 20px #ff2e6e;
-        }
-        .admin-modal {
+        .admin-panel {
             position: fixed;
             top: 50%;
             left: 50%;
@@ -302,7 +317,7 @@
             background: linear-gradient(135deg, #0a0a1a, #000000);
             border-radius: 35px;
             padding: 30px;
-            max-width: 480px;
+            max-width: 450px;
             width: 90%;
             z-index: 10001;
             border: 2px solid #ff2e6e;
@@ -311,46 +326,27 @@
             transition: 0.3s;
             box-shadow: 0 0 60px rgba(255,46,110,0.3);
         }
-        .admin-modal.active {
+        .admin-panel.active {
             opacity: 1;
             visibility: visible;
             transform: translate(-50%, -50%) scale(1);
         }
-        .admin-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            color: #ff2e6e;
-        }
-        .admin-input, .admin-select {
+        .admin-panel input, .admin-panel select {
             width: 100%;
-            padding: 12px;
-            margin: 10px 0;
+            padding: 10px;
+            margin: 8px 0;
             background: rgba(255,255,255,0.1);
             border: 1px solid #ff2e6e;
             border-radius: 30px;
             color: white;
         }
-        .admin-btn {
-            background: #ff2e6e;
-            border: none;
-            padding: 10px;
-            border-radius: 30px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-        }
-
-        /* МОДАЛКА ИНФО */
         .info-modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.85);
+            background: rgba(0,0,0,0.8);
             backdrop-filter: blur(15px);
             z-index: 10000;
             display: flex;
@@ -365,313 +361,187 @@
             visibility: visible;
         }
         .info-window {
-            background: linear-gradient(145deg, #111122, #050510);
-            border-radius: 50px;
-            padding: 40px;
-            max-width: 400px;
+            background: #0a0a1a;
+            border-radius: 40px;
+            padding: 35px;
+            max-width: 380px;
             width: 90%;
             border: 2px solid #ff2e6e;
             text-align: center;
         }
-        .info-window h2 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #ff2e6e, #ffaa66);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-        }
-        .info-row {
-            text-align: left;
-            margin: 15px 0;
-            font-size: 1rem;
-        }
-        .info-row i {
-            width: 30px;
-            color: #ff2e6e;
-        }
-        .close-info {
-            background: #ff2e6e;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 40px;
-            color: white;
-            font-weight: bold;
-            margin-top: 20px;
-            cursor: pointer;
-        }
-
-        .footer-cyber {
+        .footer {
             display: flex;
             justify-content: space-between;
             margin-top: 25px;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #ff99bb;
             border-top: 1px dashed rgba(255,46,110,0.4);
             padding-top: 18px;
         }
-
         @media (max-width: 550px) {
-            .cyber-card { padding: 25px 18px; }
-            .nick-glitch { font-size: 1.6rem; }
-            .avatar-cyber { width: 110px; height: 110px; }
+            .glass-card { padding: 25px 18px; }
+            .glitch-nick { font-size: 1.6rem; }
         }
     </style>
 </head>
 <body>
 
 <canvas id="webgl-canvas"></canvas>
-<div class="overlay-gradient"></div>
-<div class="glitch-lines"></div>
 
-<div class="main-content">
-    <div class="cyber-card">
-        <div class="lang-wrap">
-            <button class="lang-btn" data-lang="ru">RU</button>
-            <button class="lang-btn" data-lang="en">EN</button>
+<div class="glass-card">
+    <div style="display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 15px;">
+        <button class="neon-btn" style="padding: 4px 15px; font-size:0.7rem;" data-lang="ru">🇷🇺 RU</button>
+        <button class="neon-btn" style="padding: 4px 15px; font-size:0.7rem;" data-lang="en">🇬🇧 EN</button>
+    </div>
+
+    <div class="avatar-neon">
+        <div class="avatar-ring-pulse"></div>
+        <div class="avatar-img">
+            <img src="https://media.discordapp.net/attachments/1498720837694525580/1503369701840126102/5064BD7E-D3CE-4EAA-824B-103E9FF890CE.png?ex=6a0319a4&is=6a01c824&hm=b0fd716490103bde51d7aec9d4350081b0020b546f97509a1d9e23e2732bff01&=&format=webp&quality=lossless&width=925&height=960" alt="avatar">
         </div>
+    </div>
 
-        <div class="avatar-cyber">
-            <div class="avatar-ring"></div>
-            <div class="avatar-img">
-                <img src="https://media.discordapp.net/attachments/1498720837694525580/1503369701840126102/5064BD7E-D3CE-4EAA-824B-103E9FF890CE.png?ex=6a0319a4&is=6a01c824&hm=b0fd716490103bde51d7aec9d4350081b0020b546f97509a1d9e23e2732bff01&=&format=webp&quality=lossless&width=925&height=960" alt="avatar">
-            </div>
+    <div class="glitch-nick" id="userNick">@vestel</div>
+    
+    <div class="online-status">
+        <div class="status-led"></div>
+        <span class="status-text" id="statusText">ONLINE • В ИГРЕ</span>
+    </div>
+
+    <div class="badge-cluster">
+        <span class="badge-cyber" id="userAge">🎂 17 лет</span>
+        <span class="badge-cyber" id="badgeRole">💀 Sceleton Army</span>
+    </div>
+
+    <div class="bio" id="bioText">Должности: Sceleton Army - Curator, Support</div>
+
+    <div class="social-row">
+        <div class="neon-btn" id="discordBtn"><i class="fab fa-discord"></i> <span id="discordText">vest_el</span></div>
+        <a href="https://www.roblox.com/users/2370186892/profile" class="neon-btn" target="_blank"><i class="fas fa-gamepad"></i> <span id="robloxText">Roblox</span></a>
+        <a href="https://t.me/vest_ell" class="neon-btn" target="_blank"><i class="fab fa-telegram"></i> <span id="telegramText">@vest_ell</span></a>
+    </div>
+
+    <!-- НОВИНКА: МУЗЫКАЛЬНЫЙ ПЛЕЕР -->
+    <div class="music-player" id="musicPlayer">
+        <div class="track-info">
+            <i class="fas fa-music"></i>
+            <span id="trackName">Sakura Dreams</span>
         </div>
+        <button class="play-btn" id="playMusicBtn"><i class="fas fa-play" id="playIcon"></i></button>
+    </div>
 
-        <div class="nick-glitch" id="userNick">@vestel</div>
+    <!-- НОВИНКА: ДОСТИЖЕНИЯ (кликабельные) -->
+    <div class="achievements">
+        <div class="achievement earned" data-achieve="curator">🏆 Куратор</div>
+        <div class="achievement" data-achieve="veteran">⚔️ Ветеран</div>
+        <div class="achievement" data-achieve="neon">💜 Неоновый дух</div>
+    </div>
 
-        <div class="badges">
-            <span class="badge-cyber" id="userAge">🎂 17 лет</span>
-            <span class="badge-cyber" id="badgeRole">💀 Sceleton Army</span>
-        </div>
+    <div class="neon-btn info-btn-full" id="infoBtn" style="width: 100%; justify-content: center; margin-top: 10px;"><i class="fas fa-id-card"></i> <span id="infoText">ПРОФИЛЬ</span></div>
 
-        <div class="bio-cyber" id="bioText">Должности: Sceleton Army - Curator, Support</div>
-
-        <div class="social-grid">
-            <div class="cyber-btn" id="discordBtn"><i class="fab fa-discord"></i> <span id="discordText">vest_el</span></div>
-            <a href="https://www.roblox.com/users/2370186892/profile" class="cyber-btn" target="_blank"><i class="fas fa-gamepad"></i> <span id="robloxText">Roblox</span></a>
-            <a href="https://t.me/vest_ell" class="cyber-btn" target="_blank"><i class="fab fa-telegram"></i> <span id="telegramText">@vest_ell</span></a>
-        </div>
-
-        <div class="cyber-btn info-btn-full" id="infoBtn"><i class="fas fa-id-card"></i> <span id="infoText">ПРОФИЛЬ</span></div>
-
-        <div class="footer-cyber">
-            <span>⚡ NEON ARMY ⚡</span>
-            <span id="footerQuote">Sceleton Elite</span>
-        </div>
+    <div class="footer">
+        <span>⚡ CYBER ARMY ⚡</span>
+        <span id="footerQuote">Sceleton Elite</span>
     </div>
 </div>
 
 <!-- АДМИН ПАНЕЛЬ -->
-<div class="admin-trigger" id="adminTrigger"><i class="fas fa-shield-alt"></i></div>
-<div class="admin-modal" id="adminPanel">
-    <div class="admin-header"><h3>🔐 ADMIN ACCESS</h3><button id="closeAdminBtn" style="background:none; border:none; color:#ff2e6e; font-size:24px; cursor:pointer;">✕</button></div>
-    <input type="password" id="adminPass" class="admin-input" placeholder="пароль">
-    <button id="adminLoginBtn" class="admin-btn">ВОЙТИ</button>
+<div class="admin-trigger" id="adminTrigger"><i class="fas fa-crown"></i></div>
+<div class="admin-panel" id="adminPanel">
+    <div style="display: flex; justify-content: space-between; margin-bottom: 20px;"><h3 style="color:#ff2e6e;">🔐 MASTER CONTROL</h3><button id="closeAdminBtn" style="background:none; border:none; color:#ff2e6e; font-size:24px;">✕</button></div>
+    <input type="password" id="adminPass" placeholder="пароль">
+    <button id="adminLoginBtn" style="background:#ff2e6e; width:100%; padding:10px; border-radius:30px; margin-top:10px; border:none; color:white;">ВОЙТИ</button>
     <div id="adminSettingsArea" style="display:none; margin-top:20px;">
-        <input type="text" id="setNick" class="admin-input" placeholder="Ник">
-        <input type="text" id="setBio" class="admin-input" placeholder="Должность">
-        <input type="text" id="setAge" class="admin-input" placeholder="Возраст">
-        <input type="text" id="setBirth" class="admin-input" placeholder="ДР">
-        <input type="text" id="setCity" class="admin-input" placeholder="Город">
-        <input type="color" id="setColor" class="admin-input" style="height:45px;" value="#ff2e6e">
-        <select id="setGlow" class="admin-select">
-            <option value="on">🎨 Свечение АВАТАРА (вкл)</option>
-            <option value="off">❌ Выкл</option>
+        <input type="text" id="setNick" placeholder="Никнейм">
+        <input type="text" id="setBio" placeholder="Должность">
+        <input type="text" id="setAge" placeholder="Возраст">
+        <input type="color" id="setColor" value="#ff2e6e" style="height:45px;">
+        <select id="setStatus">
+            <option value="online">🔵 ONLINE • В ИГРЕ</option>
+            <option value="idle">🌙 IDLE • ОТОШЁЛ</option>
+            <option value="stream">🎥 СТРИМ</option>
         </select>
-        <button id="applyAdmin" class="admin-btn">✅ ПРИМЕНИТЬ</button>
-        <button id="resetAdmin" class="admin-btn" style="background:#333;">🔄 СБРОС</button>
-        <button id="logoutAdmin" class="admin-btn" style="background:#550000;">🚪 ВЫЙТИ</button>
+        <button id="applySettings" style="background:#ff2e6e; width:100%; padding:10px; margin-top:10px; border-radius:30px;">ПРИМЕНИТЬ</button>
+        <button id="resetSettings" style="background:#333; width:100%; margin-top:8px; padding:10px;">СБРОС</button>
     </div>
 </div>
 
 <!-- МОДАЛКА ИНФО -->
 <div class="info-modal" id="infoModal">
     <div class="info-window">
-        <h2 id="modalTitle">🌸 VESTEL INFO</h2>
-        <div class="info-row"><i class="fas fa-user"></i> <strong id="infoNameLbl">Имя:</strong> <span id="infoNameVal">Паша</span></div>
-        <div class="info-row"><i class="fas fa-calendar"></i> <strong id="infoAgeLbl">Возраст:</strong> <span id="infoAgeVal">17 лет</span></div>
-        <div class="info-row"><i class="fas fa-birthday-cake"></i> <strong id="infoBirthLbl">ДР:</strong> <span id="infoBirthVal">28 августа</span></div>
-        <div class="info-row"><i class="fas fa-city"></i> <strong id="infoCityLbl">Город:</strong> <span id="infoCityVal">Пермь</span></div>
-        <div class="info-row"><i class="fas fa-skull"></i> <strong id="infoRoleLbl">Роль:</strong> <span id="infoRoleVal">Sceleton Army - Curator, Support</span></div>
-        <button class="close-info" id="closeInfoBtn">ЗАКРЫТЬ</button>
+        <h2 style="color:#ff2e6e; margin-bottom:20px;">🌸 VESTEL INFO</h2>
+        <div style="text-align:left;"><i class="fas fa-user"></i> <strong>Имя:</strong> <span id="infoName">Паша</span></div>
+        <div style="margin:12px 0;"><i class="fas fa-calendar"></i> <strong>Возраст:</strong> <span id="infoAge">17 лет</span></div>
+        <div style="margin:12px 0;"><i class="fas fa-birthday-cake"></i> <strong>ДР:</strong> <span id="infoBirth">28 августа</span></div>
+        <div style="margin:12px 0;"><i class="fas fa-city"></i> <strong>Город:</strong> <span id="infoCity">Пермь</span></div>
+        <div style="margin:12px 0;"><i class="fas fa-skull"></i> <strong>Роль:</strong> <span id="infoRole">Sceleton Army - Curator, Support</span></div>
+        <button id="closeInfoBtn" style="background:#ff2e6e; border:none; padding:10px 30px; border-radius:40px; margin-top:20px; width:100%;">ЗАКРЫТЬ</button>
     </div>
 </div>
 
-<!-- THREE.JS + 3D ЭФФЕКТЫ С ПЕРСОНАЖЕМ -->
-<script type="importmap">
-    {
-        "imports": {
-            "three": "https://unpkg.com/three@0.128.0/build/three.module.js"
-        }
-    }
-</script>
-
-<script type="module">
-    import * as THREE from 'three';
-
-    // ИНИЦИАЛИЗАЦИЯ СЦЕНЫ
-    const canvas = document.getElementById('webgl-canvas');
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+    // ---------- 3D БАЗОВЫЙ ФОН (простой, но красивый) ----------
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x000000);
-    scene.fog = new THREE.FogExp2(0x000000, 0.008);
-
-    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 1.5, 12);
-    camera.lookAt(0, 0, 0);
-
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: false, antialias: true });
+    scene.background = new THREE.Color(0x010105);
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 1, 12);
+    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('webgl-canvas'), alpha: false });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-
-    // СВЕТ
-    const ambientLight = new THREE.AmbientLight(0x111111);
-    scene.add(ambientLight);
-    const mainLight = new THREE.DirectionalLight(0xff3366, 1);
-    mainLight.position.set(2, 3, 4);
-    scene.add(mainLight);
-    const backLight = new THREE.PointLight(0xff2e6e, 0.8);
-    backLight.position.set(-2, 1, -3);
-    scene.add(backLight);
-    const fillLight = new THREE.PointLight(0xffaa88, 0.5);
-    fillLight.position.set(1, 2, 2);
-    scene.add(fillLight);
-
-    // ЧАСТИЦЫ ТУМАННОСТИ
-    const particleCount = 2500;
-    const particlesGeometry = new THREE.BufferGeometry();
-    const particlesPos = [];
-    for (let i = 0; i < particleCount; i++) {
-        particlesPos.push((Math.random() - 0.5) * 40);
-        particlesPos.push((Math.random() - 0.5) * 25);
-        particlesPos.push((Math.random() - 0.5) * 30 - 15);
+    
+    // Частицы звёзд
+    const starCount = 1800;
+    const starGeo = new THREE.BufferGeometry();
+    const starPos = [];
+    for (let i = 0; i < starCount; i++) {
+        starPos.push((Math.random() - 0.5) * 200);
+        starPos.push((Math.random() - 0.5) * 100);
+        starPos.push((Math.random() - 0.5) * 60 - 30);
     }
-    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(particlesPos), 3));
-    const particlesMat = new THREE.PointsMaterial({ color: 0xff4d8c, size: 0.08, transparent: true, opacity: 0.4 });
-    const particleSystem = new THREE.Points(particlesGeometry, particlesMat);
-    scene.add(particleSystem);
-
-    // ГРУППА ДЛЯ ВРАЩАЮЩИХСЯ КОЛЕЦ
+    starGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(starPos), 3));
+    const starMat = new THREE.PointsMaterial({ color: 0xff88aa, size: 0.12, transparent: true, opacity: 0.6 });
+    const stars = new THREE.Points(starGeo, starMat);
+    scene.add(stars);
+    
+    // Парящие торы
     const ringGroup = new THREE.Group();
-    const ringGeo = new THREE.TorusGeometry(2.2, 0.05, 64, 300);
-    const ringMat = new THREE.MeshStandardMaterial({ color: 0xff2e6e, emissive: 0xff1155, emissiveIntensity: 0.8 });
-    const ring1 = new THREE.Mesh(ringGeo, ringMat);
+    const ringMat = new THREE.MeshStandardMaterial({ color: 0xff2e6e, emissive: 0xff1155, emissiveIntensity: 0.5 });
+    const ring1 = new THREE.Mesh(new THREE.TorusGeometry(2.5, 0.06, 64, 300), ringMat);
     ring1.rotation.x = Math.PI / 2;
     ringGroup.add(ring1);
-    const ring2 = new THREE.Mesh(new THREE.TorusGeometry(2.7, 0.04, 64, 300), ringMat);
+    const ring2 = new THREE.Mesh(new THREE.TorusGeometry(3.2, 0.05, 64, 400), ringMat);
     ring2.rotation.z = Math.PI / 3;
     ringGroup.add(ring2);
-    const ring3 = new THREE.Mesh(new THREE.TorusGeometry(3.2, 0.06, 64, 400), ringMat);
-    ring3.rotation.x = Math.PI / 2.5;
-    ringGroup.add(ring3);
     scene.add(ringGroup);
-
-    // ПАРЯЩИЕ СФЕРЫ
-    const orbGroup = new THREE.Group();
-    for (let i = 0; i < 60; i++) {
-        const orb = new THREE.Mesh(new THREE.SphereGeometry(0.08, 8, 8), new THREE.MeshStandardMaterial({ color: 0xff66aa, emissive: 0xff2e6e, emissiveIntensity: 0.5 }));
-        const angle = (i / 60) * Math.PI * 2;
-        const radius = 3.8;
-        orb.position.set(Math.cos(angle) * radius, Math.sin(angle * 2) * 1.2, Math.sin(angle) * radius);
-        orbGroup.add(orb);
-    }
-    scene.add(orbGroup);
-
-    // 3D МОДЕЛЬ ЧЕРЕПА / СКЕЛЕТОНА (стилизованный объект)
-    const skullGroup = new THREE.Group();
-    const skullMat = new THREE.MeshStandardMaterial({ color: 0xdd88aa, emissive: 0x552233, roughness: 0.3, metalness: 0.7 });
-    const mainSkull = new THREE.Mesh(new THREE.SphereGeometry(0.65, 32, 32), skullMat);
-    mainSkull.scale.set(0.9, 0.95, 0.8);
-    skullGroup.add(mainSkull);
-    const jaw = new THREE.Mesh(new THREE.SphereGeometry(0.45, 32, 32), skullMat);
-    jaw.position.set(0, -0.5, 0.3);
-    jaw.scale.set(0.9, 0.5, 0.7);
-    skullGroup.add(jaw);
-    const eyeL = new THREE.Mesh(new THREE.SphereGeometry(0.18, 24, 24), new THREE.MeshStandardMaterial({ color: 0xff0000, emissive: 0xff2e6e, emissiveIntensity: 1.2 }));
-    eyeL.position.set(-0.28, 0.15, 0.65);
-    skullGroup.add(eyeL);
-    const eyeR = new THREE.Mesh(new THREE.SphereGeometry(0.18, 24, 24), new THREE.MeshStandardMaterial({ color: 0xff0000, emissive: 0xff2e6e, emissiveIntensity: 1.2 }));
-    eyeR.position.set(0.28, 0.15, 0.65);
-    skullGroup.add(eyeR);
-    skullGroup.position.set(0, -0.8, -2.5);
-    skullGroup.scale.set(0.9, 0.9, 0.9);
-    scene.add(skullGroup);
-
-    // АНИМАЦИЯ
-    let time = 0;
-    function animate3D() {
-        requestAnimationFrame(animate3D);
-        time += 0.012;
-        
-        ringGroup.rotation.x = time * 0.2;
-        ringGroup.rotation.y = time * 0.15;
-        ringGroup.rotation.z = time * 0.1;
-        
-        orbGroup.rotation.y = time * 0.2;
-        orbGroup.rotation.x = Math.sin(time * 0.3) * 0.2;
-        
-        particleSystem.rotation.y = time * 0.03;
-        particleSystem.rotation.x = Math.sin(time * 0.1) * 0.1;
-        
-        skullGroup.position.y = -0.8 + Math.sin(time * 1.5) * 0.05;
-        skullGroup.rotation.y = Math.sin(time * 0.6) * 0.2;
-        
-        const glowIntensity = 0.8 + Math.sin(time * 5) * 0.3;
-        eyeL.material.emissiveIntensity = glowIntensity;
-        eyeR.material.emissiveIntensity = glowIntensity;
-        
+    
+    const ambient = new THREE.AmbientLight(0x222222);
+    scene.add(ambient);
+    const light = new THREE.PointLight(0xff3366, 0.8);
+    light.position.set(3, 3, 5);
+    scene.add(light);
+    
+    let t = 0;
+    function animate() {
+        requestAnimationFrame(animate);
+        t += 0.008;
+        stars.rotation.y = t * 0.03;
+        stars.rotation.x = Math.sin(t * 0.1) * 0.1;
+        ringGroup.rotation.x = t * 0.2;
+        ringGroup.rotation.y = t * 0.15;
+        ringGroup.rotation.z = t * 0.1;
         camera.position.x += (0 - camera.position.x) * 0.05;
-        camera.position.y += (1.4 - camera.position.y) * 0.05;
-        camera.lookAt(0, 0.2, 0);
-        
+        camera.position.y += (1.2 - camera.position.y) * 0.05;
+        camera.lookAt(0, 0, 0);
         renderer.render(scene, camera);
     }
-    animate3D();
-    
+    animate();
     window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
     });
-</script>
-
-<script type="text/javascript">
-    // ----- ОСНОВНАЯ ЛОГИКА САЙТА -----
-    const translations = {
-        ru: { badgeRole: "💀 Sceleton Army", bio: "Должности: Sceleton Army - Curator, Support", infoText: "ПРОФИЛЬ", footerQuote: "Sceleton Elite", modalTitle: "🌸 VESTEL INFO", infoNameLbl: "Имя:", infoAgeLbl: "Возраст:", infoBirthLbl: "ДР:", infoCityLbl: "Город:", infoRoleLbl: "Роль:", robloxText: "Roblox", telegramText: "@vest_ell", discordText: "vest_el", nick: "vestel", age: "17 лет", birth: "28 августа", city: "Пермь", role: "Sceleton Army - Curator, Support", nameVal: "Паша" },
-        en: { badgeRole: "💀 Sceleton Army", bio: "Roles: Sceleton Army - Curator, Support", infoText: "PROFILE", footerQuote: "Sceleton Elite", modalTitle: "🌸 VESTEL INFO", infoNameLbl: "Name:", infoAgeLbl: "Age:", infoBirthLbl: "Birth:", infoCityLbl: "City:", infoRoleLbl: "Role:", robloxText: "Roblox", telegramText: "@vest_ell", discordText: "vest_el", nick: "vestel", age: "17 y.o", birth: "Aug 28", city: "Perm", role: "Sceleton Army - Curator, Support", nameVal: "Pasha" }
-    };
-    let currentLang = 'ru';
     
-    function updateLang() {
-        const t = translations[currentLang];
-        document.getElementById('badgeRole').innerHTML = t.badgeRole;
-        document.getElementById('bioText').innerHTML = t.bio;
-        document.getElementById('infoText').innerHTML = t.infoText;
-        document.getElementById('footerQuote').innerHTML = t.footerQuote;
-        document.getElementById('modalTitle').innerHTML = t.modalTitle;
-        document.getElementById('infoNameLbl').innerHTML = t.infoNameLbl;
-        document.getElementById('infoAgeLbl').innerHTML = t.infoAgeLbl;
-        document.getElementById('infoBirthLbl').innerHTML = t.infoBirthLbl;
-        document.getElementById('infoCityLbl').innerHTML = t.infoCityLbl;
-        document.getElementById('infoRoleLbl').innerHTML = t.infoRoleLbl;
-        document.getElementById('robloxText').innerHTML = t.robloxText;
-        document.getElementById('telegramText').innerHTML = t.telegramText;
-        document.getElementById('discordText').innerHTML = t.discordText;
-        document.getElementById('userNick').innerHTML = '@' + t.nick;
-        document.getElementById('userAge').innerHTML = '🎂 ' + t.age;
-        document.getElementById('infoBirthVal').innerHTML = t.birth;
-        document.getElementById('infoCityVal').innerHTML = t.city;
-        document.getElementById('infoRoleVal').innerHTML = t.role;
-        document.getElementById('infoAgeVal').innerHTML = t.age;
-        document.getElementById('infoNameVal').innerHTML = t.nameVal;
-        document.querySelectorAll('.lang-btn').forEach(btn => {
-            if(btn.dataset.lang === currentLang) btn.classList.add('active');
-            else btn.classList.remove('active');
-        });
-    }
-    
-    // КУРСОР
+    // ---------- КУРСОР ----------
     const cursor = document.createElement('div'); cursor.className = 'cursor'; document.body.appendChild(cursor);
     const cursorDot = document.createElement('div'); cursorDot.className = 'cursor-dot'; document.body.appendChild(cursorDot);
     document.addEventListener('mousemove', (e) => {
@@ -679,111 +549,160 @@
         cursor.style.top = e.clientY + 'px';
         cursorDot.style.left = e.clientX + 'px';
         cursorDot.style.top = e.clientY + 'px';
-        const hover = e.target.closest('.cyber-btn, .lang-btn, .admin-trigger, .close-info');
-        if(hover) cursor.classList.add('active');
+        const hover = e.target.closest('.neon-btn, .achievement, .play-btn, .admin-trigger');
+        if (hover) cursor.classList.add('active');
         else cursor.classList.remove('active');
     });
     
-    function playSound() {
+    // Звук клика
+    let audioCtx = null;
+    function playClick() {
         try {
-            let ctx = new (window.AudioContext || window.webkitAudioContext)();
-            if(ctx.state === 'suspended') ctx.resume();
-            let osc = ctx.createOscillator(), gain = ctx.createGain();
-            osc.frequency.value = 840;
-            gain.gain.setValueAtTime(0.1, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.2);
-            osc.connect(gain); gain.connect(ctx.destination);
-            osc.start(); osc.stop(ctx.currentTime + 0.15);
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.frequency.value = 880;
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.15);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.12);
         } catch(e) {}
     }
     
-    function showToast(msg) {
-        let div = document.createElement('div');
-        div.style.position = 'fixed'; div.style.bottom = '30px'; div.style.left = '50%';
-        div.style.transform = 'translateX(-50%)'; div.style.background = '#ff2e6e';
-        div.style.color = 'white'; div.style.padding = '12px 28px'; div.style.borderRadius = '50px';
-        div.style.zIndex = '20000'; div.style.fontWeight = 'bold'; div.style.fontSize = '0.9rem';
-        div.innerText = msg; document.body.appendChild(div);
-        setTimeout(() => div.remove(), 2000);
+    function toast(msg) {
+        const d = document.createElement('div');
+        d.innerText = msg;
+        d.style.position = 'fixed'; d.style.bottom = '80px'; d.style.left = '50%'; d.style.transform = 'translateX(-50%)';
+        d.style.background = '#ff2e6e'; d.style.color = 'white'; d.style.padding = '10px 24px'; d.style.borderRadius = '50px';
+        d.style.zIndex = '20000'; d.style.fontWeight = 'bold'; d.style.fontSize = '0.85rem';
+        document.body.appendChild(d);
+        setTimeout(() => d.remove(), 2000);
     }
     
-    // АДМИНКА
-    let adminLogged = false;
+    // Плеер (имитация, просто демо)
+    let isPlaying = false;
+    const playBtn = document.getElementById('playMusicBtn');
+    const playIcon = document.getElementById('playIcon');
+    playBtn.addEventListener('click', () => {
+        playClick();
+        isPlaying = !isPlaying;
+        if (isPlaying) {
+            playIcon.className = 'fas fa-pause';
+            toast('🎵 Sakura Dreams — трек играет (демо)');
+        } else {
+            playIcon.className = 'fas fa-play';
+            toast('⏸ Пауза');
+        }
+    });
+    
+    // Достижения
+    const achievements = document.querySelectorAll('.achievement');
+    achievements.forEach(ach => {
+        ach.addEventListener('click', () => {
+            playClick();
+            if (!ach.classList.contains('earned')) {
+                ach.classList.add('earned');
+                toast(`🏅 Достижение "${ach.innerText}" получено! +100 опыта`);
+            } else {
+                toast(`🔁 У вас уже есть "${ach.innerText}"`);
+            }
+        });
+    });
+    
+    // Мультиязык
+    const texts = {
+        ru: { badgeRole: "💀 Sceleton Army", bio: "Должности: Sceleton Army - Curator, Support", infoText: "ПРОФИЛЬ", footerQuote: "Sceleton Elite", nick: "vestel", age: "17 лет", role: "Sceleton Army - Curator, Support", nameVal:"Паша", birth:"28 августа", city:"Пермь", discordT:"vest_el", robloxT:"Roblox", telegramT:"@vest_ell", status:"ONLINE • В ИГРЕ" },
+        en: { badgeRole: "💀 Sceleton Army", bio: "Roles: Sceleton Army - Curator, Support", infoText: "PROFILE", footerQuote: "Sceleton Elite", nick: "vestel", age: "17 y.o", role: "Sceleton Army - Curator, Support", nameVal:"Pasha", birth:"Aug 28", city:"Perm", discordT:"vest_el", robloxT:"Roblox", telegramT:"@vest_ell", status:"ONLINE • IN GAME" }
+    };
+    let lang = 'ru';
+    function updateLangUI() {
+        const t = texts[lang];
+        document.getElementById('badgeRole').innerText = t.badgeRole;
+        document.getElementById('bioText').innerText = t.bio;
+        document.getElementById('infoText').innerText = t.infoText;
+        document.getElementById('footerQuote').innerText = t.footerQuote;
+        document.getElementById('userNick').innerHTML = '@' + t.nick;
+        document.getElementById('userAge').innerHTML = '🎂 ' + t.age;
+        document.getElementById('infoRole').innerText = t.role;
+        document.getElementById('infoName').innerText = t.nameVal;
+        document.getElementById('infoBirth').innerText = t.birth;
+        document.getElementById('infoCity').innerText = t.city;
+        document.getElementById('discordText').innerText = t.discordT;
+        document.getElementById('robloxText').innerText = t.robloxT;
+        document.getElementById('telegramText').innerText = t.telegramT;
+        document.getElementById('statusText').innerText = t.status;
+        document.getElementById('infoAge').innerText = t.age;
+        document.querySelectorAll('[data-lang]').forEach(btn => {
+            if(btn.dataset.lang === lang) btn.style.borderColor = '#ff2e6e';
+            else btn.style.borderColor = 'rgba(255,46,110,0.4)';
+        });
+    }
+    document.querySelectorAll('[data-lang]').forEach(btn => {
+        btn.addEventListener('click', () => { playClick(); lang = btn.dataset.lang; updateLangUI(); });
+    });
+    updateLangUI();
+    
+    // Админка
     const adminPanel = document.getElementById('adminPanel');
     const adminTrigger = document.getElementById('adminTrigger');
-    const closeAdminBtn = document.getElementById('closeAdminBtn');
-    const adminLoginBtn = document.getElementById('adminLoginBtn');
-    const adminPass = document.getElementById('adminPass');
-    const settingsArea = document.getElementById('adminSettingsArea');
-    const applyAdmin = document.getElementById('applyAdmin');
-    const resetAdmin = document.getElementById('resetAdmin');
-    const logoutAdmin = document.getElementById('logoutAdmin');
+    const closeAdmin = document.getElementById('closeAdminBtn');
+    const adminLogin = document.getElementById('adminLoginBtn');
+    const adminPassInp = document.getElementById('adminPass');
+    const settingsDiv = document.getElementById('adminSettingsArea');
+    const applySet = document.getElementById('applySettings');
+    const resetSet = document.getElementById('resetSettings');
     
-    adminTrigger.onclick = () => { playSound(); adminPanel.classList.add('active'); adminPass.value = ''; settingsArea.style.display = 'none'; };
-    closeAdminBtn.onclick = () => { adminPanel.classList.remove('active'); };
-    adminLoginBtn.onclick = () => {
-        playSound();
-        if(adminPass.value === 'Pawel775577зфцул775577') {
-            settingsArea.style.display = 'block';
+    adminTrigger.onclick = () => { playClick(); adminPanel.classList.add('active'); settingsDiv.style.display = 'none'; };
+    closeAdmin.onclick = () => { adminPanel.classList.remove('active'); };
+    adminLogin.onclick = () => {
+        playClick();
+        if (adminPassInp.value === 'Pawel775577зфцул775577') {
+            settingsDiv.style.display = 'block';
             document.getElementById('setNick').value = document.getElementById('userNick').innerText.replace('@','');
             document.getElementById('setBio').value = document.getElementById('bioText').innerText.replace('Должности: ','').replace('Roles: ','');
             document.getElementById('setAge').value = document.getElementById('userAge').innerText.replace('🎂 ','');
-            document.getElementById('setBirth').value = document.getElementById('infoBirthVal').innerText;
-            document.getElementById('setCity').value = document.getElementById('infoCityVal').innerText;
-            showToast('✅ Добро пожаловать, командир!');
-        } else { showToast('❌ Неверный пароль!'); adminPanel.classList.remove('active'); }
+            toast('✅ Доступ получен, командир');
+        } else { toast('❌ Неверный пароль'); adminPanel.classList.remove('active'); }
     };
-    applyAdmin.onclick = () => {
-        playSound();
-        let newColor = document.getElementById('setColor').value;
+    applySet.onclick = () => {
+        playClick();
+        const newColor = document.getElementById('setColor').value;
         document.documentElement.style.setProperty('--accent-color', newColor);
-        document.querySelectorAll('.cyber-btn, .lang-btn, .admin-trigger, .close-info').forEach(el => el.style.setProperty('border-color', newColor));
-        let glowMode = document.getElementById('setGlow').value;
-        if(glowMode === 'off') document.querySelector('.avatar-ring').style.opacity = '0.3';
-        else document.querySelector('.avatar-ring').style.opacity = '1';
-        showToast('✅ Стиль обновлён!');
-        // сохраняем в localStorage опционально
-        localStorage.setItem('neonColor', newColor);
-        localStorage.setItem('glowMode', glowMode);
+        const newStatus = document.getElementById('setStatus').value;
+        let statusText = '';
+        if(newStatus === 'online') statusText = 'ONLINE • В ИГРЕ';
+        else if(newStatus === 'idle') statusText = '🌙 IDLE • ОТОШЁЛ';
+        else statusText = '🎥 СТРИМ';
+        document.getElementById('statusText').innerText = statusText;
+        toast('✅ Стиль и статус обновлены');
+        localStorage.setItem('themeColor', newColor);
     };
-    resetAdmin.onclick = () => { localStorage.clear(); location.reload(); };
-    logoutAdmin.onclick = () => { adminPanel.classList.remove('active'); showToast('🔒 Выход'); };
+    resetSet.onclick = () => { localStorage.clear(); location.reload(); };
     
-    // МОДАЛКА ИНФО
+    if(localStorage.getItem('themeColor')) {
+        document.documentElement.style.setProperty('--accent-color', localStorage.getItem('themeColor'));
+    }
+    
+    // Инфо модалка
     const infoModal = document.getElementById('infoModal');
     const infoBtn = document.getElementById('infoBtn');
-    const closeInfoBtn = document.getElementById('closeInfoBtn');
-    infoBtn.onclick = () => { playSound(); infoModal.classList.add('active'); };
-    closeInfoBtn.onclick = () => { infoModal.classList.remove('active'); };
+    const closeInfo = document.getElementById('closeInfoBtn');
+    infoBtn.onclick = () => { playClick(); infoModal.classList.add('active'); };
+    closeInfo.onclick = () => { infoModal.classList.remove('active'); };
     infoModal.onclick = (e) => { if(e.target === infoModal) infoModal.classList.remove('active'); };
     
-    // КОПИРОВАНИЕ DISCORD
+    // Discord копирование
     document.getElementById('discordBtn').onclick = async () => {
-        playSound();
+        playClick();
         await navigator.clipboard.writeText('vest_el');
-        showToast('✅ Discord скопирован: vest_el');
+        toast('✅ Discord ник скопирован: vest_el');
     };
     
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.onclick = () => { playSound(); currentLang = btn.dataset.lang; updateLang(); };
-    });
-    
-    // восстанавливаем сохраненный цвет
-    const savedColor = localStorage.getItem('neonColor');
-    if(savedColor) document.documentElement.style.setProperty('--accent-color', savedColor);
-    updateLang();
-    
-    // ЗВУК ДЛЯ КЛИКОВ
-    document.querySelectorAll('.cyber-btn, .lang-btn, .close-info, .admin-trigger').forEach(el => {
-        el.addEventListener('click', playSound);
-    });
-    
-    // ЭФФЕКТ ГЛИТЧА ПО КЛИКУ
-    document.body.addEventListener('click', () => {
-        const glitch = document.querySelector('.glitch-lines');
-        glitch.style.opacity = '0.7';
-        setTimeout(() => glitch.style.opacity = '0.3', 100);
-    });
+    // Глобальный клик для аудиоконтекста
+    document.body.addEventListener('click', () => { if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); });
 </script>
 </body>
 </html>
