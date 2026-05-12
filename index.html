@@ -36,7 +36,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%);
+            background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.7) 100%);
             z-index: 1;
             pointer-events: none;
         }
@@ -76,7 +76,6 @@
             gap: 12px;
         }
 
-        /* одна компактная вкладка */
         .compact-tab {
             display: flex;
             align-items: center;
@@ -553,168 +552,230 @@
 
     const canvas = document.getElementById('webgl-canvas');
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x000000);
-    scene.fog = new THREE.FogExp2(0x000000, 0.006);
+    scene.background = new THREE.Color(0x010105);
+    scene.fog = new THREE.FogExp2(0x010105, 0.008);
 
     const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 1.8, 13);
+    camera.position.set(0, 1.5, 14);
     camera.lookAt(0, 0.5, 0);
 
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: false, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.shadowMap.enabled = true;
 
-    // Свет
+    // Lights
     const ambientLight = new THREE.AmbientLight(0x111122);
     scene.add(ambientLight);
-    const mainLight = new THREE.DirectionalLight(0xff4488, 1.2);
-    mainLight.position.set(3, 4, 5);
+    const mainLight = new THREE.DirectionalLight(0xff5588, 1.3);
+    mainLight.position.set(3, 5, 4);
+    mainLight.castShadow = true;
     scene.add(mainLight);
     const backLight = new THREE.PointLight(0xff2e6e, 0.9);
-    backLight.position.set(-2, 1.5, -4);
+    backLight.position.set(-2, 1.5, -5);
     scene.add(backLight);
-    const rimLight = new THREE.PointLight(0xffaa88, 0.7);
-    rimLight.position.set(1, 2, 3);
-    scene.add(rimLight);
-
-    // Частицы
-    const particleCount = 2000;
-    const particlesGeometry = new THREE.BufferGeometry();
-    const particlesPos = [];
-    for (let i = 0; i < particleCount; i++) {
-        particlesPos.push((Math.random() - 0.5) * 45);
-        particlesPos.push((Math.random() - 0.5) * 30);
-        particlesPos.push((Math.random() - 0.5) * 35 - 15);
+    const fillLight = new THREE.PointLight(0x44aaff, 0.5);
+    fillLight.position.set(2, 1, 3);
+    scene.add(fillLight);
+    
+    // ========== ГЛАВНЫЙ ФОКУС: КРУТОЙ ВРАЩАЮЩИЙСЯ ОБЪЕКТ (ГИПЕРКУБ + КОЛЬЦА + ШИПЫ) ==========
+    const mainOrbitalGroup = new THREE.Group();
+    
+    // Центральное ядро - искажённый икосаэдр с неоновой текстурой
+    const coreGeo = new THREE.IcosahedronGeometry(0.85, 0);
+    const coreMat = new THREE.MeshStandardMaterial({ color: 0xff2266, emissive: 0xff1155, emissiveIntensity: 0.9, metalness: 0.85, roughness: 0.2 });
+    const coreMesh = new THREE.Mesh(coreGeo, coreMat);
+    coreMesh.castShadow = true;
+    mainOrbitalGroup.add(coreMesh);
+    
+    // Внутренние вращающиеся шипы (острые пирамиды)
+    const spikeGroup = new THREE.Group();
+    const spikeMat = new THREE.MeshStandardMaterial({ color: 0xff44aa, emissive: 0xff2266, metalness: 0.7 });
+    for (let i = 0; i < 24; i++) {
+        const spike = new THREE.Mesh(new THREE.ConeGeometry(0.12, 0.55, 6), spikeMat);
+        const angle = (i / 24) * Math.PI * 2;
+        const radius = 1.25;
+        spike.position.set(Math.cos(angle) * radius, Math.sin(angle) * 0.8, Math.sin(angle) * radius);
+        spike.lookAt(0, 0, 0);
+        spikeGroup.add(spike);
     }
-    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(particlesPos), 3));
-    const particlesMat = new THREE.PointsMaterial({ color: 0xff4d8c, size: 0.07, transparent: true, opacity: 0.4 });
-    const particleSystem = new THREE.Points(particlesGeometry, particlesMat);
-    scene.add(particleSystem);
-
-    // Кольца
-    const ringGroup = new THREE.Group();
-    const ringMat = new THREE.MeshStandardMaterial({ color: 0xff2e6e, emissive: 0xff1155, emissiveIntensity: 0.7 });
-    const ring1 = new THREE.Mesh(new THREE.TorusGeometry(2.0, 0.05, 64, 300), ringMat);
-    ring1.rotation.x = Math.PI / 2;
-    ringGroup.add(ring1);
-    const ring2 = new THREE.Mesh(new THREE.TorusGeometry(2.5, 0.04, 64, 300), ringMat);
-    ring2.rotation.z = Math.PI / 3;
-    ringGroup.add(ring2);
-    scene.add(ringGroup);
-
-    // ========== НОВЫЙ КРАСИВЫЙ ПЕРСОНАЖ (кибер-воин/андроид) ==========
+    mainOrbitalGroup.add(spikeGroup);
+    
+    // Энергетические кольца (двойное тор)
+    const ringMatGlow = new THREE.MeshStandardMaterial({ color: 0xff2e6e, emissive: 0xff2e6e, emissiveIntensity: 0.7 });
+    const outerRing = new THREE.Mesh(new THREE.TorusGeometry(1.65, 0.08, 64, 200), ringMatGlow);
+    outerRing.rotation.x = Math.PI / 2;
+    outerRing.rotation.z = Math.PI / 4;
+    mainOrbitalGroup.add(outerRing);
+    
+    const diagonalRing = new THREE.Mesh(new THREE.TorusGeometry(1.85, 0.07, 64, 200), ringMatGlow);
+    diagonalRing.rotation.y = Math.PI / 3;
+    diagonalRing.rotation.x = Math.PI / 3;
+    mainOrbitalGroup.add(diagonalRing);
+    
+    const hexRing = new THREE.Mesh(new THREE.TorusGeometry(1.45, 0.06, 48, 200), ringMatGlow);
+    hexRing.rotation.z = Math.PI / 2;
+    hexRing.rotation.x = Math.PI / 2.5;
+    mainOrbitalGroup.add(hexRing);
+    
+    // Плавающие кристаллы (октаэдры)
+    const crystalGroup = new THREE.Group();
+    const crystalMat = new THREE.MeshStandardMaterial({ color: 0xff66aa, emissive: 0x882244, emissiveIntensity: 0.6 });
+    for (let i = 0; i < 12; i++) {
+        const crystal = new THREE.Mesh(new THREE.OctahedronGeometry(0.22), crystalMat);
+        const angleRad = (i / 12) * Math.PI * 2;
+        const radius = 2.1;
+        crystal.position.set(Math.cos(angleRad) * radius, Math.sin(angleRad * 2) * 0.9, Math.sin(angleRad) * radius);
+        crystalGroup.add(crystal);
+    }
+    mainOrbitalGroup.add(crystalGroup);
+    
+    // Вихрь частиц вокруг главного объекта (дополнительный динамический эффект)
+    const vortexParticleCount = 800;
+    const vortexGeo = new THREE.BufferGeometry();
+    const vortexPositions = [];
+    for (let i = 0; i < vortexParticleCount; i++) {
+        const radius = 2.0 + Math.random() * 1.2;
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.acos(2 * Math.random() - 1);
+        const x = radius * Math.sin(phi) * Math.cos(theta);
+        const y = radius * Math.sin(phi) * Math.sin(theta) * 0.6;
+        const z = radius * Math.cos(phi);
+        vortexPositions.push(x, y, z);
+    }
+    vortexGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vortexPositions), 3));
+    const vortexParticleMat = new THREE.PointsMaterial({ color: 0xff77bb, size: 0.05, transparent: true, blending: THREE.AdditiveBlending });
+    const vortexPoints = new THREE.Points(vortexGeo, vortexParticleMat);
+    mainOrbitalGroup.add(vortexPoints);
+    
+    scene.add(mainOrbitalGroup);
+    
+    // Добавим окружающие малые частицы для атмосферы
+    const bgParticleCount = 1800;
+    const bgParticleGeo = new THREE.BufferGeometry();
+    const bgPositions = [];
+    for (let i = 0; i < bgParticleCount; i++) {
+        bgPositions.push((Math.random() - 0.5) * 55);
+        bgPositions.push((Math.random() - 0.5) * 30);
+        bgPositions.push((Math.random() - 0.5) * 40 - 15);
+    }
+    bgParticleGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(bgPositions), 3));
+    const bgParticleMat = new THREE.PointsMaterial({ color: 0xff4d8c, size: 0.05, transparent: true, opacity: 0.3 });
+    const bgStars = new THREE.Points(bgParticleGeo, bgParticleMat);
+    scene.add(bgStars);
+    
+    // Светящаяся аура вокруг всей группы
+    const auraLight = new THREE.PointLight(0xff2e6e, 1.2, 18);
+    auraLight.position.set(0, 0, 0);
+    mainOrbitalGroup.add(auraLight);
+    
+    // ========== КИБЕР-ПЕРСОНАЖ (статичный, но с анимацией пульса) ==========
     const characterGroup = new THREE.Group();
-    
-    // Тело (броня)
     const bodyGeo = new THREE.CylinderGeometry(0.55, 0.5, 1.2, 12);
-    const bodyMat = new THREE.MeshStandardMaterial({ color: 0xcc2266, emissive: 0x331133, metalness: 0.7, roughness: 0.3 });
-    const body = new THREE.Mesh(bodyGeo, bodyMat);
-    body.position.y = 0;
-    characterGroup.add(body);
+    const bodyMatChar = new THREE.MeshStandardMaterial({ color: 0xcc2266, emissive: 0x331133, metalness: 0.7, roughness: 0.3 });
+    const bodyChar = new THREE.Mesh(bodyGeo, bodyMatChar);
+    bodyChar.position.y = 0;
+    characterGroup.add(bodyChar);
     
-    // Голова (шлем)
     const headGeo = new THREE.SphereGeometry(0.48, 32, 32);
-    const headMat = new THREE.MeshStandardMaterial({ color: 0xdd44aa, emissive: 0x441133, metalness: 0.8 });
-    const head = new THREE.Mesh(headGeo, headMat);
-    head.position.y = 0.85;
-    characterGroup.add(head);
+    const headMatChar = new THREE.MeshStandardMaterial({ color: 0xdd44aa, emissive: 0x441133, metalness: 0.8 });
+    const headChar = new THREE.Mesh(headGeo, headMatChar);
+    headChar.position.y = 0.85;
+    characterGroup.add(headChar);
     
-    // Визор (светящийся)
-    const visorGeo = new THREE.BoxGeometry(0.65, 0.2, 0.1);
-    const visorMat = new THREE.MeshStandardMaterial({ color: 0xff2e6e, emissive: 0xff2e6e, emissiveIntensity: 1.2 });
-    const visor = new THREE.Mesh(visorGeo, visorMat);
-    visor.position.set(0, 0.9, 0.48);
-    characterGroup.add(visor);
+    const visorGeoBox = new THREE.BoxGeometry(0.65, 0.2, 0.1);
+    const visorMatChar = new THREE.MeshStandardMaterial({ color: 0xff2e6e, emissive: 0xff2e6e, emissiveIntensity: 1.2 });
+    const visorChar = new THREE.Mesh(visorGeoBox, visorMatChar);
+    visorChar.position.set(0, 0.9, 0.48);
+    characterGroup.add(visorChar);
     
-    // Плечи-наплечники
-    const shoulderGeo = new THREE.SphereGeometry(0.28, 8, 8);
-    const shoulderMat = new THREE.MeshStandardMaterial({ color: 0xaa3366, metalness: 0.9 });
-    const leftShoulder = new THREE.Mesh(shoulderGeo, shoulderMat);
-    leftShoulder.position.set(-0.65, 0.55, 0);
-    const rightShoulder = new THREE.Mesh(shoulderGeo, shoulderMat);
-    rightShoulder.position.set(0.65, 0.55, 0);
-    characterGroup.add(leftShoulder);
-    characterGroup.add(rightShoulder);
+    const shoulderGeoSphere = new THREE.SphereGeometry(0.28, 8, 8);
+    const shoulderMatChar = new THREE.MeshStandardMaterial({ color: 0xaa3366, metalness: 0.9 });
+    const leftShoulderChar = new THREE.Mesh(shoulderGeoSphere, shoulderMatChar);
+    leftShoulderChar.position.set(-0.65, 0.55, 0);
+    const rightShoulderChar = new THREE.Mesh(shoulderGeoSphere, shoulderMatChar);
+    rightShoulderChar.position.set(0.65, 0.55, 0);
+    characterGroup.add(leftShoulderChar);
+    characterGroup.add(rightShoulderChar);
     
-    // Руки (цилиндры)
-    const armMat = new THREE.MeshStandardMaterial({ color: 0xbb4488, metalness: 0.6 });
-    const leftArm = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.16, 0.9, 6), armMat);
-    leftArm.position.set(-0.7, 0.15, 0);
-    const rightArm = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.16, 0.9, 6), armMat);
-    rightArm.position.set(0.7, 0.15, 0);
-    characterGroup.add(leftArm);
-    characterGroup.add(rightArm);
+    const armMatChar = new THREE.MeshStandardMaterial({ color: 0xbb4488, metalness: 0.6 });
+    const leftArmChar = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.16, 0.9, 6), armMatChar);
+    leftArmChar.position.set(-0.7, 0.15, 0);
+    const rightArmChar = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.16, 0.9, 6), armMatChar);
+    rightArmChar.position.set(0.7, 0.15, 0);
+    characterGroup.add(leftArmChar);
+    characterGroup.add(rightArmChar);
     
-    // Плащ/шлейф (энергетический)
-    const capeGeo = new THREE.ConeGeometry(0.7, 0.9, 8);
-    const capeMat = new THREE.MeshStandardMaterial({ color: 0x882244, emissive: 0x221111, transparent: true, opacity: 0.7 });
-    const cape = new THREE.Mesh(capeGeo, capeMat);
-    cape.position.set(0, -0.3, -0.55);
-    characterGroup.add(cape);
+    const capeChar = new THREE.Mesh(new THREE.ConeGeometry(0.7, 0.9, 8), new THREE.MeshStandardMaterial({ color: 0x882244, emissive: 0x221111, transparent: true, opacity: 0.7 }));
+    capeChar.position.set(0, -0.3, -0.55);
+    characterGroup.add(capeChar);
     
-    // Крылья/энергетические лопасти (стильно)
-    const wingMat = new THREE.MeshStandardMaterial({ color: 0xff4488, emissive: 0xff2e6e, emissiveIntensity: 0.5 });
-    const leftWing = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.08, 0.4), wingMat);
-    leftWing.position.set(-0.9, 0.4, -0.2);
-    leftWing.rotation.z = 0.4;
-    const rightWing = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.08, 0.4), wingMat);
-    rightWing.position.set(0.9, 0.4, -0.2);
-    rightWing.rotation.z = -0.4;
-    characterGroup.add(leftWing);
-    characterGroup.add(rightWing);
+    const wingMatChar = new THREE.MeshStandardMaterial({ color: 0xff4488, emissive: 0xff2e6e, emissiveIntensity: 0.5 });
+    const leftWingChar = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.08, 0.4), wingMatChar);
+    leftWingChar.position.set(-0.9, 0.4, -0.2);
+    leftWingChar.rotation.z = 0.4;
+    const rightWingChar = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.08, 0.4), wingMatChar);
+    rightWingChar.position.set(0.9, 0.4, -0.2);
+    rightWingChar.rotation.z = -0.4;
+    characterGroup.add(leftWingChar);
+    characterGroup.add(rightWingChar);
     
-    // Светящиеся точки на груди
-    const coreGlow = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 16), new THREE.MeshStandardMaterial({ color: 0xff2e6e, emissive: 0xff2e6e, emissiveIntensity: 1.0 }));
-    coreGlow.position.set(0, 0.2, 0.55);
-    characterGroup.add(coreGlow);
+    const coreGlowChar = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 16), new THREE.MeshStandardMaterial({ color: 0xff2e6e, emissive: 0xff2e6e, emissiveIntensity: 1.0 }));
+    coreGlowChar.position.set(0, 0.2, 0.55);
+    characterGroup.add(coreGlowChar);
     
-    characterGroup.position.set(0, -0.9, -2.2);
+    characterGroup.position.set(0, -0.95, -2.5);
     characterGroup.scale.set(0.85, 0.85, 0.85);
     scene.add(characterGroup);
     
-    // Добавим летающие искры вокруг персонажа
-    const sparkleCount = 300;
-    const sparkleGeo = new THREE.BufferGeometry();
-    const sparklePos = [];
-    for (let i = 0; i < sparkleCount; i++) {
-        sparklePos.push((Math.random() - 0.5) * 3.5);
-        sparklePos.push((Math.random() - 0.5) * 3 + 0.5);
-        sparklePos.push((Math.random() - 0.5) * 3 - 1.5);
-    }
-    sparkleGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(sparklePos), 3));
-    const sparkleMat = new THREE.PointsMaterial({ color: 0xff77aa, size: 0.04, transparent: true, blending: THREE.AdditiveBlending });
-    const sparkles = new THREE.Points(sparkleGeo, sparkleMat);
-    scene.add(sparkles);
-    
-    // Анимация
+    // Вспомогательная анимация времени
     let time = 0;
+    
     function animate3D() {
         requestAnimationFrame(animate3D);
-        time += 0.014;
+        time += 0.012;
         
-        ringGroup.rotation.x = time * 0.2;
-        ringGroup.rotation.y = time * 0.18;
-        ringGroup.rotation.z = time * 0.1;
+        // ГЛАВНАЯ ФИШКА: вращение основного комплекса с разными скоростями для разных частей
+        mainOrbitalGroup.rotation.y = time * 0.35;
+        mainOrbitalGroup.rotation.x = Math.sin(time * 0.2) * 0.2;
+        mainOrbitalGroup.rotation.z = Math.cos(time * 0.25) * 0.15;
         
-        particleSystem.rotation.y = time * 0.03;
-        particleSystem.rotation.x = Math.sin(time * 0.1) * 0.1;
+        // Вращение шипов и кристаллов независимо от группы (создаёт эффект хаоса)
+        spikeGroup.rotation.y = time * 0.8;
+        spikeGroup.rotation.x = time * 0.5;
+        crystalGroup.rotation.y = -time * 0.6;
+        crystalGroup.rotation.z = time * 0.4;
+        
+        // Пульсация колец
+        const scaleRing = 1 + Math.sin(time * 5) * 0.03;
+        outerRing.scale.set(scaleRing, scaleRing, scaleRing);
+        diagonalRing.scale.set(scaleRing, scaleRing, scaleRing);
+        hexRing.scale.set(1 + Math.sin(time * 4.2) * 0.02, 1 + Math.sin(time * 4.2) * 0.02, 1 + Math.sin(time * 4.2) * 0.02);
+        
+        // Вращение частиц вихря
+        vortexPoints.rotation.y = time * 0.2;
+        vortexPoints.rotation.x = Math.sin(time * 0.3) * 0.1;
+        vortexPoints.rotation.z = time * 0.15;
+        
+        // Изменение интенсивности свечения
+        const glowIntensity = 0.8 + Math.sin(time * 3) * 0.4;
+        auraLight.intensity = 1.0 + Math.sin(time * 2.5) * 0.5;
+        coreMesh.material.emissiveIntensity = 0.6 + Math.sin(time * 3) * 0.3;
         
         // Анимация персонажа
-        characterGroup.position.y = -0.9 + Math.sin(time * 1.2) * 0.03;
-        characterGroup.rotation.y = Math.sin(time * 0.5) * 0.15;
-        // пульсация визора
-        const intensity = 0.8 + Math.sin(time * 8) * 0.5;
-        visor.material.emissiveIntensity = intensity;
-        coreGlow.material.emissiveIntensity = 0.7 + Math.sin(time * 6) * 0.4;
+        characterGroup.position.y = -0.95 + Math.sin(time * 1.5) * 0.025;
+        characterGroup.rotation.y = Math.sin(time * 0.4) * 0.1;
+        visorChar.material.emissiveIntensity = 0.9 + Math.sin(time * 8) * 0.6;
+        coreGlowChar.material.emissiveIntensity = 0.7 + Math.sin(time * 6) * 0.5;
         
-        // вращение искр
-        sparkles.rotation.y = time * 0.2;
-        sparkles.rotation.x = Math.sin(time * 0.3) * 0.2;
+        // Фоновая звездная пыль медленно вращается
+        bgStars.rotation.y = time * 0.02;
+        bgStars.rotation.x = time * 0.01;
         
-        // плавное движение камеры
-        camera.position.x += (0 - camera.position.x) * 0.04;
-        camera.position.y += (1.6 - camera.position.y) * 0.04;
-        camera.lookAt(0, 0.3, 0);
+        // Движение камеры для объёмного восприятия
+        camera.position.x += (Math.sin(time * 0.2) * 0.2 - camera.position.x) * 0.03;
+        camera.position.y += (1.6 + Math.sin(time * 0.25) * 0.05 - camera.position.y) * 0.03;
+        camera.lookAt(0, 0.2, 0);
         
         renderer.render(scene, camera);
     }
