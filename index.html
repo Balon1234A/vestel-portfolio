@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Vestel | Sceleton Army — Organic Slime Cyber Profile</title>
+    <title>Vestel | Sceleton Army — Orbital Slime Core</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -30,68 +30,90 @@
             z-index: 0;
         }
 
-        /* ========== РОЗОВАЯ СЛИЗЬ ========== */
-        .slime-backdrop {
+        /* НЕБОЛЬШОЙ ЖИДКИЙ ОБЪЕКТ ЗА КАРТОЧКОЙ — КРУЖИТ И НЕ ВЫХОДИТ ЗА РАМКИ */
+        .orbital-slime {
             position: fixed;
-            bottom: -20%;
-            left: -15%;
-            width: 130%;
-            height: 75%;
-            z-index: 1;
+            bottom: 50%;
+            right: 50%;
+            transform: translate(50%, 50%);
+            width: 580px;
+            height: 580px;
+            z-index: 5;
             pointer-events: none;
-            filter: blur(32px) brightness(1.1);
-            opacity: 0.9;
+            filter: blur(35px) brightness(1.2);
+            opacity: 0.65;
             mix-blend-mode: screen;
+            border-radius: 50%;
+            animation: slimeOrbit 12s infinite alternate ease-in-out;
         }
-        .slime-canvas {
+        
+        .slime-core {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 30% 50%, #ff3b7f, #ff0a54, #c9184a, #a4133c);
-            border-radius: 80% 40% 70% 30% / 50% 60% 40% 50%;
-            animation: slimeFlow 8s infinite ease-in-out;
-            box-shadow: 0 0 100px #ff0a54, 0 0 200px #ff66cc;
+            background: radial-gradient(circle at 40% 45%, #ff2e6e, #ff0a54, #c9184a, #800f2f);
+            border-radius: 60% 40% 70% 30% / 45% 55% 45% 55%;
+            box-shadow: 0 0 80px #ff1a5e, 0 0 140px #ff5e9e;
+            animation: liquidMorph 6s infinite cubic-bezier(0.45, 0.05, 0.2, 0.99);
         }
-        @keyframes slimeFlow {
-            0% { border-radius: 70% 30% 80% 20% / 40% 60% 40% 60%; transform: scale(1) translateX(0%) translateY(0%); background-position: 0% 0%;}
-            25% { border-radius: 50% 50% 65% 35% / 60% 40% 70% 30%; transform: scale(1.03) translateX(4%) translateY(-3%); background-position: 20% 15%;}
-            50% { border-radius: 85% 15% 60% 40% / 35% 75% 25% 65%; transform: scale(1.06) translateX(-3%) translateY(5%); background-position: 45% 25%;}
-            75% { border-radius: 45% 55% 90% 10% / 80% 30% 70% 20%; transform: scale(1.04) translateX(6%) translateY(-2%); background-position: 65% 10%;}
-            100% { border-radius: 70% 30% 80% 20% / 40% 60% 40% 60%; transform: scale(1) translateX(0%) translateY(0%); background-position: 0% 0%;}
-        }
-        /* Вторая волна для глубины и вылезания за рамку */
-        .slime-backdrop-extra {
-            position: fixed;
-            bottom: -10%;
-            right: -20%;
-            width: 110%;
-            height: 65%;
-            z-index: 1;
-            pointer-events: none;
-            filter: blur(48px) hue-rotate(5deg);
-            opacity: 0.6;
-            mix-blend-mode: lighten;
-        }
-        .slime-canvas-extra {
+        
+        /* Вторая оболочка для дополнительного вращения */
+        .slime-aura {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(ellipse at 70% 60%, #ff66cc, #ff1a6e, #b80046);
-            border-radius: 60% 40% 70% 30% / 40% 50% 50% 60%;
-            animation: slimeFlowExtra 10s infinite alternate ease-in-out;
+            width: 85%;
+            height: 85%;
+            top: 7.5%;
+            left: 7.5%;
+            background: radial-gradient(ellipse, #ff66cc, #ff2a6e);
+            border-radius: 45% 55% 60% 40% / 50% 45% 55% 50%;
+            filter: blur(18px);
+            animation: spinAura 8s infinite linear;
+            opacity: 0.8;
         }
-        @keyframes slimeFlowExtra {
-            0% { border-radius: 50% 50% 60% 40% / 60% 40% 60% 40%; transform: translateX(-5%) translateY(5%) scale(1);}
-            100% { border-radius: 30% 70% 40% 60% / 50% 60% 40% 50%; transform: translateX(8%) translateY(-4%) scale(1.05);}
+        
+        @keyframes slimeOrbit {
+            0% {
+                transform: translate(50%, 50%) translateX(-15px) translateY(10px) rotate(0deg);
+                width: 560px;
+                height: 560px;
+            }
+            33% {
+                transform: translate(50%, 50%) translateX(20px) translateY(-12px) rotate(4deg);
+                width: 590px;
+                height: 570px;
+            }
+            66% {
+                transform: translate(50%, 50%) translateX(-10px) translateY(18px) rotate(-3deg);
+                width: 575px;
+                height: 585px;
+            }
+            100% {
+                transform: translate(50%, 50%) translateX(8px) translateY(-8px) rotate(0deg);
+                width: 565px;
+                height: 565px;
+            }
         }
-
+        
+        @keyframes liquidMorph {
+            0% { border-radius: 60% 40% 70% 30% / 45% 55% 45% 55%; transform: scale(1) rotate(0deg); background-position: 0% 0%;}
+            25% { border-radius: 45% 55% 50% 50% / 60% 40% 60% 40%; transform: scale(1.04) rotate(2deg); background-position: 20% 30%;}
+            50% { border-radius: 70% 30% 45% 55% / 35% 65% 35% 65%; transform: scale(0.98) rotate(-2deg); background-position: 50% 20%;}
+            75% { border-radius: 35% 65% 60% 40% / 70% 30% 70% 30%; transform: scale(1.02) rotate(1deg); background-position: 30% 50%;}
+            100% { border-radius: 60% 40% 70% 30% / 45% 55% 45% 55%; transform: scale(1) rotate(0deg); background-position: 0% 0%;}
+        }
+        
+        @keyframes spinAura {
+            0% { transform: rotate(0deg); border-radius: 45% 55% 60% 40% / 50% 45% 55% 50%;}
+            100% { transform: rotate(360deg); border-radius: 60% 40% 45% 55% / 55% 50% 50% 45%;}
+        }
+        
         .overlay-gradient {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.65) 100%);
+            background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.65) 100%);
             z-index: 2;
             pointer-events: none;
         }
@@ -113,7 +135,7 @@
             100% { transform: translateY(4px); opacity: 0.3; }
         }
 
-        /* ========== ВЕРХНЯЯ ПАНЕЛЬ ========== */
+        /* ВЕРХНЯЯ ПАНЕЛЬ */
         .browser-bar {
             position: fixed;
             top: 0;
@@ -141,7 +163,6 @@
             border: 1px solid rgba(255, 46, 110, 0.5);
             font-size: 0.8rem;
             font-weight: 600;
-            letter-spacing: 1px;
         }
         .compact-tab i { color: #ff2e6e; }
 
@@ -168,7 +189,6 @@
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
-            margin-left: 4px;
         }
 
         .main-content {
@@ -195,7 +215,22 @@
             padding: 40px 30px;
             transition: 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             animation: floatCard 4s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
         }
+        /* Лёгкая внутренняя подсветка от слизи, но сама слизь снаружи */
+        .cyber-card::after {
+            content: '';
+            position: absolute;
+            bottom: -20%;
+            left: -20%;
+            width: 140%;
+            height: 140%;
+            background: radial-gradient(ellipse at center, rgba(255,46,110,0.08) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        
         @keyframes floatCard {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-8px); }
@@ -203,7 +238,6 @@
         .cyber-card:hover {
             border-color: #ff2e6e;
             box-shadow: 0 30px 55px rgba(0,0,0,0.6), 0 0 50px rgba(255,46,110,0.5);
-            transform: scale(1.01);
         }
 
         .lang-wrap {
@@ -234,6 +268,7 @@
             width: 130px;
             height: 130px;
             margin: 0 auto 20px;
+            z-index: 2;
         }
         .avatar-ring {
             position: absolute;
@@ -253,11 +288,7 @@
             border: 3px solid #ff2e6e;
             box-shadow: 0 0 30px #ff2e6e;
         }
-        .avatar-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .avatar-img img { width: 100%; height: 100%; object-fit: cover; }
 
         .nick-glitch {
             text-align: center;
@@ -331,7 +362,7 @@
         .cyber-btn:hover i { color: white; }
         .info-btn-full { width: 100%; justify-content: center; }
 
-        /* МАКСИМАЛЬНО ПРОЗРАЧНАЯ КНОПКА АДМИНКИ */
+        /* АДМИНКА — ПРОЗРАЧНАЯ КНОПКА */
         .admin-trigger {
             position: fixed;
             bottom: 20px;
@@ -350,15 +381,9 @@
             transition: 0.2s;
             opacity: 0.45;
         }
-        .admin-trigger:hover {
-            opacity: 1;
-            background: rgba(255,46,110,0.3);
-            border-color: #ff2e6e;
-            transform: scale(1.05);
-        }
+        .admin-trigger:hover { opacity: 1; background: rgba(255,46,110,0.3); border-color: #ff2e6e; transform: scale(1.05); }
         .admin-trigger i { color: #ff99bb; font-size: 1rem; }
 
-        /* АДМИН ПАНЕЛЬ — АККУРАТНЫЙ СТИЛЬ */
         .admin-modal {
             position: fixed;
             top: 50%;
@@ -377,11 +402,7 @@
             box-shadow: 0 25px 50px rgba(0,0,0,0.8), 0 0 40px rgba(255,46,110,0.2);
             backdrop-filter: blur(8px);
         }
-        .admin-modal.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translate(-50%, -50%) scale(1);
-        }
+        .admin-modal.active { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
         .admin-header {
             display: flex;
             justify-content: space-between;
@@ -390,14 +411,7 @@
             padding-bottom: 10px;
             border-bottom: 1px dashed rgba(255,46,110,0.4);
         }
-        .admin-header h3 {
-            font-size: 1.3rem;
-            background: linear-gradient(135deg, #ff2e6e, #ffaa66);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            letter-spacing: 1px;
-        }
+        .admin-header h3 { font-size: 1.3rem; background: linear-gradient(135deg, #ff2e6e, #ffaa66); background-clip: text; -webkit-background-clip: text; color: transparent; }
         .admin-input {
             width: 100%;
             padding: 12px 16px;
@@ -408,12 +422,8 @@
             color: #fff;
             font-family: 'Space Grotesk', monospace;
             outline: none;
-            transition: 0.2s;
         }
-        .admin-input:focus {
-            border-color: #ff2e6e;
-            box-shadow: 0 0 12px rgba(255,46,110,0.4);
-        }
+        .admin-input:focus { border-color: #ff2e6e; box-shadow: 0 0 12px rgba(255,46,110,0.4); }
         .admin-btn {
             background: linear-gradient(95deg, #ff2e6e, #ff5e9e);
             border: none;
@@ -425,22 +435,9 @@
             width: 100%;
             margin-top: 12px;
             transition: 0.2s;
-            font-size: 0.9rem;
         }
-        .admin-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(255,46,110,0.5);
-        }
-        #adminSettingsArea {
-            margin-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 18px;
-        }
-        .flex-btns {
-            display: flex;
-            gap: 12px;
-            margin-top: 8px;
-        }
+        .admin-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(255,46,110,0.5); }
+        .flex-btns { display: flex; gap: 12px; margin-top: 8px; }
         .flex-btns .admin-btn { margin-top: 0; }
 
         .info-modal {
@@ -469,51 +466,32 @@
             border: 2px solid #ff2e6e;
             text-align: center;
         }
-        .info-window h2 {
-            font-size: 1.8rem;
-            margin-bottom: 18px;
-            background: linear-gradient(135deg, #ff2e6e, #ffaa66);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-        }
+        .info-window h2 { font-size: 1.8rem; margin-bottom: 18px; background: linear-gradient(135deg, #ff2e6e, #ffaa66); background-clip: text; -webkit-background-clip: text; color: transparent; }
         .info-row { text-align: left; margin: 12px 0; font-size: 0.9rem; }
         .info-row i { width: 28px; color: #ff2e6e; }
-        .close-info {
-            background: #ff2e6e;
-            border: none;
-            padding: 10px 22px;
-            border-radius: 40px;
-            color: white;
-            font-weight: bold;
-            margin-top: 18px;
-            cursor: pointer;
-        }
-        .footer-cyber {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            font-size: 0.65rem;
-            color: #ff99bb;
-            border-top: 1px dashed rgba(255,46,110,0.4);
-            padding-top: 15px;
-        }
+        .close-info { background: #ff2e6e; border: none; padding: 10px 22px; border-radius: 40px; color: white; font-weight: bold; margin-top: 18px; cursor: pointer; }
+        .footer-cyber { display: flex; justify-content: space-between; margin-top: 20px; font-size: 0.65rem; color: #ff99bb; border-top: 1px dashed rgba(255,46,110,0.4); padding-top: 15px; }
+        
         @media (max-width: 650px) {
             .browser-bar { padding: 6px 15px; }
             .widget-area { gap: 12px; padding: 4px 12px; }
-            .weather-widget, .birthday-widget { font-size: 0.7rem; }
             .cyber-card { padding: 25px 18px; }
             .nick-glitch { font-size: 1.5rem; }
             .avatar-cyber { width: 100px; height: 100px; }
+            .orbital-slime { width: 480px; height: 480px; filter: blur(30px); opacity: 0.6; }
         }
     </style>
 </head>
 <body>
 
 <canvas id="webgl-canvas"></canvas>
-<!-- СЛИЗЬ, КОТОРАЯ ВЫЛЕЗАЕТ ЗА РАМКУ И ДВИГАЕТСЯ -->
-<div class="slime-backdrop"><div class="slime-canvas"></div></div>
-<div class="slime-backdrop-extra"><div class="slime-canvas-extra"></div></div>
+
+<!-- АККУРАТНЫЙ ОРБИТАЛЬНЫЙ ОБЪЕКТ ЗА КАРТОЧКОЙ — РОЗОВАЯ ЖИДКАЯ СФЕРА, КРУЖИТСЯ КРАСИВО -->
+<div class="orbital-slime">
+    <div class="slime-core"></div>
+    <div class="slime-aura"></div>
+</div>
+
 <div class="overlay-gradient"></div>
 <div class="glitch-lines"></div>
 
@@ -548,7 +526,7 @@
     </div>
 </div>
 
-<!-- АДМИНКА – АККУРАТНАЯ И ПОЛНОСТЬЮ РАБОЧАЯ -->
+<!-- АДМИНКА полность рабочая -->
 <div class="admin-trigger" id="adminTrigger"><i class="fas fa-shield-alt"></i></div>
 <div class="admin-modal" id="adminPanel">
     <div class="admin-header"><h3>🔐 ADMIN NEXUS</h3><button id="closeAdminBtn" style="background:none; border:none; color:#ff2e6e; font-size:26px; cursor:pointer;">✕</button></div>
@@ -598,11 +576,11 @@
     renderer.shadowMap.enabled = true;
     const ambientLight = new THREE.AmbientLight(0x111122);
     scene.add(ambientLight);
-    const mainLight = new THREE.DirectionalLight(0xff5588, 1.3);
+    const mainLight = new THREE.DirectionalLight(0xff5588, 1.2);
     mainLight.position.set(3,5,4);
     mainLight.castShadow = true;
     scene.add(mainLight);
-    const backLight = new THREE.PointLight(0xff2e6e,0.9);
+    const backLight = new THREE.PointLight(0xff2e6e,0.8);
     backLight.position.set(-2,1.5,-5);
     scene.add(backLight);
     const fillLight = new THREE.PointLight(0x44aaff,0.5);
@@ -611,7 +589,7 @@
     
     const mainOrbitalGroup = new THREE.Group();
     const coreGeo = new THREE.IcosahedronGeometry(0.85,0);
-    const coreMat = new THREE.MeshStandardMaterial({ color:0xff2266, emissive:0xff1155, emissiveIntensity:0.9, metalness:0.85, roughness:0.2 });
+    const coreMat = new THREE.MeshStandardMaterial({ color:0xff2266, emissive:0xff1155, emissiveIntensity:0.8, metalness:0.85, roughness:0.2 });
     const coreMesh = new THREE.Mesh(coreGeo, coreMat);
     mainOrbitalGroup.add(coreMesh);
     const spikeGroup = new THREE.Group();
@@ -637,7 +615,7 @@
     mainOrbitalGroup.add(vortexPoints);
     scene.add(mainOrbitalGroup);
     
-    const bgParticleCount=1800, bgPositions=[];
+    const bgParticleCount=1500, bgPositions=[];
     for(let i=0;i<bgParticleCount;i++) bgPositions.push((Math.random()-0.5)*55,(Math.random()-0.5)*30,(Math.random()-0.5)*40-15);
     const bgParticleGeo=new THREE.BufferGeometry();
     bgParticleGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(bgPositions),3));
@@ -660,11 +638,10 @@
         mainOrbitalGroup.rotation.y=time*0.35; mainOrbitalGroup.rotation.x=Math.sin(time*0.2)*0.2; mainOrbitalGroup.rotation.z=Math.cos(time*0.25)*0.15;
         spikeGroup.rotation.y=time*0.8; spikeGroup.rotation.x=time*0.5; crystalGroup.rotation.y=-time*0.6; crystalGroup.rotation.z=time*0.4;
         const scaleRing=1+Math.sin(time*5)*0.03; outerRing.scale.set(scaleRing,scaleRing,scaleRing);
-        vortexPoints.rotation.y=time*0.2; vortexPoints.rotation.x=Math.sin(time*0.3)*0.1;
-        auraLight.intensity=1.0+Math.sin(time*2.5)*0.5;
+        vortexPoints.rotation.y=time*0.2; auraLight.intensity=1.0+Math.sin(time*2.5)*0.5;
         coreMesh.material.emissiveIntensity=0.6+Math.sin(time*3)*0.3;
         characterGroup.position.y=-0.95+Math.sin(time*1.5)*0.025; visorChar.material.emissiveIntensity=0.9+Math.sin(time*8)*0.6;
-        bgStars.rotation.y=time*0.02; camera.position.x+=(Math.sin(time*0.2)*0.2-camera.position.x)*0.03; camera.position.y+=(1.6+Math.sin(time*0.25)*0.05-camera.position.y)*0.03; camera.lookAt(0,0.2,0);
+        bgStars.rotation.y=time*0.02; camera.position.x+=(Math.sin(time*0.15)*0.15-camera.position.x)*0.03; camera.position.y+=(1.6+Math.sin(time*0.25)*0.05-camera.position.y)*0.03; camera.lookAt(0,0.2,0);
         renderer.render(scene,camera);
     }
     animate3D();
@@ -672,7 +649,6 @@
 </script>
 
 <script>
-    // погода и обратный отсчёт
     async function updateWeather(){ try{ const res=await fetch('https://wttr.in/Perm?format=%t&lang=ru'); if(res.ok){ let temp=await res.text(); document.getElementById('weatherText').innerHTML=`Пермь: ${temp.trim()}`; } else document.getElementById('weatherText').innerHTML=`Пермь: ❄️ -7°C`; } catch(e){ document.getElementById('weatherText').innerHTML=`Пермь: 🌙 -5°C`; } }
     function updateBirthdayCountdown(){ const today=new Date(), currentYear=today.getFullYear(); let birthday=new Date(currentYear,7,28); if(today>birthday) birthday=new Date(currentYear+1,7,28); document.getElementById('birthdayCountdown').innerText=Math.ceil((birthday-today)/(1000*60*60*24)); }
     updateWeather(); updateBirthdayCountdown(); setInterval(updateBirthdayCountdown,3600000); setInterval(updateWeather,1800000);
@@ -682,16 +658,14 @@
     function updateLang(){ const t=translations[currentLang]; document.getElementById('badgeRole').innerHTML=t.badgeRole; document.getElementById('bioText').innerHTML=t.bio; document.getElementById('infoText').innerHTML=t.infoText; document.getElementById('footerQuote').innerHTML=t.footerQuote; document.getElementById('modalTitle').innerHTML=t.modalTitle; document.getElementById('infoNameLbl').innerHTML=t.infoNameLbl; document.getElementById('infoAgeLbl').innerHTML=t.infoAgeLbl; document.getElementById('infoBirthLbl').innerHTML=t.infoBirthLbl; document.getElementById('infoCityLbl').innerHTML=t.infoCityLbl; document.getElementById('infoRoleLbl').innerHTML=t.infoRoleLbl; document.getElementById('robloxText').innerHTML=t.robloxText; document.getElementById('telegramText').innerHTML=t.telegramText; document.getElementById('discordText').innerHTML=t.discordText; document.getElementById('userNick').innerHTML='@'+t.nick; document.getElementById('userAge').innerHTML='🌷 '+t.age; document.getElementById('infoBirthVal').innerHTML=t.birth; document.getElementById('infoCityVal').innerHTML=t.city; document.getElementById('infoRoleVal').innerHTML=t.role; document.getElementById('infoAgeVal').innerHTML=t.age; document.getElementById('infoNameVal').innerHTML=t.nameVal; document.querySelectorAll('.lang-btn').forEach(btn=>{ if(btn.dataset.lang===currentLang) btn.classList.add('active'); else btn.classList.remove('active'); }); }
     function showToast(msg){ let div=document.createElement('div'); div.style.position='fixed'; div.style.bottom='30px'; div.style.left='50%'; div.style.transform='translateX(-50%)'; div.style.background='#ff2e6e'; div.style.color='white'; div.style.padding='10px 24px'; div.style.borderRadius='50px'; div.style.zIndex='20000'; div.style.fontWeight='bold'; div.innerText=msg; document.body.appendChild(div); setTimeout(()=>div.remove(),2000); }
     
-    // АДМИНКА ПОЛНОСТЬЮ РАБОТАЕТ
     const adminPanel=document.getElementById('adminPanel'), adminTrigger=document.getElementById('adminTrigger'), closeAdminBtn=document.getElementById('closeAdminBtn'), adminLoginBtn=document.getElementById('adminLoginBtn'), adminPass=document.getElementById('adminPass'), settingsArea=document.getElementById('adminSettingsArea'), applyAdmin=document.getElementById('applyAdmin'), resetAdmin=document.getElementById('resetAdmin'), logoutAdmin=document.getElementById('logoutAdmin');
     adminTrigger.onclick=()=>{ adminPanel.classList.add('active'); adminPass.value=''; settingsArea.style.display='none'; };
     closeAdminBtn.onclick=()=>{ adminPanel.classList.remove('active'); };
-    adminLoginBtn.onclick=()=>{ if(adminPass.value==='Pawel775577зфцул775577'){ settingsArea.style.display='block'; document.getElementById('setNick').value=document.getElementById('userNick').innerText.replace('@',''); let bioRaw=document.getElementById('bioText').innerText; bioRaw=bioRaw.replace('Должности: ','').replace('Roles: ',''); document.getElementById('setBio').value=bioRaw; document.getElementById('setAge').value=document.getElementById('userAge').innerText.replace('🌷 ',''); document.getElementById('setBirth').value=document.getElementById('infoBirthVal').innerText; document.getElementById('setCity').value=document.getElementById('infoCityVal').innerText; showToast('✅ Доступ разрешён, командир'); } else { showToast('❌ Неверный пароль!'); adminPanel.classList.remove('active'); } };
-    applyAdmin.onclick=()=>{ let newColor=document.getElementById('setColor').value; document.documentElement.style.setProperty('--accent-color',newColor); document.querySelectorAll('.cyber-btn, .lang-btn, .admin-trigger, .compact-tab, .badge-cyber').forEach(el=>el.style.borderColor=newColor); showToast('✅ Стиль обновлён!'); localStorage.setItem('neonColor',newColor); };
+    adminLoginBtn.onclick=()=>{ if(adminPass.value==='Pawel775577зфцул775577'){ settingsArea.style.display='block'; document.getElementById('setNick').value=document.getElementById('userNick').innerText.replace('@',''); let bioRaw=document.getElementById('bioText').innerText; bioRaw=bioRaw.replace('Должности: ','').replace('Roles: ',''); document.getElementById('setBio').value=bioRaw; document.getElementById('setAge').value=document.getElementById('userAge').innerText.replace('🌷 ',''); document.getElementById('setBirth').value=document.getElementById('infoBirthVal').innerText; document.getElementById('setCity').value=document.getElementById('infoCityVal').innerText; showToast('✅ Доступ разрешён'); } else { showToast('❌ Неверный пароль!'); adminPanel.classList.remove('active'); } };
+    applyAdmin.onclick=()=>{ let newColor=document.getElementById('setColor').value; document.querySelectorAll('.cyber-btn, .lang-btn, .compact-tab, .badge-cyber').forEach(el=>el.style.borderColor=newColor); showToast('✅ Стиль обновлён!'); localStorage.setItem('neonColor',newColor); };
     resetAdmin.onclick=()=>{ localStorage.clear(); location.reload(); };
-    logoutAdmin.onclick=()=>{ adminPanel.classList.remove('active'); showToast('🔒 Выход из админ-зоны'); };
-    
-    document.getElementById('discordBtn').onclick=async()=>{ await navigator.clipboard.writeText('vest_el'); showToast('✅ Discord скопирован: vest_el'); };
+    logoutAdmin.onclick=()=>{ adminPanel.classList.remove('active'); showToast('🔒 Выход'); };
+    document.getElementById('discordBtn').onclick=async()=>{ await navigator.clipboard.writeText('vest_el'); showToast('✅ Discord скопирован'); };
     const infoModal=document.getElementById('infoModal'), infoBtn=document.getElementById('infoBtn'), closeInfoBtn=document.getElementById('closeInfoBtn');
     infoBtn.onclick=()=>infoModal.classList.add('active');
     closeInfoBtn.onclick=()=>infoModal.classList.remove('active');
@@ -699,7 +673,6 @@
     document.querySelectorAll('.lang-btn').forEach(btn=>{ btn.onclick=()=>{ currentLang=btn.dataset.lang; updateLang(); }; });
     const savedColor=localStorage.getItem('neonColor'); if(savedColor) document.documentElement.style.setProperty('--accent-color',savedColor);
     updateLang();
-    document.body.addEventListener('click',()=>{ const glitch=document.querySelector('.glitch-lines'); glitch.style.opacity='0.6'; setTimeout(()=>glitch.style.opacity='0.2',120); });
 </script>
 </body>
 </html>
