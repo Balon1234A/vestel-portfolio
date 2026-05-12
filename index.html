@@ -486,8 +486,8 @@
         <div class="nick-glitch" id="userNick">@vestel</div>
 
         <div class="badges">
-            <span class="badge-cyber" id="userAge">🎂 17 лет</span>
-            <span class="badge-cyber" id="badgeRole">💀 Sceleton Army</span>
+            <span class="badge-cyber" id="userAge">🌷 17 лет</span>
+            <span class="badge-cyber" id="badgeRole">🌺sakura</span>
         </div>
 
         <div class="bio-cyber" id="bioText">Должности: Sceleton Army - Curator by bans</div>
@@ -822,8 +822,8 @@
     
     // Переводы
     const translations = {
-        ru: { badgeRole: "💀 Sceleton Army", bio: "Должности: Sceleton Army - Curator by bans", infoText: "ПРОФИЛЬ", footerQuote: "Sceleton Elite", modalTitle: "🌸 VESTEL INFO", infoNameLbl: "Имя:", infoAgeLbl: "Возраст:", infoBirthLbl: "ДР:", infoCityLbl: "Город:", infoRoleLbl: "Роль:", robloxText: "Roblox", telegramText: "@vest_ell", discordText: "vest_el", nick: "vestel", age: "17 лет", birth: "28 августа", city: "Пермь", role: "Sceleton Army - Curator by bans", nameVal: "Паша" },
-        en: { badgeRole: "💀 Sceleton Army", bio: "Roles: Sceleton Army - Curator by bans", infoText: "PROFILE", footerQuote: "Sceleton Elite", modalTitle: "🌸 VESTEL INFO", infoNameLbl: "Name:", infoAgeLbl: "Age:", infoBirthLbl: "Birth:", infoCityLbl: "City:", infoRoleLbl: "Role:", robloxText: "Roblox", telegramText: "@vest_ell", discordText: "vest_el", nick: "vestel", age: "17 y.o", birth: "Aug 28", city: "Perm", role: "Sceleton Army - Curator by bans", nameVal: "Pasha" }
+        ru: { badgeRole: 🌺sakura", bio: "Должности: Sceleton Army - Curator by bans", infoText: "ПРОФИЛЬ", footerQuote: "work for c++", modalTitle: "🌸 VESTEL INFO", infoNameLbl: "Имя:", infoAgeLbl: "Возраст:", infoBirthLbl: "ДР:", infoCityLbl: "Город:", infoRoleLbl: "Роль:", robloxText: "Roblox", telegramText: "@vest_ell", discordText: "vest_el", nick: "vestel", age: "17 лет", birth: "28 августа", city: "Пермь", role: "Sceleton Army - Curator by bans", nameVal: "Паша" },
+        en: { badgeRole: "🌺sakura", bio: "Roles: Sceleton Army - Curator by bans", infoText: "PROFILE", footerQuote: "work for c++", modalTitle: "🌸 VESTEL INFO", infoNameLbl: "Name:", infoAgeLbl: "Age:", infoBirthLbl: "Birth:", infoCityLbl: "City:", infoRoleLbl: "Role:", robloxText: "Roblox", telegramText: "@vest_ell", discordText: "vest_el", nick: "vestel", age: "17 y.o", birth: "Aug 28", city: "Perm", role: "Sceleton Army - Curator by bans", nameVal: "Pasha" }
     };
     let currentLang = 'ru';
     
@@ -843,7 +843,7 @@
         document.getElementById('telegramText').innerHTML = t.telegramText;
         document.getElementById('discordText').innerHTML = t.discordText;
         document.getElementById('userNick').innerHTML = '@' + t.nick;
-        document.getElementById('userAge').innerHTML = '🎂 ' + t.age;
+        document.getElementById('userAge').innerHTML = 'f🌷 ' + t.age;
         document.getElementById('infoBirthVal').innerHTML = t.birth;
         document.getElementById('infoCityVal').innerHTML = t.city;
         document.getElementById('infoRoleVal').innerHTML = t.role;
@@ -883,7 +883,7 @@
             settingsArea.style.display = 'block';
             document.getElementById('setNick').value = document.getElementById('userNick').innerText.replace('@','');
             document.getElementById('setBio').value = document.getElementById('bioText').innerText.replace('Должности: ','').replace('Roles: ','');
-            document.getElementById('setAge').value = document.getElementById('userAge').innerText.replace('🎂 ','');
+            document.getElementById('setAge').value = document.getElementById('userAge').innerText.replace('🌷 ','');
             document.getElementById('setBirth').value = document.getElementById('infoBirthVal').innerText;
             document.getElementById('setCity').value = document.getElementById('infoCityVal').innerText;
             showToast('✅ Добро пожаловать, командир!');
