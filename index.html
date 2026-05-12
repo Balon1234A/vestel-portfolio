@@ -11,7 +11,8 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: none;
+            /* стандартный курсор */
+            cursor: auto;
         }
 
         body {
@@ -19,37 +20,7 @@
             overflow: hidden;
             background: #000;
             color: #fff;
-        }
-
-        /* КРУТОЙ КАСТОМНЫЙ КУРСОР */
-        .cursor {
-            position: fixed;
-            width: 30px;
-            height: 30px;
-            border: 2px solid #ff2e6e;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 99999;
-            transform: translate(-50%, -50%);
-            transition: 0.08s ease;
-            box-shadow: 0 0 15px #ff2e6e;
-        }
-        .cursor-dot {
-            position: fixed;
-            width: 6px;
-            height: 6px;
-            background: #ff2e6e;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 99999;
-            transform: translate(-50%, -50%);
-            transition: 0.05s ease;
-        }
-        .cursor.active {
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 46, 110, 0.2);
-            backdrop-filter: blur(4px);
+            cursor: auto;
         }
 
         /* THREE.JS КАНВАС */
@@ -92,7 +63,104 @@
             100% { transform: translateY(4px); opacity: 0.4; }
         }
 
-        /* ОСНОВНОЙ КОНТЕНТ */
+        /* ========== НОВАЯ ВЕРХНЯЯ ПАНЕЛЬ (СТИЛЬ БРАУЗЕРНЫХ ВКЛАДОК) ========== */
+        .browser-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(20, 10, 30, 0.55);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 46, 110, 0.4);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-family: 'Space Grotesk', monospace;
+        }
+
+        /* левая часть — имитация вкладок */
+        .browser-tabs {
+            display: flex;
+            gap: 4px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            flex: 1;
+        }
+        .browser-tabs::-webkit-scrollbar {
+            display: none;
+        }
+        .tab-item {
+            background: rgba(30, 20, 45, 0.7);
+            backdrop-filter: blur(8px);
+            padding: 6px 18px;
+            border-radius: 20px 20px 12px 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #ffccdd;
+            border: 1px solid rgba(255, 46, 110, 0.4);
+            border-bottom: none;
+            white-space: nowrap;
+            transition: 0.2s;
+            letter-spacing: 0.5px;
+        }
+        .tab-item.active-tab {
+            background: rgba(255, 46, 110, 0.25);
+            color: white;
+            border-color: #ff2e6e;
+            box-shadow: 0 -2px 10px rgba(255,46,110,0.3);
+        }
+        .tab-item i {
+            margin-right: 6px;
+            font-size: 0.75rem;
+            color: #ff2e6e;
+        }
+
+        /* правая часть — виджеты (погода + дни до др) */
+        .widget-area {
+            display: flex;
+            gap: 20px;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(12px);
+            padding: 6px 20px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 46, 110, 0.5);
+        }
+        .weather-widget, .birthday-widget {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #fff0f5;
+        }
+        .weather-widget i, .birthday-widget i {
+            color: #ff2e6e;
+            font-size: 1rem;
+            text-shadow: 0 0 5px #ff2e6e;
+        }
+        .weather-temp {
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffccdd, #ff8a5c);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .countdown-number {
+            font-weight: 800;
+            background: linear-gradient(135deg, #ff2e6e, #ffaa66);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-left: 4px;
+            font-size: 1rem;
+        }
+
+        /* ОСНОВНОЙ КОНТЕНТ (сдвинут вниз, чтобы не перекрывать панель) */
         .main-content {
             position: relative;
             z-index: 10;
@@ -103,6 +171,7 @@
             justify-content: center;
             overflow-y: auto;
             padding: 20px;
+            padding-top: 85px;  /* чтобы контент не уходил под панель */
         }
 
         /* NEON CYBER КАРД */
@@ -411,10 +480,24 @@
             padding-top: 18px;
         }
 
+        @media (max-width: 760px) {
+            .browser-bar {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 8px 15px;
+            }
+            .widget-area {
+                justify-content: space-between;
+            }
+            .main-content {
+                padding-top: 130px;
+            }
+        }
         @media (max-width: 550px) {
             .cyber-card { padding: 25px 18px; }
             .nick-glitch { font-size: 1.6rem; }
             .avatar-cyber { width: 110px; height: 110px; }
+            .widget-area { font-size: 0.7rem; gap: 12px; padding: 5px 12px; }
         }
     </style>
 </head>
@@ -423,6 +506,27 @@
 <canvas id="webgl-canvas"></canvas>
 <div class="overlay-gradient"></div>
 <div class="glitch-lines"></div>
+
+<!-- ========== НОВАЯ ВЕРХНЯЯ ПАНЕЛЬ СТИЛЬ БРАУЗЕР ========== -->
+<div class="browser-bar">
+    <div class="browser-tabs">
+        <div class="tab-item active-tab"><i class="fas fa-skull"></i> SCELETON ARMY</div>
+        <div class="tab-item"><i class="fas fa-terminal"></i> DASHBOARD</div>
+        <div class="tab-item"><i class="fas fa-shield-alt"></i> ELITE ZONE</div>
+    </div>
+    <div class="widget-area">
+        <div class="weather-widget" id="weatherWidget">
+            <i class="fas fa-cloud-moon"></i>
+            <span id="weatherText">Пермь: загрузка...</span>
+        </div>
+        <div class="birthday-widget">
+            <i class="fas fa-cake-candles"></i>
+            <span>До 28 августа:</span>
+            <span class="countdown-number" id="birthdayCountdown">--</span>
+            <span>дней</span>
+        </div>
+    </div>
+</div>
 
 <div class="main-content">
     <div class="cyber-card">
@@ -456,8 +560,8 @@
         <div class="cyber-btn info-btn-full" id="infoBtn"><i class="fas fa-id-card"></i> <span id="infoText">ПРОФИЛЬ</span></div>
 
         <div class="footer-cyber">
-            <span>vestel.bio</span>
-            <span id="footerQuote"> </span>
+            <span>⚡ NEON ARMY ⚡</span>
+            <span id="footerQuote">Sceleton Elite</span>
         </div>
     </div>
 </div>
@@ -498,7 +602,7 @@
     </div>
 </div>
 
-<!-- THREE.JS + 3D ЭФФЕКТЫ С ПЕРСОНАЖЕМ -->
+<!-- THREE.JS + 3D ЭФФЕКТЫ -->
 <script type="importmap">
     {
         "imports": {
@@ -510,7 +614,6 @@
 <script type="module">
     import * as THREE from 'three';
 
-    // ИНИЦИАЛИЗАЦИЯ СЦЕНЫ
     const canvas = document.getElementById('webgl-canvas');
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x000000);
@@ -524,7 +627,6 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
 
-    // СВЕТ
     const ambientLight = new THREE.AmbientLight(0x111111);
     scene.add(ambientLight);
     const mainLight = new THREE.DirectionalLight(0xff3366, 1);
@@ -537,7 +639,6 @@
     fillLight.position.set(1, 2, 2);
     scene.add(fillLight);
 
-    // ЧАСТИЦЫ ТУМАННОСТИ
     const particleCount = 2500;
     const particlesGeometry = new THREE.BufferGeometry();
     const particlesPos = [];
@@ -551,7 +652,6 @@
     const particleSystem = new THREE.Points(particlesGeometry, particlesMat);
     scene.add(particleSystem);
 
-    // ГРУППА ДЛЯ ВРАЩАЮЩИХСЯ КОЛЕЦ
     const ringGroup = new THREE.Group();
     const ringGeo = new THREE.TorusGeometry(2.2, 0.05, 64, 300);
     const ringMat = new THREE.MeshStandardMaterial({ color: 0xff2e6e, emissive: 0xff1155, emissiveIntensity: 0.8 });
@@ -566,7 +666,6 @@
     ringGroup.add(ring3);
     scene.add(ringGroup);
 
-    // ПАРЯЩИЕ СФЕРЫ
     const orbGroup = new THREE.Group();
     for (let i = 0; i < 60; i++) {
         const orb = new THREE.Mesh(new THREE.SphereGeometry(0.08, 8, 8), new THREE.MeshStandardMaterial({ color: 0xff66aa, emissive: 0xff2e6e, emissiveIntensity: 0.5 }));
@@ -577,7 +676,6 @@
     }
     scene.add(orbGroup);
 
-    // 3D МОДЕЛЬ ЧЕРЕПА / СКЕЛЕТОНА (стилизованный объект)
     const skullGroup = new THREE.Group();
     const skullMat = new THREE.MeshStandardMaterial({ color: 0xdd88aa, emissive: 0x552233, roughness: 0.3, metalness: 0.7 });
     const mainSkull = new THREE.Mesh(new THREE.SphereGeometry(0.65, 32, 32), skullMat);
@@ -597,33 +695,24 @@
     skullGroup.scale.set(0.9, 0.9, 0.9);
     scene.add(skullGroup);
 
-    // АНИМАЦИЯ
     let time = 0;
     function animate3D() {
         requestAnimationFrame(animate3D);
         time += 0.012;
-        
         ringGroup.rotation.x = time * 0.2;
         ringGroup.rotation.y = time * 0.15;
         ringGroup.rotation.z = time * 0.1;
-        
         orbGroup.rotation.y = time * 0.2;
         orbGroup.rotation.x = Math.sin(time * 0.3) * 0.2;
-        
         particleSystem.rotation.y = time * 0.03;
-        particleSystem.rotation.x = Math.sin(time * 0.1) * 0.1;
-        
         skullGroup.position.y = -0.8 + Math.sin(time * 1.5) * 0.05;
         skullGroup.rotation.y = Math.sin(time * 0.6) * 0.2;
-        
         const glowIntensity = 0.8 + Math.sin(time * 5) * 0.3;
         eyeL.material.emissiveIntensity = glowIntensity;
         eyeR.material.emissiveIntensity = glowIntensity;
-        
         camera.position.x += (0 - camera.position.x) * 0.05;
         camera.position.y += (1.4 - camera.position.y) * 0.05;
         camera.lookAt(0, 0.2, 0);
-        
         renderer.render(scene, camera);
     }
     animate3D();
@@ -636,7 +725,43 @@
 </script>
 
 <script type="text/javascript">
-    // ----- ОСНОВНАЯ ЛОГИКА САЙТА -----
+    // ----- ОСНОВНАЯ ЛОГИКА + ПОГОДА И ОТСЧЁТ -----
+    // Функция для получения погоды (имитация, но с реальными данными через API, для красоты симуляция с запросом)
+    async function updateWeather() {
+        const weatherSpan = document.getElementById('weatherText');
+        try {
+            // Используем бесплатный API wttr.in для Перми (краткий формат)
+            const res = await fetch('https://wttr.in/Perm?format=%t&lang=ru');
+            if (res.ok) {
+                let temp = await res.text();
+                temp = temp.trim();
+                weatherSpan.innerHTML = `Пермь: ${temp}`;
+            } else {
+                weatherSpan.innerHTML = `Пермь: ❄️ -8°C`;
+            }
+        } catch(e) {
+            weatherSpan.innerHTML = `Пермь: 🌙 -6°C`;
+        }
+    }
+    
+    function updateBirthdayCountdown() {
+        const today = new Date();
+        const currentYear = today.getFullYear();
+        let birthday = new Date(currentYear, 7, 28); // август — месяц 7 (0-индекс)
+        if (today > birthday) {
+            birthday = new Date(currentYear + 1, 7, 28);
+        }
+        const diffTime = birthday - today;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        document.getElementById('birthdayCountdown').innerText = diffDays;
+    }
+    
+    updateWeather();
+    updateBirthdayCountdown();
+    setInterval(updateBirthdayCountdown, 3600000); // обновление каждый час
+    setInterval(updateWeather, 1800000); // погода每30 минут
+    
+    // Переводы
     const translations = {
         ru: { badgeRole: "💀 Sceleton Army", bio: "Должности: Sceleton Army - Curator, Support", infoText: "ПРОФИЛЬ", footerQuote: "Sceleton Elite", modalTitle: "🌸 VESTEL INFO", infoNameLbl: "Имя:", infoAgeLbl: "Возраст:", infoBirthLbl: "ДР:", infoCityLbl: "Город:", infoRoleLbl: "Роль:", robloxText: "Roblox", telegramText: "@vest_ell", discordText: "vest_el", nick: "vestel", age: "17 лет", birth: "28 августа", city: "Пермь", role: "Sceleton Army - Curator, Support", nameVal: "Паша" },
         en: { badgeRole: "💀 Sceleton Army", bio: "Roles: Sceleton Army - Curator, Support", infoText: "PROFILE", footerQuote: "Sceleton Elite", modalTitle: "🌸 VESTEL INFO", infoNameLbl: "Name:", infoAgeLbl: "Age:", infoBirthLbl: "Birth:", infoCityLbl: "City:", infoRoleLbl: "Role:", robloxText: "Roblox", telegramText: "@vest_ell", discordText: "vest_el", nick: "vestel", age: "17 y.o", birth: "Aug 28", city: "Perm", role: "Sceleton Army - Curator, Support", nameVal: "Pasha" }
@@ -671,32 +796,7 @@
         });
     }
     
-    // КУРСОР
-    const cursor = document.createElement('div'); cursor.className = 'cursor'; document.body.appendChild(cursor);
-    const cursorDot = document.createElement('div'); cursorDot.className = 'cursor-dot'; document.body.appendChild(cursorDot);
-    document.addEventListener('mousemove', (e) => {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
-        cursorDot.style.left = e.clientX + 'px';
-        cursorDot.style.top = e.clientY + 'px';
-        const hover = e.target.closest('.cyber-btn, .lang-btn, .admin-trigger, .close-info');
-        if(hover) cursor.classList.add('active');
-        else cursor.classList.remove('active');
-    });
-    
-    function playSound() {
-        try {
-            let ctx = new (window.AudioContext || window.webkitAudioContext)();
-            if(ctx.state === 'suspended') ctx.resume();
-            let osc = ctx.createOscillator(), gain = ctx.createGain();
-            osc.frequency.value = 840;
-            gain.gain.setValueAtTime(0.1, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.2);
-            osc.connect(gain); gain.connect(ctx.destination);
-            osc.start(); osc.stop(ctx.currentTime + 0.15);
-        } catch(e) {}
-    }
-    
+    function playSound() { /* без звука, опционально */ }
     function showToast(msg) {
         let div = document.createElement('div');
         div.style.position = 'fixed'; div.style.bottom = '30px'; div.style.left = '50%';
@@ -707,7 +807,7 @@
         setTimeout(() => div.remove(), 2000);
     }
     
-    // АДМИНКА
+    // Админка
     let adminLogged = false;
     const adminPanel = document.getElementById('adminPanel');
     const adminTrigger = document.getElementById('adminTrigger');
@@ -719,10 +819,9 @@
     const resetAdmin = document.getElementById('resetAdmin');
     const logoutAdmin = document.getElementById('logoutAdmin');
     
-    adminTrigger.onclick = () => { playSound(); adminPanel.classList.add('active'); adminPass.value = ''; settingsArea.style.display = 'none'; };
+    adminTrigger.onclick = () => { adminPanel.classList.add('active'); adminPass.value = ''; settingsArea.style.display = 'none'; };
     closeAdminBtn.onclick = () => { adminPanel.classList.remove('active'); };
     adminLoginBtn.onclick = () => {
-        playSound();
         if(adminPass.value === 'Pawel775577зфцул775577') {
             settingsArea.style.display = 'block';
             document.getElementById('setNick').value = document.getElementById('userNick').innerText.replace('@','');
@@ -734,7 +833,6 @@
         } else { showToast('❌ Неверный пароль!'); adminPanel.classList.remove('active'); }
     };
     applyAdmin.onclick = () => {
-        playSound();
         let newColor = document.getElementById('setColor').value;
         document.documentElement.style.setProperty('--accent-color', newColor);
         document.querySelectorAll('.cyber-btn, .lang-btn, .admin-trigger, .close-info').forEach(el => el.style.setProperty('border-color', newColor));
@@ -742,43 +840,34 @@
         if(glowMode === 'off') document.querySelector('.avatar-ring').style.opacity = '0.3';
         else document.querySelector('.avatar-ring').style.opacity = '1';
         showToast('✅ Стиль обновлён!');
-        // сохраняем в localStorage опционально
         localStorage.setItem('neonColor', newColor);
         localStorage.setItem('glowMode', glowMode);
     };
     resetAdmin.onclick = () => { localStorage.clear(); location.reload(); };
     logoutAdmin.onclick = () => { adminPanel.classList.remove('active'); showToast('🔒 Выход'); };
     
-    // МОДАЛКА ИНФО
+    // Модалка инфо
     const infoModal = document.getElementById('infoModal');
     const infoBtn = document.getElementById('infoBtn');
     const closeInfoBtn = document.getElementById('closeInfoBtn');
-    infoBtn.onclick = () => { playSound(); infoModal.classList.add('active'); };
+    infoBtn.onclick = () => { infoModal.classList.add('active'); };
     closeInfoBtn.onclick = () => { infoModal.classList.remove('active'); };
     infoModal.onclick = (e) => { if(e.target === infoModal) infoModal.classList.remove('active'); };
     
-    // КОПИРОВАНИЕ DISCORD
+    // Discord copy
     document.getElementById('discordBtn').onclick = async () => {
-        playSound();
         await navigator.clipboard.writeText('vest_el');
         showToast('✅ Discord скопирован: vest_el');
     };
     
     document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.onclick = () => { playSound(); currentLang = btn.dataset.lang; updateLang(); };
+        btn.onclick = () => { currentLang = btn.dataset.lang; updateLang(); };
     });
     
-    // восстанавливаем сохраненный цвет
     const savedColor = localStorage.getItem('neonColor');
     if(savedColor) document.documentElement.style.setProperty('--accent-color', savedColor);
     updateLang();
     
-    // ЗВУК ДЛЯ КЛИКОВ
-    document.querySelectorAll('.cyber-btn, .lang-btn, .close-info, .admin-trigger').forEach(el => {
-        el.addEventListener('click', playSound);
-    });
-    
-    // ЭФФЕКТ ГЛИТЧА ПО КЛИКУ
     document.body.addEventListener('click', () => {
         const glitch = document.querySelector('.glitch-lines');
         glitch.style.opacity = '0.7';
