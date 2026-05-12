@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Vestel | Sceleton Army — Orbital Slime Core</title>
+    <title>Vestel | Sceleton Army — Hyperdimensional Core</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -28,77 +28,61 @@
             width: 100%;
             height: 100%;
             z-index: 0;
+            display: block;
         }
 
-        /* НЕБОЛЬШОЙ ЖИДКИЙ ОБЪЕКТ ЗА КАРТОЧКОЙ — КРУЖИТ И НЕ ВЫХОДИТ ЗА РАМКИ */
+        /* МАСШТАБИРУЕМАЯ ЖИДКАЯ СФЕРА С НЕОНОВЫМИ ЭФФЕКТАМИ 4K */
         .orbital-slime {
             position: fixed;
             bottom: 50%;
             right: 50%;
             transform: translate(50%, 50%);
-            width: 580px;
-            height: 580px;
+            width: 620px;
+            height: 620px;
             z-index: 5;
             pointer-events: none;
-            filter: blur(35px) brightness(1.2);
-            opacity: 0.65;
+            filter: blur(40px) brightness(1.3) contrast(1.2);
+            opacity: 0.7;
             mix-blend-mode: screen;
             border-radius: 50%;
-            animation: slimeOrbit 12s infinite alternate ease-in-out;
+            animation: slimeHyperOrbit 14s infinite alternate cubic-bezier(0.65, 0.05, 0.36, 1);
         }
         
         .slime-core {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 40% 45%, #ff2e6e, #ff0a54, #c9184a, #800f2f);
+            background: radial-gradient(circle at 35% 40%, #ff0a54, #ff2e6e, #c9184a, #590d2a);
             border-radius: 60% 40% 70% 30% / 45% 55% 45% 55%;
-            box-shadow: 0 0 80px #ff1a5e, 0 0 140px #ff5e9e;
-            animation: liquidMorph 6s infinite cubic-bezier(0.45, 0.05, 0.2, 0.99);
+            box-shadow: 0 0 100px #ff1a5e, 0 0 180px #ff5e9e, inset 0 0 40px rgba(255,255,200,0.4);
+            animation: liquidMorph 7s infinite cubic-bezier(0.45, 0.05, 0.2, 0.99);
         }
         
-        /* Вторая оболочка для дополнительного вращения */
         .slime-aura {
             position: absolute;
-            width: 85%;
-            height: 85%;
-            top: 7.5%;
-            left: 7.5%;
-            background: radial-gradient(ellipse, #ff66cc, #ff2a6e);
+            width: 88%;
+            height: 88%;
+            top: 6%;
+            left: 6%;
+            background: radial-gradient(ellipse, #ff66cc, #ff1a66);
             border-radius: 45% 55% 60% 40% / 50% 45% 55% 50%;
-            filter: blur(18px);
-            animation: spinAura 8s infinite linear;
-            opacity: 0.8;
+            filter: blur(28px);
+            animation: spinAura 9s infinite linear;
+            opacity: 0.85;
         }
         
-        @keyframes slimeOrbit {
-            0% {
-                transform: translate(50%, 50%) translateX(-15px) translateY(10px) rotate(0deg);
-                width: 560px;
-                height: 560px;
-            }
-            33% {
-                transform: translate(50%, 50%) translateX(20px) translateY(-12px) rotate(4deg);
-                width: 590px;
-                height: 570px;
-            }
-            66% {
-                transform: translate(50%, 50%) translateX(-10px) translateY(18px) rotate(-3deg);
-                width: 575px;
-                height: 585px;
-            }
-            100% {
-                transform: translate(50%, 50%) translateX(8px) translateY(-8px) rotate(0deg);
-                width: 565px;
-                height: 565px;
-            }
+        @keyframes slimeHyperOrbit {
+            0% { transform: translate(50%, 50%) translateX(-22px) translateY(14px) rotate(0deg); width: 600px; height: 600px; filter: blur(38px);}
+            33% { transform: translate(50%, 50%) translateX(28px) translateY(-18px) rotate(5deg); width: 640px; height: 620px; filter: blur(44px);}
+            66% { transform: translate(50%, 50%) translateX(-16px) translateY(24px) rotate(-4deg); width: 625px; height: 635px; filter: blur(40px);}
+            100% { transform: translate(50%, 50%) translateX(12px) translateY(-12px) rotate(0deg); width: 615px; height: 610px; filter: blur(42px);}
         }
         
         @keyframes liquidMorph {
             0% { border-radius: 60% 40% 70% 30% / 45% 55% 45% 55%; transform: scale(1) rotate(0deg); background-position: 0% 0%;}
-            25% { border-radius: 45% 55% 50% 50% / 60% 40% 60% 40%; transform: scale(1.04) rotate(2deg); background-position: 20% 30%;}
-            50% { border-radius: 70% 30% 45% 55% / 35% 65% 35% 65%; transform: scale(0.98) rotate(-2deg); background-position: 50% 20%;}
-            75% { border-radius: 35% 65% 60% 40% / 70% 30% 70% 30%; transform: scale(1.02) rotate(1deg); background-position: 30% 50%;}
+            25% { border-radius: 45% 55% 50% 50% / 60% 40% 60% 40%; transform: scale(1.05) rotate(2deg); background-position: 20% 30%;}
+            50% { border-radius: 70% 30% 45% 55% / 35% 65% 35% 65%; transform: scale(0.97) rotate(-3deg); background-position: 50% 20%;}
+            75% { border-radius: 35% 65% 60% 40% / 70% 30% 70% 30%; transform: scale(1.03) rotate(2deg); background-position: 30% 50%;}
             100% { border-radius: 60% 40% 70% 30% / 45% 55% 45% 55%; transform: scale(1) rotate(0deg); background-position: 0% 0%;}
         }
         
@@ -113,7 +97,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.65) 100%);
+            background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.75) 100%);
             z-index: 2;
             pointer-events: none;
         }
@@ -126,26 +110,26 @@
             height: 100%;
             z-index: 3;
             pointer-events: none;
-            opacity: 0.2;
-            background: repeating-linear-gradient(0deg, rgba(255,0,100,0.08) 0px, rgba(255,0,100,0.08) 2px, transparent 2px, transparent 6px);
-            animation: glitchMove 0.2s infinite;
+            opacity: 0.25;
+            background: repeating-linear-gradient(0deg, rgba(255,0,100,0.1) 0px, rgba(255,0,100,0.1) 2px, transparent 2px, transparent 8px);
+            animation: glitchMove 0.15s infinite;
         }
         @keyframes glitchMove {
-            0% { transform: translateY(0); opacity: 0.15; }
-            100% { transform: translateY(4px); opacity: 0.3; }
+            0% { transform: translateY(0); opacity: 0.2; }
+            100% { transform: translateY(6px); opacity: 0.35; }
         }
 
-        /* ВЕРХНЯЯ ПАНЕЛЬ */
+        /* ВЕРХНЯЯ ПАНЕЛЬ СТИЛЬНАЯ */
         .browser-bar {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             z-index: 110;
-            background: rgba(10, 5, 20, 0.6);
-            backdrop-filter: blur(20px) saturate(180%);
-            border-bottom: 1px solid rgba(255, 46, 110, 0.5);
-            padding: 8px 24px;
+            background: rgba(8, 5, 18, 0.7);
+            backdrop-filter: blur(24px) saturate(200%);
+            border-bottom: 1px solid rgba(255, 46, 110, 0.6);
+            padding: 10px 28px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -156,39 +140,41 @@
         .compact-tab {
             display: flex;
             align-items: center;
-            gap: 8px;
-            background: rgba(255, 46, 110, 0.15);
-            padding: 5px 18px;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 46, 110, 0.5);
-            font-size: 0.8rem;
-            font-weight: 600;
+            gap: 10px;
+            background: rgba(255, 46, 110, 0.2);
+            padding: 6px 20px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 46, 110, 0.7);
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
         }
-        .compact-tab i { color: #ff2e6e; }
+        .compact-tab i { color: #ff2e6e; font-size: 1rem; }
 
         .widget-area {
             display: flex;
-            gap: 20px;
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(12px);
-            padding: 5px 20px;
-            border-radius: 40px;
-            border: 1px solid rgba(255, 46, 110, 0.4);
+            gap: 28px;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(16px);
+            padding: 6px 24px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 46, 110, 0.5);
         }
         .weather-widget, .birthday-widget {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 0.8rem;
-            font-weight: 500;
+            gap: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
         }
-        .weather-widget i, .birthday-widget i { color: #ff2e6e; }
+        .weather-widget i, .birthday-widget i { color: #ff2e6e; font-size: 1rem; }
         .countdown-number {
             font-weight: 800;
             background: linear-gradient(135deg, #ff2e6e, #ffaa66);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
+            font-size: 1rem;
         }
 
         .main-content {
@@ -201,82 +187,83 @@
             justify-content: center;
             overflow-y: auto;
             padding: 20px;
-            padding-top: 75px;
+            padding-top: 85px;
         }
 
+        /* КАРТОЧКА ПРОФИЛЯ 4K ПРЕМИУМ */
         .cyber-card {
-            max-width: 520px;
+            max-width: 580px;
             width: 100%;
-            background: rgba(8, 8, 20, 0.65);
-            backdrop-filter: blur(24px) saturate(180%);
-            border-radius: 40px;
-            border: 1px solid rgba(255, 46, 110, 0.6);
-            box-shadow: 0 25px 45px rgba(0,0,0,0.5), 0 0 30px rgba(255,46,110,0.3);
-            padding: 40px 30px;
-            transition: 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            animation: floatCard 4s ease-in-out infinite;
+            background: rgba(10, 8, 22, 0.55);
+            backdrop-filter: blur(28px) saturate(200%);
+            border-radius: 56px;
+            border: 1.5px solid rgba(255, 46, 110, 0.7);
+            box-shadow: 0 35px 55px rgba(0,0,0,0.6), 0 0 45px rgba(255,46,110,0.4);
+            padding: 45px 38px;
+            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            animation: floatCard 5s ease-in-out infinite;
             position: relative;
             overflow: hidden;
         }
-        /* Лёгкая внутренняя подсветка от слизи, но сама слизь снаружи */
-        .cyber-card::after {
+        .cyber-card::before {
             content: '';
             position: absolute;
-            bottom: -20%;
-            left: -20%;
-            width: 140%;
-            height: 140%;
-            background: radial-gradient(ellipse at center, rgba(255,46,110,0.08) 0%, transparent 70%);
+            top: -50%;
+            left: -30%;
+            width: 180%;
+            height: 180%;
+            background: radial-gradient(circle, rgba(255,46,110,0.08) 0%, transparent 70%);
             pointer-events: none;
             z-index: -1;
         }
         
         @keyframes floatCard {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
+            50% { transform: translateY(-12px); }
         }
         .cyber-card:hover {
-            border-color: #ff2e6e;
-            box-shadow: 0 30px 55px rgba(0,0,0,0.6), 0 0 50px rgba(255,46,110,0.5);
+            border-color: #ff5e9e;
+            box-shadow: 0 40px 70px rgba(0,0,0,0.7), 0 0 70px rgba(255,46,110,0.7);
         }
 
         .lang-wrap {
             display: flex;
             justify-content: flex-end;
-            gap: 12px;
-            margin-bottom: 20px;
+            gap: 14px;
+            margin-bottom: 22px;
         }
         .lang-btn {
-            background: rgba(255,46,110,0.15);
-            border: 1px solid rgba(255,46,110,0.5);
-            border-radius: 30px;
-            padding: 5px 16px;
-            font-weight: 600;
-            font-size: 0.7rem;
+            background: rgba(255,46,110,0.2);
+            border: 1px solid rgba(255,46,110,0.6);
+            border-radius: 40px;
+            padding: 6px 20px;
+            font-weight: 700;
+            font-size: 0.75rem;
             cursor: pointer;
             transition: 0.2s;
             color: #ff99bb;
+            letter-spacing: 0.05em;
         }
         .lang-btn.active {
             background: #ff2e6e;
             color: white;
-            box-shadow: 0 0 12px #ff2e6e;
+            box-shadow: 0 0 18px #ff2e6e;
         }
 
         .avatar-cyber {
             position: relative;
-            width: 130px;
-            height: 130px;
-            margin: 0 auto 20px;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 24px;
             z-index: 2;
         }
         .avatar-ring {
             position: absolute;
-            inset: -8px;
+            inset: -10px;
             border-radius: 50%;
-            background: conic-gradient(from 0deg, #ff2e6e, #ff8a5c, #ff2e6e);
-            animation: spinRing 3s linear infinite;
-            filter: blur(8px);
+            background: conic-gradient(from 0deg, #ff2e6e, #ff8a5c, #ffb347, #ff2e6e);
+            animation: spinRing 4s linear infinite;
+            filter: blur(12px);
         }
         @keyframes spinRing { 100% { transform: rotate(360deg); } }
         .avatar-img {
@@ -286,159 +273,161 @@
             border-radius: 50%;
             overflow: hidden;
             border: 3px solid #ff2e6e;
-            box-shadow: 0 0 30px #ff2e6e;
+            box-shadow: 0 0 40px #ff2e6e;
+            transition: 0.3s;
         }
         .avatar-img img { width: 100%; height: 100%; object-fit: cover; }
 
         .nick-glitch {
             text-align: center;
-            font-size: 2rem;
+            font-size: 2.3rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #fff, #ff2e6e, #ff8a5c);
+            background: linear-gradient(135deg, #fff, #ff2e6e, #ff8a5c, #ffc371);
+            background-size: 300% 300%;
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
-            text-shadow: 0 0 10px rgba(255,46,110,0.5);
-            margin-bottom: 12px;
+            text-shadow: 0 0 15px rgba(255,46,110,0.7);
+            margin-bottom: 14px;
+            animation: textGlow 3s infinite alternate;
+        }
+        @keyframes textGlow {
+            0% { background-position: 0% 50%; text-shadow: 0 0 5px #ff2e6e;}
+            100% { background-position: 100% 50%; text-shadow: 0 0 20px #ff6e9e;}
         }
 
         .badges {
             display: flex;
             justify-content: center;
-            gap: 12px;
-            margin-bottom: 18px;
+            gap: 16px;
+            margin-bottom: 22px;
             flex-wrap: wrap;
         }
         .badge-cyber {
-            background: rgba(255,46,110,0.2);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255,46,110,0.5);
-            border-radius: 50px;
-            padding: 4px 18px;
-            font-size: 0.75rem;
-            font-weight: 600;
+            background: rgba(255,46,110,0.25);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255,46,110,0.7);
+            border-radius: 60px;
+            padding: 5px 24px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
         }
 
         .bio-cyber {
-            background: rgba(0,0,0,0.6);
-            border-left: 4px solid #ff2e6e;
-            border-radius: 20px;
-            padding: 12px 18px;
-            margin: 18px 0;
+            background: rgba(0,0,0,0.65);
+            border-left: 5px solid #ff2e6e;
+            border-radius: 28px;
+            padding: 14px 22px;
+            margin: 22px 0;
             text-align: center;
-            font-weight: 500;
-            font-size: 0.9rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            backdrop-filter: blur(4px);
         }
 
         .social-grid {
             display: flex;
-            gap: 12px;
+            gap: 18px;
             justify-content: center;
             flex-wrap: wrap;
-            margin: 20px 0;
+            margin: 24px 0;
         }
         .cyber-btn {
-            background: rgba(10,10,20,0.8);
-            border: 1.5px solid rgba(255,46,110,0.6);
+            background: rgba(12,10,24,0.85);
+            border: 1.8px solid rgba(255,46,110,0.7);
             border-radius: 60px;
-            padding: 10px 24px;
-            font-weight: 700;
+            padding: 12px 28px;
+            font-weight: 800;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            transition: 0.2s;
+            gap: 12px;
+            transition: 0.25s;
             cursor: pointer;
             text-decoration: none;
             color: white;
-            backdrop-filter: blur(8px);
-            font-size: 0.85rem;
+            backdrop-filter: blur(10px);
+            font-size: 0.9rem;
         }
-        .cyber-btn i { font-size: 1.2rem; color: #ff2e6e; }
+        .cyber-btn i { font-size: 1.3rem; color: #ff2e6e; transition: 0.2s; }
         .cyber-btn:hover {
             background: #ff2e6e;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255,46,110,0.5);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(255,46,110,0.6);
+            border-color: white;
         }
         .cyber-btn:hover i { color: white; }
-        .info-btn-full { width: 100%; justify-content: center; }
+        .info-btn-full { width: 100%; justify-content: center; background: linear-gradient(95deg, rgba(255,46,110,0.3), rgba(0,0,0,0.7)); }
 
-        /* АДМИНКА — ПРОЗРАЧНАЯ КНОПКА */
+        /* АДМИНКА — стильная */
         .admin-trigger {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 38px;
-            height: 38px;
-            background: rgba(0,0,0,0.2);
-            backdrop-filter: blur(4px);
-            border-radius: 30px;
+            bottom: 28px;
+            right: 28px;
+            width: 48px;
+            height: 48px;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(10px);
+            border-radius: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            border: 1px solid rgba(255,46,110,0.3);
+            border: 1px solid rgba(255,46,110,0.5);
             cursor: pointer;
-            transition: 0.2s;
-            opacity: 0.45;
+            transition: 0.25s;
+            opacity: 0.6;
         }
-        .admin-trigger:hover { opacity: 1; background: rgba(255,46,110,0.3); border-color: #ff2e6e; transform: scale(1.05); }
-        .admin-trigger i { color: #ff99bb; font-size: 1rem; }
+        .admin-trigger:hover { opacity: 1; background: rgba(255,46,110,0.4); border-color: #ff2e6e; transform: scale(1.08); }
+        .admin-trigger i { color: #ff99bb; font-size: 1.3rem; }
 
         .admin-modal {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0.92);
-            background: linear-gradient(145deg, #0f0f1f, #020208);
-            border-radius: 40px;
-            padding: 28px 30px;
-            max-width: 460px;
+            background: linear-gradient(145deg, #0c0c1c, #020208);
+            border-radius: 48px;
+            padding: 32px 34px;
+            max-width: 500px;
             width: 90%;
             z-index: 10001;
-            border: 1.5px solid rgba(255,46,110,0.7);
+            border: 1.8px solid rgba(255,46,110,0.8);
             opacity: 0;
             visibility: hidden;
-            transition: 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.8), 0 0 40px rgba(255,46,110,0.2);
-            backdrop-filter: blur(8px);
+            transition: 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.9), 0 0 50px rgba(255,46,110,0.3);
+            backdrop-filter: blur(12px);
         }
         .admin-modal.active { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
-        .admin-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 22px;
-            padding-bottom: 10px;
-            border-bottom: 1px dashed rgba(255,46,110,0.4);
-        }
-        .admin-header h3 { font-size: 1.3rem; background: linear-gradient(135deg, #ff2e6e, #ffaa66); background-clip: text; -webkit-background-clip: text; color: transparent; }
+        .admin-header h3 { font-size: 1.6rem; background: linear-gradient(135deg, #ff2e6e, #ffaa66); background-clip: text; -webkit-background-clip: text; color: transparent; }
         .admin-input {
             width: 100%;
-            padding: 12px 16px;
-            margin: 10px 0;
-            background: rgba(20,20,40,0.8);
-            border: 1px solid rgba(255,46,110,0.5);
-            border-radius: 50px;
+            padding: 14px 18px;
+            margin: 12px 0;
+            background: rgba(25,25,45,0.9);
+            border: 1px solid rgba(255,46,110,0.6);
+            border-radius: 60px;
             color: #fff;
             font-family: 'Space Grotesk', monospace;
             outline: none;
+            font-size: 0.9rem;
         }
-        .admin-input:focus { border-color: #ff2e6e; box-shadow: 0 0 12px rgba(255,46,110,0.4); }
+        .admin-input:focus { border-color: #ff2e6e; box-shadow: 0 0 18px rgba(255,46,110,0.5); }
         .admin-btn {
             background: linear-gradient(95deg, #ff2e6e, #ff5e9e);
             border: none;
-            padding: 12px;
-            border-radius: 50px;
+            padding: 14px;
+            border-radius: 60px;
             color: white;
             font-weight: bold;
             cursor: pointer;
             width: 100%;
-            margin-top: 12px;
-            transition: 0.2s;
+            margin-top: 14px;
+            transition: 0.25s;
         }
-        .admin-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(255,46,110,0.5); }
-        .flex-btns { display: flex; gap: 12px; margin-top: 8px; }
-        .flex-btns .admin-btn { margin-top: 0; }
+        .admin-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(255,46,110,0.6); }
+        .flex-btns { display: flex; gap: 16px; margin-top: 12px; }
 
         .info-modal {
             position: fixed;
@@ -446,8 +435,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(15px);
+            background: rgba(0,0,0,0.92);
+            backdrop-filter: blur(20px);
             z-index: 10000;
             display: flex;
             align-items: center;
@@ -458,27 +447,28 @@
         }
         .info-modal.active { opacity: 1; visibility: visible; }
         .info-window {
-            background: linear-gradient(145deg, #111122, #050510);
-            border-radius: 50px;
-            padding: 35px;
-            max-width: 380px;
+            background: linear-gradient(145deg, #111122, #03030e);
+            border-radius: 64px;
+            padding: 42px;
+            max-width: 420px;
             width: 90%;
             border: 2px solid #ff2e6e;
             text-align: center;
+            box-shadow: 0 0 70px rgba(255,46,110,0.3);
         }
-        .info-window h2 { font-size: 1.8rem; margin-bottom: 18px; background: linear-gradient(135deg, #ff2e6e, #ffaa66); background-clip: text; -webkit-background-clip: text; color: transparent; }
-        .info-row { text-align: left; margin: 12px 0; font-size: 0.9rem; }
-        .info-row i { width: 28px; color: #ff2e6e; }
-        .close-info { background: #ff2e6e; border: none; padding: 10px 22px; border-radius: 40px; color: white; font-weight: bold; margin-top: 18px; cursor: pointer; }
-        .footer-cyber { display: flex; justify-content: space-between; margin-top: 20px; font-size: 0.65rem; color: #ff99bb; border-top: 1px dashed rgba(255,46,110,0.4); padding-top: 15px; }
+        .info-row { text-align: left; margin: 15px 0; font-size: 1rem; backdrop-filter: blur(4px); padding: 6px 8px; border-radius: 20px; background: rgba(255,46,110,0.05);}
+        .info-row i { width: 32px; color: #ff2e6e; }
+        .close-info { background: #ff2e6e; border: none; padding: 12px 28px; border-radius: 50px; color: white; font-weight: bold; margin-top: 24px; cursor: pointer; transition: 0.2s; }
+        .footer-cyber { display: flex; justify-content: space-between; margin-top: 28px; font-size: 0.7rem; color: #ff99bb; border-top: 1px dashed rgba(255,46,110,0.5); padding-top: 18px; font-weight: 500; }
         
         @media (max-width: 650px) {
-            .browser-bar { padding: 6px 15px; }
-            .widget-area { gap: 12px; padding: 4px 12px; }
-            .cyber-card { padding: 25px 18px; }
-            .nick-glitch { font-size: 1.5rem; }
-            .avatar-cyber { width: 100px; height: 100px; }
-            .orbital-slime { width: 480px; height: 480px; filter: blur(30px); opacity: 0.6; }
+            .browser-bar { padding: 8px 16px; }
+            .widget-area { gap: 14px; padding: 5px 14px; }
+            .cyber-card { padding: 28px 20px; }
+            .nick-glitch { font-size: 1.7rem; }
+            .avatar-cyber { width: 115px; height: 115px; }
+            .orbital-slime { width: 480px; height: 480px; filter: blur(32px); opacity: 0.6; }
+            .cyber-btn { padding: 8px 20px; font-size: 0.75rem; }
         }
     </style>
 </head>
@@ -486,7 +476,7 @@
 
 <canvas id="webgl-canvas"></canvas>
 
-<!-- АККУРАТНЫЙ ОРБИТАЛЬНЫЙ ОБЪЕКТ ЗА КАРТОЧКОЙ — РОЗОВАЯ ЖИДКАЯ СФЕРА, КРУЖИТСЯ КРАСИВО -->
+<!-- ЖИДКАЯ СФЕРА PREMIUM -->
 <div class="orbital-slime">
     <div class="slime-core"></div>
     <div class="slime-aura"></div>
@@ -496,7 +486,7 @@
 <div class="glitch-lines"></div>
 
 <div class="browser-bar">
-    <div class="compact-tab"><i class="fas fa-skull"></i><span>VESTEL.BIO (SOON)</span></div>
+    <div class="compact-tab"><i class="fas fa-skull"></i><span>◢ VESTEL.BIO ◣</span></div>
     <div class="widget-area">
         <div class="weather-widget" id="weatherWidget"><i class="fas fa-cloud-moon"></i><span id="weatherText">Пермь: загрузка...</span></div>
         <div class="birthday-widget"><i class="fas fa-cake-candles"></i><span>До 28 авг:</span><span class="countdown-number" id="birthdayCountdown">--</span><span>дн.</span></div>
@@ -522,23 +512,23 @@
             <a href="https://t.me/vest_ell" class="cyber-btn" target="_blank"><i class="fab fa-telegram"></i> <span id="telegramText">@vest_ell</span></a>
         </div>
         <div class="cyber-btn info-btn-full" id="infoBtn"><i class="fas fa-id-card"></i> <span id="infoText">ПРОФИЛЬ</span></div>
-        <div class="footer-cyber"><span>vestel.bio</span><span id="footerQuote">work for c++</span></div>
+        <div class="footer-cyber"><span>🧬 vestel.bio</span><span id="footerQuote">work for c++</span></div>
     </div>
 </div>
 
-<!-- АДМИНКА полность рабочая -->
+<!-- АДМИНКА С ПОЛНЫМ КОНТРОЛЕМ -->
 <div class="admin-trigger" id="adminTrigger"><i class="fas fa-shield-alt"></i></div>
 <div class="admin-modal" id="adminPanel">
-    <div class="admin-header"><h3>🔐 ADMINS ONLY</h3><button id="closeAdminBtn" style="background:none; border:none; color:#ff2e6e; font-size:26px; cursor:pointer;">✕</button></div>
+    <div class="admin-header"><h3>🔐 ADMIN ACCESS</h3><button id="closeAdminBtn" style="background:none; border:none; color:#ff2e6e; font-size:28px; cursor:pointer;">✕</button></div>
     <input type="password" id="adminPass" class="admin-input" placeholder="пароль доступа">
     <button id="adminLoginBtn" class="admin-btn">ВОЙТИ В СИСТЕМУ</button>
     <div id="adminSettingsArea" style="display:none;">
         <input type="text" id="setNick" class="admin-input" placeholder="Никнейм">
         <input type="text" id="setBio" class="admin-input" placeholder="Должность / Био">
         <input type="text" id="setAge" class="admin-input" placeholder="Возраст">
-        <input type="text" id="setBirth" class="admin-input" placeholder="День рождения">
+        <input type="text" id="setBirth" class="admin-input" placeholder="День рождения (28 августа)">
         <input type="text" id="setCity" class="admin-input" placeholder="Город">
-        <input type="color" id="setColor" class="admin-input" style="height:42px;" value="#ff2e6e">
+        <input type="color" id="setColor" class="admin-input" style="height:46px;" value="#ff2e6e">
         <button id="applyAdmin" class="admin-btn">✨ ПРИМЕНИТЬ ИЗМЕНЕНИЯ</button>
         <div class="flex-btns">
             <button id="resetAdmin" class="admin-btn" style="background:#333;">🔄 СБРОС</button>
@@ -549,12 +539,12 @@
 
 <div class="info-modal" id="infoModal">
     <div class="info-window">
-        <h2 id="modalTitle">🌸 VESTEL INFO</h2>
-        <div class="info-row"><i class="fas fa-user"></i> <strong id="infoNameLbl">Имя:</strong> <span id="infoNameVal">Паша</span></div>
-        <div class="info-row"><i class="fas fa-calendar"></i> <strong id="infoAgeLbl">Возраст:</strong> <span id="infoAgeVal">17 лет</span></div>
+        <h2 id="modalTitle">🌸 VESTEL • HYPER CORE</h2>
+        <div class="info-row"><i class="fas fa-user-astronaut"></i> <strong id="infoNameLbl">Имя:</strong> <span id="infoNameVal">Паша</span></div>
+        <div class="info-row"><i class="fas fa-calendar-alt"></i> <strong id="infoAgeLbl">Возраст:</strong> <span id="infoAgeVal">17 лет</span></div>
         <div class="info-row"><i class="fas fa-birthday-cake"></i> <strong id="infoBirthLbl">ДР:</strong> <span id="infoBirthVal">28 августа</span></div>
         <div class="info-row"><i class="fas fa-city"></i> <strong id="infoCityLbl">Город:</strong> <span id="infoCityVal">Пермь</span></div>
-        <div class="info-row"><i class="fas fa-skull"></i> <strong id="infoRoleLbl">Роль:</strong> <span id="infoRoleVal">Sceleton Army - Curator by bans</span></div>
+        <div class="info-row"><i class="fas fa-skull-crossbones"></i> <strong id="infoRoleLbl">Роль:</strong> <span id="infoRoleVal">Sceleton Army - Curator by bans</span></div>
         <button class="close-info" id="closeInfoBtn">ЗАКРЫТЬ</button>
     </div>
 </div>
@@ -566,106 +556,149 @@
     import * as THREE from 'three';
     const canvas = document.getElementById('webgl-canvas');
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x010105);
-    scene.fog = new THREE.FogExp2(0x010105, 0.008);
-    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 1.5, 14);
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: false, antialias: true });
+    scene.background = new THREE.Color(0x02010a);
+    scene.fog = new THREE.FogExp2(0x02010a, 0.006);
+    const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 1.2, 13.5);
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: false, antialias: true, powerPreference: "high-performance" });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    
     const ambientLight = new THREE.AmbientLight(0x111122);
     scene.add(ambientLight);
-    const mainLight = new THREE.DirectionalLight(0xff5588, 1.2);
-    mainLight.position.set(3,5,4);
+    const mainLight = new THREE.DirectionalLight(0xff88aa, 1.3);
+    mainLight.position.set(4, 6, 3);
     mainLight.castShadow = true;
     scene.add(mainLight);
-    const backLight = new THREE.PointLight(0xff2e6e,0.8);
-    backLight.position.set(-2,1.5,-5);
+    const backLight = new THREE.PointLight(0xff2e6e, 1.0);
+    backLight.position.set(-2, 1.2, -5.5);
     scene.add(backLight);
-    const fillLight = new THREE.PointLight(0x44aaff,0.5);
-    fillLight.position.set(2,1,3);
+    const fillLight = new THREE.PointLight(0x44aaff, 0.7);
+    fillLight.position.set(2.5, 1.2, 3.8);
     scene.add(fillLight);
+    const rimLight = new THREE.PointLight(0xff66aa, 0.9);
+    rimLight.position.set(1, 2.2, -4);
+    scene.add(rimLight);
     
     const mainOrbitalGroup = new THREE.Group();
-    const coreGeo = new THREE.IcosahedronGeometry(0.85,0);
-    const coreMat = new THREE.MeshStandardMaterial({ color:0xff2266, emissive:0xff1155, emissiveIntensity:0.8, metalness:0.85, roughness:0.2 });
+    const coreGeo = new THREE.IcosahedronGeometry(0.95, 0);
+    const coreMat = new THREE.MeshStandardMaterial({ color: 0xff2266, emissive: 0xff2266, emissiveIntensity: 0.9, metalness: 0.9, roughness: 0.15 });
     const coreMesh = new THREE.Mesh(coreGeo, coreMat);
     mainOrbitalGroup.add(coreMesh);
     const spikeGroup = new THREE.Group();
-    const spikeMat = new THREE.MeshStandardMaterial({ color:0xff44aa, emissive:0xff2266, metalness:0.7 });
-    for(let i=0;i<24;i++){ const spike=new THREE.Mesh(new THREE.ConeGeometry(0.12,0.55,6),spikeMat); const angle=(i/24)*Math.PI*2; spike.position.set(Math.cos(angle)*1.25, Math.sin(angle)*0.8, Math.sin(angle)*1.25); spike.lookAt(0,0,0); spikeGroup.add(spike); }
+    const spikeMat = new THREE.MeshStandardMaterial({ color: 0xff44aa, emissive: 0xff3366, metalness: 0.8 });
+    for(let i = 0; i < 32; i++) {
+        const spike = new THREE.Mesh(new THREE.ConeGeometry(0.13, 0.68, 8), spikeMat);
+        const angle = (i / 32) * Math.PI * 2;
+        spike.position.set(Math.cos(angle) * 1.45, Math.sin(angle) * 0.95, Math.sin(angle) * 1.35);
+        spike.lookAt(0,0,0);
+        spikeGroup.add(spike);
+    }
     mainOrbitalGroup.add(spikeGroup);
-    const ringMatGlow = new THREE.MeshStandardMaterial({ color:0xff2e6e, emissive:0xff2e6e, emissiveIntensity:0.7 });
-    const outerRing = new THREE.Mesh(new THREE.TorusGeometry(1.65,0.08,64,200), ringMatGlow);
-    outerRing.rotation.x = Math.PI/2; outerRing.rotation.z = Math.PI/4;
+    const ringGlow = new THREE.MeshStandardMaterial({ color: 0xff2e6e, emissive: 0xff2e6e, emissiveIntensity: 0.8 });
+    const outerRing = new THREE.Mesh(new THREE.TorusGeometry(1.85, 0.09, 128, 200), ringGlow);
+    outerRing.rotation.x = Math.PI / 2;
+    outerRing.rotation.z = Math.PI / 4;
     mainOrbitalGroup.add(outerRing);
-    const diagonalRing = new THREE.Mesh(new THREE.TorusGeometry(1.85,0.07,64,200), ringMatGlow);
-    diagonalRing.rotation.y = Math.PI/3; diagonalRing.rotation.x = Math.PI/3;
-    mainOrbitalGroup.add(diagonalRing);
+    const diagonalRing2 = new THREE.Mesh(new THREE.TorusGeometry(2.05, 0.08, 128, 200), ringGlow);
+    diagonalRing2.rotation.y = Math.PI / 3.5;
+    diagonalRing2.rotation.x = Math.PI / 3;
+    mainOrbitalGroup.add(diagonalRing2);
     const crystalGroup = new THREE.Group();
-    const crystalMat = new THREE.MeshStandardMaterial({ color:0xff66aa, emissive:0x882244, emissiveIntensity:0.6 });
-    for(let i=0;i<12;i++){ const crystal=new THREE.Mesh(new THREE.OctahedronGeometry(0.22),crystalMat); const angleRad=(i/12)*Math.PI*2; crystal.position.set(Math.cos(angleRad)*2.1, Math.sin(angleRad*2)*0.9, Math.sin(angleRad)*2.1); crystalGroup.add(crystal); }
+    const crystalMatGlow = new THREE.MeshStandardMaterial({ color: 0xff77bb, emissive: 0xaa3355, emissiveIntensity: 0.7 });
+    for(let i = 0; i < 18; i++) {
+        const crystal = new THREE.Mesh(new THREE.OctahedronGeometry(0.24), crystalMatGlow);
+        const ang = (i / 18) * Math.PI * 2;
+        crystal.position.set(Math.cos(ang) * 2.3, Math.sin(ang * 2) * 1.0, Math.sin(ang) * 2.2);
+        crystalGroup.add(crystal);
+    }
     mainOrbitalGroup.add(crystalGroup);
-    const vortexParticleCount=800, vortexPositions=[];
-    const vortexGeo=new THREE.BufferGeometry();
-    for(let i=0;i<vortexParticleCount;i++){ const r=2.0+Math.random()*1.2; const theta=Math.random()*Math.PI*2, phi=Math.acos(2*Math.random()-1); vortexPositions.push(r*Math.sin(phi)*Math.cos(theta), r*Math.sin(phi)*Math.sin(theta)*0.6, r*Math.cos(phi)); }
-    vortexGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vortexPositions),3));
-    const vortexPoints=new THREE.Points(vortexGeo, new THREE.PointsMaterial({color:0xff77bb, size:0.05, blending:THREE.AdditiveBlending}));
+    
+    const particleCount = 1400;
+    const particleGeo = new THREE.BufferGeometry();
+    const particlePos = [];
+    for(let i=0; i<particleCount; i++) {
+        const rad = 2.2 + Math.random() * 1.8;
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.acos(2 * Math.random() - 1);
+        particlePos.push(rad * Math.sin(phi) * Math.cos(theta), rad * Math.sin(phi) * Math.sin(theta) * 0.7, rad * Math.cos(phi));
+    }
+    particleGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(particlePos), 3));
+    const vortexPoints = new THREE.Points(particleGeo, new THREE.PointsMaterial({ color: 0xff88cc, size: 0.06, blending: THREE.AdditiveBlending }));
     mainOrbitalGroup.add(vortexPoints);
     scene.add(mainOrbitalGroup);
     
-    const bgParticleCount=1500, bgPositions=[];
-    for(let i=0;i<bgParticleCount;i++) bgPositions.push((Math.random()-0.5)*55,(Math.random()-0.5)*30,(Math.random()-0.5)*40-15);
-    const bgParticleGeo=new THREE.BufferGeometry();
-    bgParticleGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(bgPositions),3));
-    const bgStars=new THREE.Points(bgParticleGeo, new THREE.PointsMaterial({color:0xff4d8c,size:0.05,transparent:true,opacity:0.3}));
-    scene.add(bgStars);
-    const auraLight=new THREE.PointLight(0xff2e6e,1.2,18);
-    mainOrbitalGroup.add(auraLight);
+    const bgStarsCount = 2200;
+    const bgStarPos = [];
+    for(let i=0; i<bgStarsCount; i++) bgStarPos.push((Math.random() - 0.5) * 70, (Math.random() - 0.5) * 40, (Math.random() - 0.5) * 60 - 20);
+    const starFieldGeo = new THREE.BufferGeometry();
+    starFieldGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(bgStarPos), 3));
+    const starField = new THREE.Points(starFieldGeo, new THREE.PointsMaterial({ color: 0xff6e9e, size: 0.055, transparent: true, opacity: 0.4, blending: THREE.AdditiveBlending }));
+    scene.add(starField);
     
-    const characterGroup=new THREE.Group();
-    const bodyChar=new THREE.Mesh(new THREE.CylinderGeometry(0.55,0.5,1.2,12), new THREE.MeshStandardMaterial({color:0xcc2266, emissive:0x331133, metalness:0.7}));
-    bodyChar.position.y=0; characterGroup.add(bodyChar);
-    const headChar=new THREE.Mesh(new THREE.SphereGeometry(0.48,32,32), new THREE.MeshStandardMaterial({color:0xdd44aa, emissive:0x441133, metalness:0.8}));
-    headChar.position.y=0.85; characterGroup.add(headChar);
-    const visorChar=new THREE.Mesh(new THREE.BoxGeometry(0.65,0.2,0.1), new THREE.MeshStandardMaterial({color:0xff2e6e, emissive:0xff2e6e, emissiveIntensity:1.2}));
-    visorChar.position.set(0,0.9,0.48); characterGroup.add(visorChar);
-    characterGroup.position.set(0,-0.95,-2.5); characterGroup.scale.set(0.85,0.85,0.85);
-    scene.add(characterGroup);
-    let time=0;
-    function animate3D(){ requestAnimationFrame(animate3D); time+=0.012;
-        mainOrbitalGroup.rotation.y=time*0.35; mainOrbitalGroup.rotation.x=Math.sin(time*0.2)*0.2; mainOrbitalGroup.rotation.z=Math.cos(time*0.25)*0.15;
-        spikeGroup.rotation.y=time*0.8; spikeGroup.rotation.x=time*0.5; crystalGroup.rotation.y=-time*0.6; crystalGroup.rotation.z=time*0.4;
-        const scaleRing=1+Math.sin(time*5)*0.03; outerRing.scale.set(scaleRing,scaleRing,scaleRing);
-        vortexPoints.rotation.y=time*0.2; auraLight.intensity=1.0+Math.sin(time*2.5)*0.5;
-        coreMesh.material.emissiveIntensity=0.6+Math.sin(time*3)*0.3;
-        characterGroup.position.y=-0.95+Math.sin(time*1.5)*0.025; visorChar.material.emissiveIntensity=0.9+Math.sin(time*8)*0.6;
-        bgStars.rotation.y=time*0.02; camera.position.x+=(Math.sin(time*0.15)*0.15-camera.position.x)*0.03; camera.position.y+=(1.6+Math.sin(time*0.25)*0.05-camera.position.y)*0.03; camera.lookAt(0,0.2,0);
-        renderer.render(scene,camera);
+    const guardianGroup = new THREE.Group();
+    const bodyArmor = new THREE.Mesh(new THREE.CylinderGeometry(0.68, 0.62, 1.35, 16), new THREE.MeshStandardMaterial({ color: 0xcc3366, metalness: 0.8, emissive: 0x331122 }));
+    bodyArmor.position.y = 0;
+    guardianGroup.add(bodyArmor);
+    const headUnit = new THREE.Mesh(new THREE.SphereGeometry(0.55, 32, 32), new THREE.MeshStandardMaterial({ color: 0xdd44aa, emissive: 0x551133, metalness: 0.85 }));
+    headUnit.position.y = 0.95;
+    guardianGroup.add(headUnit);
+    const visorNeon = new THREE.Mesh(new THREE.BoxGeometry(0.78, 0.22, 0.12), new THREE.MeshStandardMaterial({ color: 0xff2e6e, emissive: 0xff2e6e, emissiveIntensity: 1.4 }));
+    visorNeon.position.set(0, 1.0, 0.58);
+    guardianGroup.add(visorNeon);
+    guardianGroup.position.set(0, -1.12, -2.9);
+    guardianGroup.scale.set(0.9, 0.9, 0.9);
+    scene.add(guardianGroup);
+    let animTime = 0;
+    function animateScene() {
+        requestAnimationFrame(animateScene);
+        animTime += 0.012;
+        mainOrbitalGroup.rotation.y = animTime * 0.4;
+        mainOrbitalGroup.rotation.x = Math.sin(animTime * 0.2) * 0.22;
+        mainOrbitalGroup.rotation.z = Math.cos(animTime * 0.23) * 0.18;
+        spikeGroup.rotation.y = animTime * 0.9;
+        crystalGroup.rotation.y = -animTime * 0.7;
+        vortexPoints.rotation.y = animTime * 0.25;
+        const pulse = 1 + Math.sin(animTime * 5) * 0.03;
+        outerRing.scale.set(pulse, pulse, pulse);
+        diagonalRing2.scale.set(pulse, pulse * 1.02, pulse);
+        coreMesh.material.emissiveIntensity = 0.75 + Math.sin(animTime * 3.2) * 0.45;
+        guardianGroup.position.y = -1.12 + Math.sin(animTime * 1.8) * 0.035;
+        visorNeon.material.emissiveIntensity = 1.1 + Math.sin(animTime * 7) * 0.7;
+        starField.rotation.y = animTime * 0.015;
+        camera.position.x += (Math.sin(animTime * 0.12) * 0.12 - camera.position.x) * 0.03;
+        camera.position.y += (1.4 + Math.sin(animTime * 0.22) * 0.07 - camera.position.y) * 0.03;
+        camera.lookAt(0, 0.2, 0);
+        renderer.render(scene, camera);
     }
-    animate3D();
-    window.addEventListener('resize',()=>{ camera.aspect=window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth,window.innerHeight); });
+    animateScene();
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
 </script>
 
 <script>
-    async function updateWeather(){ try{ const res=await fetch('https://wttr.in/Perm?format=%t&lang=ru'); if(res.ok){ let temp=await res.text(); document.getElementById('weatherText').innerHTML=`Пермь: ${temp.trim()}`; } else document.getElementById('weatherText').innerHTML=`Пермь: ❄️ -7°C`; } catch(e){ document.getElementById('weatherText').innerHTML=`Пермь: 🌙 -5°C`; } }
+    async function updateWeather(){ try{ const res=await fetch('https://wttr.in/Perm?format=%t&lang=ru'); if(res.ok){ let temp=await res.text(); document.getElementById('weatherText').innerHTML=`Пермь: ${temp.trim()}`; } else document.getElementById('weatherText').innerHTML=`Пермь: ❄️ -6°C`; } catch(e){ document.getElementById('weatherText').innerHTML=`Пермь: 🌙 -4°C`; } }
     function updateBirthdayCountdown(){ const today=new Date(), currentYear=today.getFullYear(); let birthday=new Date(currentYear,7,28); if(today>birthday) birthday=new Date(currentYear+1,7,28); document.getElementById('birthdayCountdown').innerText=Math.ceil((birthday-today)/(1000*60*60*24)); }
     updateWeather(); updateBirthdayCountdown(); setInterval(updateBirthdayCountdown,3600000); setInterval(updateWeather,1800000);
     
     const translations={ ru:{ badgeRole:"🌺sakura", bio:"Должности: Sceleton Army - Curator by bans", infoText:"ПРОФИЛЬ", footerQuote:"work for c++", modalTitle:"🌸 VESTEL INFO", infoNameLbl:"Имя:", infoAgeLbl:"Возраст:", infoBirthLbl:"ДР:", infoCityLbl:"Город:", infoRoleLbl:"Роль:", robloxText:"Roblox", telegramText:"@vest_ell", discordText:"vest_el", nick:"vestel", age:"17 лет", birth:"28 августа", city:"Пермь", role:"Sceleton Army - Curator by bans", nameVal:"Паша" }, en:{ badgeRole:"🌺sakura", bio:"Roles: Sceleton Army - Curator by bans", infoText:"PROFILE", footerQuote:"work for c++", modalTitle:"🌸 VESTEL INFO", infoNameLbl:"Name:", infoAgeLbl:"Age:", infoBirthLbl:"Birth:", infoCityLbl:"City:", infoRoleLbl:"Role:", robloxText:"Roblox", telegramText:"@vest_ell", discordText:"vest_el", nick:"vestel", age:"17 y.o", birth:"Aug 28", city:"Perm", role:"Sceleton Army - Curator by bans", nameVal:"Pasha" } };
     let currentLang='ru';
     function updateLang(){ const t=translations[currentLang]; document.getElementById('badgeRole').innerHTML=t.badgeRole; document.getElementById('bioText').innerHTML=t.bio; document.getElementById('infoText').innerHTML=t.infoText; document.getElementById('footerQuote').innerHTML=t.footerQuote; document.getElementById('modalTitle').innerHTML=t.modalTitle; document.getElementById('infoNameLbl').innerHTML=t.infoNameLbl; document.getElementById('infoAgeLbl').innerHTML=t.infoAgeLbl; document.getElementById('infoBirthLbl').innerHTML=t.infoBirthLbl; document.getElementById('infoCityLbl').innerHTML=t.infoCityLbl; document.getElementById('infoRoleLbl').innerHTML=t.infoRoleLbl; document.getElementById('robloxText').innerHTML=t.robloxText; document.getElementById('telegramText').innerHTML=t.telegramText; document.getElementById('discordText').innerHTML=t.discordText; document.getElementById('userNick').innerHTML='@'+t.nick; document.getElementById('userAge').innerHTML='🌷 '+t.age; document.getElementById('infoBirthVal').innerHTML=t.birth; document.getElementById('infoCityVal').innerHTML=t.city; document.getElementById('infoRoleVal').innerHTML=t.role; document.getElementById('infoAgeVal').innerHTML=t.age; document.getElementById('infoNameVal').innerHTML=t.nameVal; document.querySelectorAll('.lang-btn').forEach(btn=>{ if(btn.dataset.lang===currentLang) btn.classList.add('active'); else btn.classList.remove('active'); }); }
-    function showToast(msg){ let div=document.createElement('div'); div.style.position='fixed'; div.style.bottom='30px'; div.style.left='50%'; div.style.transform='translateX(-50%)'; div.style.background='#ff2e6e'; div.style.color='white'; div.style.padding='10px 24px'; div.style.borderRadius='50px'; div.style.zIndex='20000'; div.style.fontWeight='bold'; div.innerText=msg; document.body.appendChild(div); setTimeout(()=>div.remove(),2000); }
+    function showToast(msg){ let div=document.createElement('div'); div.style.position='fixed'; div.style.bottom='40px'; div.style.left='50%'; div.style.transform='translateX(-50%)'; div.style.background='#ff2e6e'; div.style.color='white'; div.style.padding='12px 28px'; div.style.borderRadius='60px'; div.style.zIndex='20001'; div.style.fontWeight='bold'; div.style.backdropFilter='blur(8px)'; div.innerText=msg; document.body.appendChild(div); setTimeout(()=>div.remove(),2300); }
     
     const adminPanel=document.getElementById('adminPanel'), adminTrigger=document.getElementById('adminTrigger'), closeAdminBtn=document.getElementById('closeAdminBtn'), adminLoginBtn=document.getElementById('adminLoginBtn'), adminPass=document.getElementById('adminPass'), settingsArea=document.getElementById('adminSettingsArea'), applyAdmin=document.getElementById('applyAdmin'), resetAdmin=document.getElementById('resetAdmin'), logoutAdmin=document.getElementById('logoutAdmin');
     adminTrigger.onclick=()=>{ adminPanel.classList.add('active'); adminPass.value=''; settingsArea.style.display='none'; };
     closeAdminBtn.onclick=()=>{ adminPanel.classList.remove('active'); };
-    adminLoginBtn.onclick=()=>{ if(adminPass.value==='Pawel7755772011'){ settingsArea.style.display='block'; document.getElementById('setNick').value=document.getElementById('userNick').innerText.replace('@',''); let bioRaw=document.getElementById('bioText').innerText; bioRaw=bioRaw.replace('Должности: ','').replace('Roles: ',''); document.getElementById('setBio').value=bioRaw; document.getElementById('setAge').value=document.getElementById('userAge').innerText.replace('🌷 ',''); document.getElementById('setBirth').value=document.getElementById('infoBirthVal').innerText; document.getElementById('setCity').value=document.getElementById('infoCityVal').innerText; showToast('✅ Доступ разрешён'); } else { showToast('❌ Неверный пароль!'); adminPanel.classList.remove('active'); } };
-    applyAdmin.onclick=()=>{ let newColor=document.getElementById('setColor').value; document.querySelectorAll('.cyber-btn, .lang-btn, .compact-tab, .badge-cyber').forEach(el=>el.style.borderColor=newColor); showToast('✅ Стиль обновлён!'); localStorage.setItem('neonColor',newColor); };
+    adminLoginBtn.onclick=()=>{ if(adminPass.value==='Pawel7755772011'){ settingsArea.style.display='block'; document.getElementById('setNick').value=document.getElementById('userNick').innerText.replace('@',''); let bioRaw=document.getElementById('bioText').innerText; bioRaw=bioRaw.replace('Должности: ','').replace('Roles: ',''); document.getElementById('setBio').value=bioRaw; document.getElementById('setAge').value=document.getElementById('userAge').innerText.replace('🌷 ',''); document.getElementById('setBirth').value=document.getElementById('infoBirthVal').innerText; document.getElementById('setCity').value=document.getElementById('infoCityVal').innerText; showToast('✅ Доступ разрешён, админ'); } else { showToast('❌ Неверный пароль!'); adminPanel.classList.remove('active'); } };
+    applyAdmin.onclick=()=>{ let newColor=document.getElementById('setColor').value; document.querySelectorAll('.cyber-btn, .lang-btn, .compact-tab, .badge-cyber, .admin-modal').forEach(el=>el.style.borderColor=newColor); showToast('✅ Неоновая стилизация обновлена'); localStorage.setItem('neonColor',newColor); };
     resetAdmin.onclick=()=>{ localStorage.clear(); location.reload(); };
-    logoutAdmin.onclick=()=>{ adminPanel.classList.remove('active'); showToast('🔒 Выход'); };
-    document.getElementById('discordBtn').onclick=async()=>{ await navigator.clipboard.writeText('vest_el'); showToast('✅ Discord скопирован'); };
+    logoutAdmin.onclick=()=>{ adminPanel.classList.remove('active'); showToast('🔒 Сессия завершена'); };
+    document.getElementById('discordBtn').onclick=async()=>{ await navigator.clipboard.writeText('vest_el'); showToast('✅ Discord скопирован: vest_el'); };
     const infoModal=document.getElementById('infoModal'), infoBtn=document.getElementById('infoBtn'), closeInfoBtn=document.getElementById('closeInfoBtn');
     infoBtn.onclick=()=>infoModal.classList.add('active');
     closeInfoBtn.onclick=()=>infoModal.classList.remove('active');
