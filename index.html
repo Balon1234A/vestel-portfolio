@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>...</title>
+    <title>// UNKNOWN</title>
     <style>
         * {
             margin: 0;
@@ -22,7 +22,7 @@
             overflow: hidden;
         }
 
-        /* грубый звёздный фон — белые точки на чистом чёрном */
+        /* звёзды */
         .stars {
             position: fixed;
             top: 0;
@@ -37,51 +37,120 @@
             position: absolute;
             background-color: #ffffff;
             border-radius: 50%;
-            opacity: 0.7;
         }
 
-        /* контент — грубый, без имён, только намёк */
-        .brutal-center {
+        /* терминал */
+        .terminal {
             position: relative;
             z-index: 10;
-            text-align: center;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            padding: 2.5rem 4rem;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: none;
-            box-shadow: none;
-            min-width: 280px;
+            width: 550px;
+            max-width: 90vw;
+            background: rgba(0, 0, 0, 0.95);
+            border: 1px solid #2a2a2a;
+            padding: 2rem;
+            box-shadow: 0 0 30px rgba(0,0,0,0.9);
         }
 
-        .prompt {
-            font-size: 1.2rem;
-            letter-spacing: 4px;
-            font-weight: 400;
-            color: #aaa;
-            text-transform: uppercase;
+        .prompt-line {
+            color: #00ff41;
+            font-size: 0.9rem;
             margin-bottom: 1.5rem;
-            font-family: 'Courier New', monospace;
+            font-family: monospace;
+            border-bottom: 1px solid #1a3a1a;
+            padding-bottom: 0.7rem;
         }
 
-        .keys {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: #fff;
-            background: #111;
+        .prompt-line span {
+            color: #ffffff;
+        }
+
+        .cursor {
             display: inline-block;
-            padding: 12px 28px;
-            border: 1px solid #333;
-            letter-spacing: 8px;
+            width: 8px;
+            height: 14px;
+            background-color: #00ff41;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+            margin-left: 4px;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .input-line {
+            margin: 1.2rem 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             font-family: monospace;
         }
 
-        .keys span {
-            color: #888;
-            font-size: 1.4rem;
-            margin: 0 4px;
+        .input-prefix {
+            color: #00ff41;
+            font-size: 1rem;
         }
 
-        /* абсолютно минималистичный модальный хардкор */
+        .input-field {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            outline: none;
+            flex: 1;
+            letter-spacing: 1px;
+        }
+
+        .input-field::placeholder {
+            color: #333;
+            font-size: 0.8rem;
+        }
+
+        .hint-box {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #1a1a1a;
+            text-align: center;
+        }
+
+        .key-combo {
+            color: #888;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .key-combo kbd {
+            background: #111;
+            border: 1px solid #333;
+            padding: 4px 12px;
+            margin: 0 4px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #00ff41;
+            border-radius: 0;
+            font-family: monospace;
+        }
+
+        .attempt-counter {
+            font-size: 0.7rem;
+            color: #444;
+            margin-top: 10px;
+        }
+
+        /* анимация нажатия */
+        .key-pressed {
+            animation: keyFlash 0.1s ease-out;
+        }
+
+        @keyframes keyFlash {
+            0% { background: #2a2a2a; color: #00ff41; border-color: #00ff41; transform: scale(1.05); }
+            100% { background: #111; color: #888; border-color: #333; transform: scale(1); }
+        }
+
+        /* модальное окно */
         .modal {
             display: none;
             position: fixed;
@@ -89,81 +158,88 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: #000000;
+            background: #000000ee;
             z-index: 1000;
             align-items: center;
             justify-content: center;
             font-family: 'Courier New', monospace;
+            backdrop-filter: blur(2px);
         }
 
         .modal-content {
             background: #0a0a0a;
-            width: 380px;
+            width: 400px;
             max-width: 85%;
-            border: 1px solid #2a2a2a;
-            padding: 2rem 1.8rem;
+            border: 1px solid #2a5a2a;
+            padding: 2rem;
             text-align: left;
-            color: #dddddd;
-            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+            color: #cccccc;
+            box-shadow: 0 0 30px rgba(0,255,65,0.1);
         }
 
         .modal-content h2 {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             font-weight: 400;
-            letter-spacing: 3px;
-            margin-bottom: 1.8rem;
-            color: #fff;
-            border-left: 3px solid #555;
-            padding-left: 14px;
+            letter-spacing: 2px;
+            margin-bottom: 1.5rem;
+            color: #00ff41;
+            border-left: 3px solid #00ff41;
+            padding-left: 12px;
             text-transform: uppercase;
         }
 
-        .bio-line {
-            font-size: 1rem;
-            margin: 0.9rem 0;
-            font-weight: 300;
-            border-bottom: 1px dashed #222;
+        .bio-item {
+            font-size: 0.95rem;
+            margin: 0.8rem 0;
+            border-bottom: 1px dashed #1a2a1a;
             padding-bottom: 6px;
         }
 
-        .bio-line strong {
-            color: #ffffff;
-            font-weight: 500;
-            width: 70px;
+        .bio-item .label {
+            color: #00ff41;
             display: inline-block;
-            letter-spacing: 1px;
+            width: 70px;
+            font-weight: bold;
         }
 
-        .close-btn {
+        .bio-item .value {
+            color: #fff;
+        }
+
+        .close-modal-btn {
             background: transparent;
-            border: 1px solid #3a3a3a;
+            border: 1px solid #2a5a2a;
             padding: 8px 20px;
             font-size: 0.8rem;
             font-weight: 400;
-            color: #aaa;
+            color: #00ff41;
             cursor: pointer;
-            margin-top: 1.8rem;
+            margin-top: 1.5rem;
             font-family: monospace;
             text-transform: uppercase;
             letter-spacing: 2px;
-            transition: 0.15s;
+            transition: 0.2s;
             width: 100%;
         }
 
-        .close-btn:hover {
-            background: #1a1a1a;
-            color: white;
-            border-color: #666;
+        .close-modal-btn:hover {
+            background: #0a2a0a;
+            border-color: #00ff41;
         }
 
-        /* убираем всё лишнее */
-        .sign {
-            display: none;
-        }
-
-        /* грубые звёзды без мерцания, просто точки */
-        @keyframes none {
-            0%, 100% { opacity: 0.5; }
+        /* доп элемент - матричный дождь внизу */
+        .matrix-line {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            z-index: 5;
+            font-size: 0.6rem;
+            color: #0a3a0a;
+            font-family: monospace;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 300px;
+            pointer-events: none;
         }
     </style>
 </head>
@@ -171,118 +247,204 @@
 
 <div class="stars" id="starfield"></div>
 
-<div class="brutal-center">
-    <div class="prompt">›› ACCESS ‹‹</div>
-    <div class="keys">
-        <span>[</span> V <span>]</span>&nbsp;&nbsp;+&nbsp;&nbsp;<span>[</span> S <span>]</span>
+<div class="terminal">
+    <div class="prompt-line">
+        > user@unknown:~<span>$</span> <span id="blinkingText">ACCESS_GRANTED</span><span class="cursor"></span>
+    </div>
+    
+    <div class="input-line">
+        <span class="input-prefix">$›</span>
+        <input type="text" class="input-field" id="commandInput" placeholder="введите код / или нажми V+S" autocomplete="off">
+    </div>
+    
+    <div class="hint-box">
+        <div class="key-combo">
+            ⚡ КОМБИНАЦИЯ: <kbd id="keyV">V</kbd> + <kbd id="keyS">S</kbd> ⚡
+        </div>
+        <div class="attempt-counter" id="attemptText">Попыток: 0</div>
     </div>
 </div>
 
+<div class="matrix-line" id="matrixText">01101101 01100001 01110100 01110010 01101001 01111000</div>
+
 <div id="bioModal" class="modal">
     <div class="modal-content">
-        <h2>// BIO_DATA</h2>
-        <div class="bio-line"><strong>NAME</strong> : PAŠA</div>
-        <div class="bio-line"><strong>AGE</strong>  : 17</div>
-        <div class="bio-line"><strong>CITY</strong> : PERM</div>
-        <div class="bio-line"><strong>STATUS</strong> : ██████</div>
-        <button class="close-btn" id="closeModalBtn">[ X ] ЗАКРЫТЬ</button>
+        <h2>⟫⟫ IDENTITY ⟪⟪</h2>
+        <div class="bio-item"><span class="label">NAME</span><span class="value">: PAŠA</span></div>
+        <div class="bio-item"><span class="label">AGE</span><span class="value">: 17</span></div>
+        <div class="bio-item"><span class="label">CITY</span><span class="value">: PERM</span></div>
+        <div class="bio-item"><span class="label">STATUS</span><span class="value">: ONLINE</span></div>
+        <div class="bio-item"><span class="label">SIGN</span><span class="value">: ██████████</span></div>
+        <button class="close-modal-btn" id="closeModalBtn">[ ЗАКРЫТЬ ]</button>
     </div>
 </div>
 
 <script>
-    // грубый чёрный фон + простые белые звёзды (без лишних эффектов)
-    function createHardStars() {
+    // ЗВЁЗДЫ
+    function createStars() {
         const container = document.getElementById('starfield');
         if (!container) return;
-        const starCount = 300;
-
+        const starCount = 400;
         for (let i = 0; i < starCount; i++) {
             const star = document.createElement('div');
             star.classList.add('star');
-            
-            const size = Math.random() * 2.2 + 0.6;
+            const size = Math.random() * 2.2 + 0.5;
             star.style.width = size + 'px';
             star.style.height = size + 'px';
-            
             star.style.left = Math.random() * 100 + '%';
             star.style.top = Math.random() * 100 + '%';
-            
-            // случайная яркость 0.3 - 1.0
-            const opacity = Math.random() * 0.7 + 0.25;
-            star.style.opacity = opacity;
-            
-            // без анимации, просто статика
+            star.style.opacity = Math.random() * 0.8 + 0.2;
             container.appendChild(star);
         }
-        
-        // несколько более ярких (но без мерцаний)
-        for (let i = 0; i < 80; i++) {
-            const brightStar = document.createElement('div');
-            brightStar.classList.add('star');
-            const s = Math.random() * 2 + 1.2;
-            brightStar.style.width = s + 'px';
-            brightStar.style.height = s + 'px';
-            brightStar.style.left = Math.random() * 100 + '%';
-            brightStar.style.top = Math.random() * 100 + '%';
-            brightStar.style.opacity = Math.random() * 0.9 + 0.5;
-            container.appendChild(brightStar);
+        for (let i = 0; i < 100; i++) {
+            const bright = document.createElement('div');
+            bright.classList.add('star');
+            bright.style.width = (Math.random() * 2.5 + 1.2) + 'px';
+            bright.style.height = bright.style.width;
+            bright.style.left = Math.random() * 100 + '%';
+            bright.style.top = Math.random() * 100 + '%';
+            bright.style.opacity = Math.random() * 0.9 + 0.5;
+            container.appendChild(bright);
         }
     }
 
-    // логика V + S 
-    let vDown = false;
-    let sDown = false;
-    let modalOpened = false;
-    
+    // КОМБИНАЦИЯ V+S — надёжная, без глюков
+    let vKeyHeld = false;
+    let sKeyHeld = false;
+    let modalActive = false;
+    let attemptCount = 0;
+    const attemptSpan = document.getElementById('attemptText');
+    const keyVDiv = document.getElementById('keyV');
+    const keySDiv = document.getElementById('keyS');
     const modal = document.getElementById('bioModal');
     const closeBtn = document.getElementById('closeModalBtn');
-    
-    function openBrutalModal() {
-        if (modalOpened) return;
-        modalOpened = true;
+    const commandInput = document.getElementById('commandInput');
+
+    function updateAttempts() {
+        if (attemptSpan) attemptSpan.innerText = `Попыток: ${attemptCount}`;
+    }
+
+    function flashKey(element) {
+        if (!element) return;
+        element.classList.add('key-pressed');
+        setTimeout(() => {
+            element.classList.remove('key-pressed');
+        }, 120);
+    }
+
+    function openModal() {
+        if (modalActive) return;
+        modalActive = true;
         modal.style.display = 'flex';
-        vDown = false;
-        sDown = false;
+        // сброс флагов после открытия
+        vKeyHeld = false;
+        sKeyHeld = false;
+        // увеличиваем счётчик только если открыли через комбинацию
+        attemptCount++;
+        updateAttempts();
     }
-    
-    function closeModal() {
+
+    function closeModalFunc() {
         modal.style.display = 'none';
-        modalOpened = false;
+        modalActive = false;
     }
-    
+
+    // ГЛАВНАЯ ЛОГИКА КЛАВИШ (работает без задержек)
     window.addEventListener('keydown', (e) => {
         const key = e.key.toLowerCase();
-        if (modalOpened) return;
+        
+        // игнорируем если модалка открыта
+        if (modalActive) return;
         
         if (key === 'v') {
-            vDown = true;
             e.preventDefault();
-        }
-        if (key === 's') {
-            sDown = true;
-            e.preventDefault();
+            if (!vKeyHeld) {
+                vKeyHeld = true;
+                flashKey(keyVDiv);
+            }
         }
         
-        if (vDown && sDown) {
-            openBrutalModal();
+        if (key === 's') {
+            e.preventDefault();
+            if (!sKeyHeld) {
+                sKeyHeld = true;
+                flashKey(keySDiv);
+            }
+        }
+        
+        // проверяем комбинацию в момент нажатия
+        if (vKeyHeld && sKeyHeld) {
+            openModal();
         }
     });
     
     window.addEventListener('keyup', (e) => {
         const key = e.key.toLowerCase();
-        if (key === 'v') vDown = false;
-        if (key === 's') sDown = false;
+        if (key === 'v') {
+            vKeyHeld = false;
+        }
+        if (key === 's') {
+            sKeyHeld = false;
+        }
     });
     
-    if (closeBtn) {
-        closeBtn.addEventListener('click', closeModal);
+    // закрытие модалки
+    if (closeBtn) closeBtn.addEventListener('click', closeModalFunc);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModalFunc();
+    });
+    
+    // ДОПОЛНИТЕЛЬНАЯ ФИЧА: если ввести в консоль "v s" или "vs" в поле ввода — тоже откроется
+    if (commandInput) {
+        commandInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const val = commandInput.value.trim().toLowerCase();
+                if (val === 'v s' || val === 'vs' || val === 'v+s') {
+                    openModal();
+                    commandInput.value = '';
+                } else if (val !== '') {
+                    // просто эффект - очищаем
+                    commandInput.value = '';
+                    flashKey(keyVDiv);
+                    setTimeout(() => flashKey(keySDiv), 50);
+                }
+            }
+        });
     }
     
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) closeModal();
-    });
+    // БЕГУЩАЯ СТРОКА (ещё одна фича для атмосферы)
+    const matrixSpan = document.getElementById('matrixText');
+    let matrixStrings = [
+        ">_ access denied", ">_ allow V+S", ">_ perm_17", 
+        "01110000 01100001 01110011 01101000 01100001", 
+        ">>> WAITING", ">_ v+s = bio", "pasha_17_perm"
+    ];
+    let idx = 0;
+    setInterval(() => {
+        if (matrixSpan) {
+            idx = (idx + 1) % matrixStrings.length;
+            matrixSpan.textContent = matrixStrings[idx];
+        }
+    }, 2800);
     
-    createHardStars();
+    // создаём звёзды
+    createStars();
+    
+    // эффект печати в первой строке
+    const textElement = document.getElementById('blinkingText');
+    if (textElement) {
+        const originalText = textElement.innerText;
+        textElement.innerText = '';
+        let i = 0;
+        function typeWriter() {
+            if (i < originalText.length && textElement) {
+                textElement.innerText += originalText.charAt(i);
+                i++;
+                setTimeout(typeWriter, 80);
+            }
+        }
+        typeWriter();
+    }
 </script>
 </body>
 </html>
