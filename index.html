@@ -2,280 +2,637 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>concrete wall</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>JUNGLE WALL // RAIN SYSTEM</title>
 <style>
-body{
-    margin:0;
-    font-family:monospace;
-    background:#0a0a0c;
-    color:white;
-    overflow:hidden;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-/* ===== LANGUAGE SCREEN ===== */
-.language-screen{
-    position:fixed;
-    inset:0;
-    background:#050507;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:9999;
+body {
+    font-family: 'Courier New', 'JetBrains Mono', monospace;
+    height: 100vh;
+    overflow: hidden;
+    background: #0a120c;
 }
 
-.language-box{
-    border:1px solid #444;
-    padding:40px;
-    text-align:center;
-    background:#0c0c10;
+/* =========================
+   РЕАЛИСТИЧНЫЙ ФОН ДЖУНГЛЕЙ (градиент + текстура листвы)
+========================= */
+.jungle-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(145deg, #0c2a1a 0%, #051a0e 40%, #020e08 100%);
+    overflow: hidden;
 }
 
-.language-title{
-    margin-bottom:20px;
-    letter-spacing:3px;
+/* слоистая текстура листвы и веток */
+.jungle-backdrop::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 40%, rgba(30, 70, 40, 0.25) 1px, transparent 1px),
+        radial-gradient(circle at 75% 85%, rgba(20, 60, 35, 0.3) 1.5px, transparent 1.5px);
+    background-size: 35px 35px, 50px 50px;
+    pointer-events: none;
 }
 
-.lang-btn{
-    margin:10px;
-    padding:15px 25px;
-    background:#111;
-    border:1px solid #666;
-    color:white;
-    cursor:pointer;
+/* тени лиан */
+.vine-overlay {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(115deg, 
+        rgba(0,0,0,0.1) 0px, 
+        rgba(0,0,0,0.1) 3px,
+        transparent 3px,
+        transparent 120px),
+        repeating-linear-gradient(25deg,
+        rgba(20,45,20,0.15) 0px,
+        rgba(20,45,20,0.15) 2px,
+        transparent 2px,
+        transparent 90px);
+    pointer-events: none;
 }
 
-/* ===== TERMINAL ===== */
-.terminal{
-    display:none;
-    padding:30px;
+/* реалистичные размытые ветки по краям */
+.branch-left {
+    position: absolute;
+    left: -30px;
+    top: 0;
+    width: 240px;
+    height: 100%;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 800"><path fill="none" stroke="%233a5a35" stroke-width="12" d="M80,0 Q110,200 70,350 T90,550 T60,800" stroke-linecap="round"/><path fill="none" stroke="%232d4828" stroke-width="8" d="M85,150 Q140,220 130,280" /><path fill="none" stroke="%233e6040" stroke-width="6" d="M72,400 Q30,460 15,430" /><path fill="none" stroke="%232c4a2a" stroke-width="5" d="M82,580 Q130,640 115,700" /></svg>') repeat-y;
+    background-size: contain;
+    opacity: 0.55;
+    filter: blur(3px);
+    pointer-events: none;
+}
+.branch-right {
+    position: absolute;
+    right: -30px;
+    top: 0;
+    width: 260px;
+    height: 100%;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 800"><path fill="none" stroke="%2335562f" stroke-width="14" d="M140,0 Q100,180 130,320 T110,550 T140,800" stroke-linecap="round"/><path fill="none" stroke="%233d6138" stroke-width="9" d="M125,250 Q180,300 195,260" /><path fill="none" stroke="%232f522c" stroke-width="7" d="M118,480 Q50,530 65,570" /></svg>') repeat-y;
+    background-size: contain;
+    opacity: 0.5;
+    filter: blur(4px);
+    pointer-events: none;
 }
 
-/* ===== MODAL ===== */
-.modal{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.8);
-    align-items:center;
-    justify-content:center;
+/* =========================
+   КИРПИЧНАЯ СТЕНА (приглушённая, вросшая в джунгли)
+========================= */
+.wall {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+    gap: 2px;
+    padding: 6px;
+    opacity: 0.4;
+    pointer-events: none;
 }
 
-.modal-content{
-    background:#111;
-    padding:25px;
-    width:300px;
-    border:1px solid #444;
+.brick {
+    background: radial-gradient(circle at 30% 40%, #374d32, #1c2e1a);
+    border-radius: 2px;
+    border: 0.5px solid rgba(80, 110, 70, 0.3);
+    box-shadow: inset 0 1px 4px rgba(0,0,0,0.6), 0 1px 1px rgba(0,0,0,0.4);
+    animation: wallBreathing 10s infinite alternate;
 }
 
-.bio-item{
-    margin:8px 0;
+@keyframes wallBreathing {
+    0% { opacity: 0.5; transform: scale(0.99); background: radial-gradient(circle at 30% 40%, #2b4427, #132813);}
+    100% { opacity: 0.7; transform: scale(1); background: radial-gradient(circle at 35% 45%, #436b3a, #1f3a1c);}
 }
 
-button{
-    margin-top:10px;
-    width:100%;
-    padding:10px;
-    background:#222;
-    color:white;
-    border:1px solid #555;
-    cursor:pointer;
+/* =========================
+   ДОЖДЬ (максимально реалистичный)
+========================= */
+.rain-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
 }
 
-/* WORK HOURS */
-#workHoursBox{
-    display:none;
-    margin-top:10px;
-    padding:10px;
-    border:1px solid #333;
+.raindrop {
+    position: absolute;
+    background: rgba(170, 210, 230, 0.55);
+    width: 1.5px;
+    height: 14px;
+    border-radius: 0 0 2px 2px;
+    animation: fall linear infinite;
+    filter: blur(0.7px);
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(-15vh);
+        opacity: 0.7;
+    }
+    85% {
+        opacity: 0.4;
+    }
+    100% {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+}
+
+/* водяная дымка внизу */
+.mist {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 35%;
+    background: linear-gradient(to top, rgba(40, 70, 45, 0.35), transparent);
+    z-index: 1;
+    pointer-events: none;
+    filter: blur(8px);
+}
+
+/* =========================
+   ЯЗЫКОВОЙ ЭКРАН
+========================= */
+.lang-screen {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(3, 12, 6, 0.92);
+    backdrop-filter: blur(12px);
+    z-index: 1000;
+}
+
+.lang-panel {
+    padding: 42px 56px;
+    background: rgba(10, 20, 12, 0.75);
+    border: 1px solid rgba(100, 140, 85, 0.5);
+    border-radius: 24px;
+    text-align: center;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+}
+
+.lang-panel div {
+    font-size: 15px;
+    letter-spacing: 4px;
+    margin-bottom: 32px;
+    color: #bedba8;
+    font-weight: 300;
+}
+
+.lang-btn {
+    margin: 10px;
+    padding: 12px 34px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(130, 180, 100, 0.7);
+    color: #e2ffcf;
+    font-family: monospace;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+    border-radius: 40px;
+}
+
+.lang-btn:hover {
+    background: #e2ffcf;
+    color: #0a1f0c;
+    border-color: #ffffff;
+}
+
+/* =========================
+   КОНСОЛЬ (строго по центру)
+========================= */
+.console {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 20;
+    width: 540px;
+    max-width: 88vw;
+    padding: 32px 28px;
+    background: rgba(8, 18, 10, 0.82);
+    backdrop-filter: blur(24px);
+    border-radius: 28px;
+    border: 1px solid rgba(110, 160, 85, 0.5);
+    box-shadow: 0 30px 50px rgba(0,0,0,0.7), inset 0 1px 0 rgba(180,220,140,0.1);
+    text-align: center;
+    display: none;
+}
+
+.console-header {
+    font-size: 11px;
+    letter-spacing: 5px;
+    font-weight: 300;
+    color: #bcdd9c;
+    border-bottom: 1px solid rgba(130,180,90,0.4);
+    display: inline-block;
+    padding-bottom: 8px;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+}
+
+.console p {
+    margin: 24px 0 24px;
+    font-size: 14px;
+    background: rgba(0,0,0,0.5);
+    padding: 10px 20px;
+    border-radius: 60px;
+    display: inline-block;
+    font-family: monospace;
+}
+
+.console-input {
+    width: 92%;
+    margin-top: 12px;
+    padding: 14px 20px;
+    background: rgba(0, 6, 2, 0.8);
+    border: 1px solid rgba(110, 170, 80, 0.6);
+    color: #ecffda;
+    font-family: 'Courier New', monospace;
+    font-size: 15px;
+    border-radius: 60px;
+    outline: none;
+    text-align: center;
+    transition: 0.2s;
+}
+
+.console-input:focus {
+    border-color: #9bda7a;
+    box-shadow: 0 0 14px rgba(100,180,70,0.3);
+}
+
+/* =========================
+   МОДАЛЬНОЕ ОКНО (PROFILE)
+========================= */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(2, 12, 5, 0.9);
+    backdrop-filter: blur(18px);
+    z-index: 2000;
+}
+
+.profile-card {
+    width: 380px;
+    max-width: 85vw;
+    padding: 32px 26px;
+    background: linear-gradient(135deg, #111f13, #071408);
+    border: 1px solid rgba(120, 175, 90, 0.5);
+    border-radius: 32px;
+    box-shadow: 0 30px 45px rgba(0,0,0,0.8);
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 14px 0;
+    font-size: 14px;
+    padding: 7px 10px;
+    border-bottom: 1px solid rgba(100,150,70,0.25);
+    font-family: monospace;
+}
+
+.info-row span:first-child {
+    font-weight: 300;
+    color: #99c27a;
+    letter-spacing: 0.5px;
+}
+
+.info-row span:last-child {
+    font-weight: 500;
+    color: #e2ffcf;
+}
+
+.action-btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px 0;
+    background: rgba(30, 55, 28, 0.9);
+    border: 1px solid rgba(140, 200, 100, 0.6);
+    color: #e2ffcf;
+    font-family: monospace;
+    cursor: pointer;
+    border-radius: 40px;
+    transition: 0.2s;
+    font-size: 13px;
+}
+
+.action-btn:hover {
+    background: #bbf096;
+    color: #0a210c;
+    border-color: #dafcc5;
+}
+
+.hours-block {
+    display: none;
+    margin-top: 20px;
+    border-top: 1px solid rgba(140,200,100,0.3);
+    padding-top: 14px;
+    font-size: 12px;
+    font-family: monospace;
+}
+
+.hours-block div {
+    padding: 6px 0;
+    color: #ccebbb;
+}
+
+.section-title {
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    border-left: 3px solid #9ed67a;
+    padding-left: 14px;
 }
 </style>
 </head>
-
 <body>
 
-<!-- LANGUAGE SCREEN -->
-<div class="language-screen" id="langScreen">
-    <div class="language-box">
-        <div class="language-title">SELECT LANGUAGE</div>
-        <button class="lang-btn" onclick="setLanguage('ru')">RU</button>
-        <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+<!-- ФОН ДЖУНГЛЕЙ реалистичный -->
+<div class="jungle-backdrop">
+    <div class="vine-overlay"></div>
+    <div class="branch-left"></div>
+    <div class="branch-right"></div>
+</div>
+
+<!-- КИРПИЧНАЯ СТЕНА (вросшая) -->
+<div class="wall" id="wallContainer"></div>
+
+<!-- СЛОЙ ДОЖДЯ -->
+<div class="rain-layer" id="rainLayer"></div>
+<div class="mist"></div>
+
+<!-- ВЫБОР ЯЗЫКА -->
+<div class="lang-screen" id="langScreen">
+    <div class="lang-panel">
+        <div>ACCESS TERMINAL</div>
+        <button class="lang-btn" onclick="setLanguage('ru')">RU / РУС</button>
+        <button class="lang-btn" onclick="setLanguage('en')">EN / ENG</button>
+        <div style="font-size:9px; margin-top:28px; opacity:0.5;">jungle interface v1.0</div>
     </div>
 </div>
 
-<!-- TERMINAL -->
-<div class="terminal" id="terminal">
-
-    <div>V + S = OPEN</div>
-    <input id="input" placeholder="v+s">
-
+<!-- КОНСОЛЬ ПО ЦЕНТРУ -->
+<div class="console" id="consolePanel">
+    <div class="console-header">CONCRETE JUNGLE SYSTEM</div>
+    <p>V + S</p>
+    <input class="console-input" id="consoleInput" placeholder="enter command" autocomplete="off">
+    <div style="font-size:10px; margin-top:20px; opacity:0.5;">system ready</div>
 </div>
 
-<!-- MODAL -->
-<div class="modal" id="modal">
-
-    <div class="modal-content">
-
-        <h3 id="title">IDENTITY</h3>
-
-        <div class="bio-item"><span id="nameL">NAME</span>: Pasha</div>
-        <div class="bio-item"><span id="ageL">AGE</span>: 17</div>
-        <div class="bio-item"><span id="cityL">CITY</span>: Perm</div>
-        <div class="bio-item"><span id="statusL">STATUS</span>: Offline</div>
-        <div class="bio-item"><span id="workL">WORK</span>: Curator</div>
-
-        <button onclick="toggleHours()" id="hoursBtn">WORK HOURS</button>
-
-        <div id="workHoursBox">
-            <div id="mon"></div>
-            <div id="tue"></div>
-            <div id="wed"></div>
-            <div id="thu"></div>
-            <div id="fri"></div>
-            <div id="sat"></div>
-            <div id="sun"></div>
-        </div>
-
-        <button onclick="closeModal()">CLOSE</button>
+<!-- МОДАЛЬНЫЙ ПРОФИЛЬ -->
+<div class="modal-overlay" id="profileModal">
+    <div class="profile-card">
+        <div class="section-title" id="profileTitle">IDENTITY</div>
+        <div class="info-row"><span>NAME</span><span>Pasha</span></div>
+        <div class="info-row"><span>AGE</span><span>17</span></div>
+        <div class="info-row"><span>CITY</span><span>Perm</span></div>
+        <div class="info-row"><span>STATUS</span><span>Offline</span></div>
+        <div class="info-row"><span>WORK</span><span>Curator</span></div>
+        <button class="action-btn" id="toggleHoursBtn">WORK HOURS</button>
+        <div class="hours-block" id="hoursBlock"></div>
+        <button class="action-btn" onclick="closeModal()">CLOSE</button>
     </div>
-
 </div>
 
 <script>
+// ========== 1. РЕАЛИСТИЧНЫЕ ДЖУНГЛИ + ДОЖДЬ ==========
+// стена кирпичей
+const wall = document.getElementById("wallContainer");
+for (let i = 0; i < 200; i++) {
+    const brick = document.createElement("div");
+    brick.className = "brick";
+    brick.style.animationDelay = `${(i % 11) * 0.12}s`;
+    wall.appendChild(brick);
+}
+function adjustWallGrid() {
+    let columns = 14;
+    const w = window.innerWidth;
+    if (w > 1400) columns = 18;
+    else if (w > 1000) columns = 14;
+    else if (w > 700) columns = 10;
+    else columns = 6;
+    wall.style.gridTemplateColumns = `repeat(${columns}, minmax(80px, 1fr))`;
+}
+adjustWallGrid();
+window.addEventListener('resize', adjustWallGrid);
 
-let lang = "ru";
+// дождь — реалистичные капли
+const rainContainer = document.getElementById("rainLayer");
+const DROPS = 210;
+function initRain() {
+    rainContainer.innerHTML = "";
+    for (let i = 0; i < DROPS; i++) {
+        const drop = document.createElement("div");
+        drop.classList.add("raindrop");
+        const width = Math.random() * 1.8 + 0.8;
+        const height = Math.random() * 12 + 8;
+        drop.style.width = `${width}px`;
+        drop.style.height = `${height}px`;
+        drop.style.left = `${Math.random() * 100}%`;
+        drop.style.animationDuration = `${Math.random() * 1.0 + 0.6}s`;
+        drop.style.animationDelay = `${Math.random() * 8}s`;
+        drop.style.opacity = Math.random() * 0.55 + 0.25;
+        rainContainer.appendChild(drop);
+    }
+}
+initRain();
+// периодическое смещение дождя
+setInterval(() => {
+    const drops = document.querySelectorAll(".raindrop");
+    drops.forEach(d => {
+        d.style.left = `${Math.random() * 100}%`;
+        d.style.animationDelay = `${Math.random() * 7}s`;
+    });
+}, 25000);
 
-/* ===== TEXT DATA ===== */
-const data = {
-    ru:{
-        title:"ЛИЧНОСТЬ",
-        name:"ИМЯ",
-        age:"ВОЗРАСТ",
-        city:"ГОРОД",
-        status:"СТАТУС",
-        work:"РАБОТА",
-        hours:"ЧАСЫ РАБОТЫ",
-        close:"ЗАКРЫТЬ",
-        schedule:[
-            "Понедельник — 07:35 - 00:00",
-            "Вторник — 07:35 - 00:00",
-            "Среда — 07:35 - 00:00",
-            "Четверг — 07:35 - 00:00",
-            "Пятница — 07:35 - 00:00",
-            "Суббота — 07:35 - 01:00",
-            "Воскресенье — 11:00 - 00:00"
-        ]
+// ========== 2. ЯЗЫК И ЛОКАЛИЗАЦИЯ ==========
+let currentLang = "ru";
+const langData = {
+    ru: {
+        title: "ЛИЧНОСТЬ",
+        hours: ["Пн 07:35 — 00:00","Вт 07:35 — 00:00","Ср 07:35 — 00:00","Чт 07:35 — 00:00","Пт 07:35 — 00:00","Сб 07:35 — 01:00","Вс 11:00 — 00:00"],
+        placeholder: "введите v+s",
+        toggleText: "РАБОЧИЕ ЧАСЫ"
     },
-    en:{
-        title:"IDENTITY",
-        name:"NAME",
-        age:"AGE",
-        city:"CITY",
-        status:"STATUS",
-        work:"WORK",
-        hours:"WORK HOURS",
-        close:"CLOSE",
-        schedule:[
-            "Monday — 07:35 - 00:00",
-            "Tuesday — 07:35 - 00:00",
-            "Wednesday — 07:35 - 00:00",
-            "Thursday — 07:35 - 00:00",
-            "Friday — 07:35 - 00:00",
-            "Saturday — 07:35 - 01:00",
-            "Sunday — 11:00 - 00:00"
-        ]
+    en: {
+        title: "IDENTITY",
+        hours: ["Mon 07:35 — 00:00","Tue 07:35 — 00:00","Wed 07:35 — 00:00","Thu 07:35 — 00:00","Fri 07:35 — 00:00","Sat 07:35 — 01:00","Sun 11:00 — 00:00"],
+        placeholder: "type v+s",
+        toggleText: "WORK HOURS"
     }
 };
 
-/* ===== LANGUAGE ===== */
-function setLanguage(l){
-
-    lang = l;
-
-    document.getElementById("langScreen").style.display="none";
-    document.getElementById("terminal").style.display="block";
-
-    applyLang();
+function applyLanguage() {
+    const data = langData[currentLang];
+    document.getElementById("profileTitle").innerText = data.title;
+    const hoursDiv = document.getElementById("hoursBlock");
+    hoursDiv.innerHTML = data.hours.map(h => `<div>${h}</div>`).join("");
+    const toggleBtn = document.getElementById("toggleHoursBtn");
+    if (toggleBtn) toggleBtn.innerText = data.toggleText;
+    const inputField = document.getElementById("consoleInput");
+    if (inputField) inputField.placeholder = data.placeholder;
 }
 
-/* ===== APPLY TEXT ===== */
-function applyLang(){
-
-    const d = data[lang];
-
-    document.getElementById("title").innerText = d.title;
-
-    document.getElementById("nameL").innerText = d.name;
-    document.getElementById("ageL").innerText = d.age;
-    document.getElementById("cityL").innerText = d.city;
-    document.getElementById("statusL").innerText = d.status;
-    document.getElementById("workL").innerText = d.work;
-
-    document.getElementById("hoursBtn").innerText = d.hours;
-    document.querySelector("button[onclick='closeModal()']").innerText = d.close;
-
-    const s = d.schedule;
-    document.getElementById("mon").innerText = s[0];
-    document.getElementById("tue").innerText = s[1];
-    document.getElementById("wed").innerText = s[2];
-    document.getElementById("thu").innerText = s[3];
-    document.getElementById("fri").innerText = s[4];
-    document.getElementById("sat").innerText = s[5];
-    document.getElementById("sun").innerText = s[6];
+function setLanguage(lang) {
+    currentLang = lang;
+    const langScreen = document.getElementById("langScreen");
+    langScreen.style.opacity = "0";
+    setTimeout(() => {
+        langScreen.style.display = "none";
+        const consoleDiv = document.getElementById("consolePanel");
+        consoleDiv.style.display = "block";
+        consoleDiv.style.animation = "fadeConsole 0.4s ease";
+    }, 220);
+    applyLanguage();
 }
 
-/* ===== MODAL ===== */
-function openModal(){
-    document.getElementById("modal").style.display="flex";
+// анимация появления
+const styleAnim = document.createElement('style');
+styleAnim.textContent = `
+@keyframes fadeConsole {
+    from { opacity: 0; transform: translate(-50%, -50%) scale(0.96); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+.console {
+    animation: fadeConsole 0.3s ease-out;
+}
+`;
+document.head.appendChild(styleAnim);
+
+// ========== 3. МОДАЛЬНОЕ ОКНО И КОМБО V+S ==========
+function openProfileModal() {
+    document.getElementById("profileModal").style.display = "flex";
+}
+function closeModal() {
+    document.getElementById("profileModal").style.display = "none";
+    document.getElementById("hoursBlock").style.display = "none";
 }
 
-function closeModal(){
-    document.getElementById("modal").style.display="none";
+function toggleWorkHours() {
+    const block = document.getElementById("hoursBlock");
+    if (block.style.display === "none" || block.style.display === "") {
+        block.style.display = "block";
+    } else {
+        block.style.display = "none";
+    }
 }
 
-/* ===== V + S ===== */
-let v=false,s=false;
-
-window.addEventListener("keydown",(e)=>{
-
-    if(e.key=="v")v=true;
-    if(e.key=="s")s=true;
-
-    if(v&&s) openModal();
+// Клавиши V и S
+let vKey = false, sKey = false;
+window.addEventListener("keydown", (e) => {
+    const key = e.key.toLowerCase();
+    if (key === 'v') { vKey = true; e.preventDefault(); }
+    if (key === 's') { sKey = true; e.preventDefault(); }
+    if (vKey && sKey) {
+        openProfileModal();
+        if (navigator.vibrate) navigator.vibrate(30);
+    }
+});
+window.addEventListener("keyup", (e) => {
+    const key = e.key.toLowerCase();
+    if (key === 'v') vKey = false;
+    if (key === 's') sKey = false;
 });
 
-window.addEventListener("keyup",(e)=>{
-
-    if(e.key=="v")v=false;
-    if(e.key=="s")s=false;
-});
-
-/* INPUT */
-document.getElementById("input").addEventListener("keydown",(e)=>{
-
-    if(e.key==="Enter"){
-
-        let val=e.target.value.toLowerCase();
-
-        if(val==="v+s"||val==="vs") openModal();
-
-        e.target.value="";
+// команда через инпут
+const cmdField = document.getElementById("consoleInput");
+cmdField.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+        const val = cmdField.value.trim().toLowerCase();
+        if (val === "v+s" || val === "vs" || val === "v s") {
+            openProfileModal();
+            cmdField.value = "";
+            cmdField.style.borderColor = "#b1f28a";
+            setTimeout(() => cmdField.style.borderColor = "rgba(110, 170, 80, 0.6)", 250);
+        } else if (val !== "") {
+            cmdField.placeholder = currentLang === 'ru' ? "неизвестно, используйте v+s" : "unknown, use v+s";
+            cmdField.value = "";
+            setTimeout(() => {
+                cmdField.placeholder = currentLang === 'ru' ? "введите v+s" : "type v+s";
+            }, 1300);
+        }
+        e.preventDefault();
     }
 });
 
-/* WORK HOURS */
-function toggleHours(){
+// кнопка часов
+document.getElementById("toggleHoursBtn").addEventListener("click", toggleWorkHours);
 
-    let box=document.getElementById("workHoursBox");
+// закрытие по ESC
+window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && document.getElementById("profileModal").style.display === "flex") {
+        closeModal();
+    }
+});
 
-    box.style.display = box.style.display==="block"?"none":"block";
+// динамическое обновление статуса (без эмодзи, строго)
+function updateStatus() {
+    const statusSpan = document.querySelector(".info-row:nth-child(4) span:last-child");
+    if (statusSpan) {
+        const hour = new Date().getHours();
+        if (hour < 6) statusSpan.innerText = "Night / Idle";
+        else if (hour < 12) statusSpan.innerText = "Morning / Offline";
+        else if (hour < 18) statusSpan.innerText = "Afternoon / Standby";
+        else statusSpan.innerText = "Evening / Curator";
+    }
 }
+updateStatus();
+setInterval(updateStatus, 60000);
 
-/* default */
-applyLang();
+// мелкий эффект: капли с листьев (без эмоджи, просто прозрачные точки)
+function addMistDrop() {
+    const mistEl = document.createElement("div");
+    mistEl.style.position = "fixed";
+    mistEl.style.bottom = "5%";
+    mistEl.style.left = Math.random() * 100 + "%";
+    mistEl.style.width = "3px";
+    mistEl.style.height = "3px";
+    mistEl.style.background = "rgba(150,210,130,0.2)";
+    mistEl.style.borderRadius = "50%";
+    mistEl.style.filter = "blur(1px)";
+    mistEl.style.pointerEvents = "none";
+    mistEl.style.zIndex = "2";
+    mistEl.style.animation = "mistFall 6s linear forwards";
+    document.body.appendChild(mistEl);
+    setTimeout(() => mistEl.remove(), 6000);
+}
+const mistStyle = document.createElement('style');
+mistStyle.textContent = `
+@keyframes mistFall {
+    0% { transform: translateY(0); opacity: 0.4; }
+    100% { transform: translateY(-80vh); opacity: 0; }
+}`;
+document.head.appendChild(mistStyle);
+setInterval(() => {
+    if (Math.random() > 0.75) addMistDrop();
+}, 3200);
 
+// Инициализация
+applyLanguage();
+
+// фикс: если модалка открыта, не кликать сквозь
+document.getElementById("profileModal").addEventListener("click", (e) => {
+    if (e.target === document.getElementById("profileModal")) closeModal();
+});
 </script>
-
 </body>
 </html>
