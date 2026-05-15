@@ -2,8 +2,8 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>unknown</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>unknown // concrete:wall</title>
     <style>
         * {
             margin: 0;
@@ -13,8 +13,8 @@
 
         body {
             min-height: 100vh;
-            background: #000000;
-            font-family: 'Courier New', 'Fira Code', monospace;
+            background: #0a0a0c;
+            font-family: 'Courier New', 'Fira Code', 'JetBrains Mono', monospace;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -22,7 +22,52 @@
             overflow: hidden;
         }
 
-        .stars {
+        /* ЧЕРНЫЙ ФОН + ЭФФЕКТ БЕТОННОЙ СТЕНЫ (еле видные полоски и структура) */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 3px,
+                    rgba(255, 255, 245, 0.02) 3px,
+                    rgba(255, 255, 245, 0.02) 6px
+                ),
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 4px,
+                    rgba(255, 255, 250, 0.012) 4px,
+                    rgba(255, 255, 250, 0.012) 8px
+                ),
+                radial-gradient(circle at 30% 50%, rgba(210,210,220,0.02) 1px, transparent 1px);
+            background-size: 12px 12px, 16px 16px, 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* дополнительный слой с "трещинами / царапинами" */
+        .wall-texture {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" opacity="0.09"><path d="M0 95 L800 93" stroke="white" stroke-width="0.5" fill="none"/><path d="M0 270 L800 268" stroke="white" stroke-width="0.35" fill="none"/><path d="M320 0 L315 600" stroke="white" stroke-width="0.45" fill="none"/><path d="M590 0 L595 600" stroke="white" stroke-width="0.4" fill="none"/><path d="M80 110 L85 190 L92 110" stroke="white" stroke-width="0.6" fill="none"/><path d="M700 320 L697 440 L704 330" stroke="white" stroke-width="0.5" fill="none"/><path d="M150 450 L155 520" stroke="white" stroke-width="0.4" fill="none"/></svg>');
+            background-repeat: repeat;
+            background-size: 340px 240px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.2;
+        }
+
+        /* падающие частицы "бетонная пыль" */
+        .dust {
             position: fixed;
             top: 0;
             left: 0;
@@ -30,123 +75,136 @@
             height: 100%;
             pointer-events: none;
             z-index: 1;
+            overflow: hidden;
         }
-
-        .star {
+        .dust-particle {
             position: absolute;
-            background-color: #ffffff;
+            background-color: rgba(210, 210, 230, 0.3);
             border-radius: 50%;
+            filter: blur(1px);
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-10vh) translateX(0); opacity: 0; }
+            15% { opacity: 0.45; }
+            85% { opacity: 0.3; }
+            100% { transform: translateY(110vh) translateX(25px); opacity: 0; }
         }
 
+        /* ГЛАВНЫЙ ТЕРМИНАЛ — бетонный стиль, бело-серые акценты */
         .terminal {
             position: relative;
-            z-index: 10;
-            width: 550px;
-            max-width: 90vw;
-            background: rgba(0, 0, 0, 0.95);
-            border: 1px solid #ff2a6d;
-            padding: 2rem;
-            box-shadow: 0 0 30px rgba(255, 42, 109, 0.15);
+            z-index: 20;
+            width: 590px;
+            max-width: 88vw;
+            background: rgba(6, 6, 8, 0.94);
+            backdrop-filter: blur(1.2px);
+            border: 1px solid rgba(170, 170, 185, 0.3);
+            padding: 2rem 2rem 1.8rem;
+            box-shadow: 0 25px 40px -15px rgba(0,0,0,0.85), inset 0 1px 0 rgba(255,255,255,0.06);
+            transition: all 0.2s ease;
         }
 
         .prompt-line {
-            color: #ff2a6d;
+            color: #c0c0d0;
             font-size: 0.9rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.8rem;
             font-family: monospace;
-            border-bottom: 1px solid #3a1030;
-            padding-bottom: 0.7rem;
+            border-bottom: 1px solid #2e2e38;
+            padding-bottom: 0.8rem;
+            letter-spacing: 0.3px;
         }
-
         .prompt-line span {
-            color: #ffffff;
+            color: #ececec;
         }
-
         .cursor {
             display: inline-block;
-            width: 8px;
-            height: 14px;
-            background-color: #ff2a6d;
+            width: 9px;
+            height: 15px;
+            background-color: #dddddd;
             animation: blink 1s infinite;
             vertical-align: middle;
-            margin-left: 4px;
+            margin-left: 6px;
+            box-shadow: 0 0 4px rgba(255,255,200,0.5);
         }
-
         @keyframes blink {
             0%, 50% { opacity: 1; }
             51%, 100% { opacity: 0; }
         }
 
         .input-line {
-            margin: 1.2rem 0;
+            margin: 1.6rem 0;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             font-family: monospace;
+            border-left: 2px solid #444455;
+            padding-left: 16px;
+            transition: border 0.2s;
         }
-
         .input-prefix {
-            color: #ff2a6d;
+            color: #d0d0e0;
             font-size: 1rem;
+            font-weight: 500;
         }
-
         .input-field {
             background: transparent;
             border: none;
-            color: #ffffff;
+            color: #f2f2f2;
             font-family: 'Courier New', monospace;
-            font-size: 1rem;
+            font-size: 0.95rem;
             outline: none;
             flex: 1;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
-
         .input-field::placeholder {
-            color: #331a2a;
+            color: #525260;
             font-size: 0.8rem;
+            font-style: italic;
         }
 
         .hint-box {
             margin-top: 2rem;
-            padding-top: 1rem;
-            border-top: 1px solid #2a1020;
+            padding-top: 1.2rem;
+            border-top: 1px solid #2a2a32;
             text-align: center;
         }
-
         .key-combo {
-            color: #aa5588;
+            color: #b0b0c0;
             font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 2px;
+            font-weight: 400;
         }
-
         .key-combo kbd {
-            background: #110511;
-            border: 1px solid #ff2a6d;
-            padding: 4px 12px;
-            margin: 0 4px;
-            font-size: 1.2rem;
+            background: #121217;
+            border: 1px solid #6e6e82;
+            padding: 5px 13px;
+            margin: 0 5px;
+            font-size: 1.1rem;
             font-weight: bold;
-            color: #ff2a6d;
-            border-radius: 0;
+            color: #f5f5ff;
+            border-radius: 0px;
             font-family: monospace;
+            box-shadow: inset 0 1px 0 #2c2c34;
+            transition: 0.05s linear;
         }
-
         .attempt-counter {
             font-size: 0.7rem;
-            color: #552a44;
-            margin-top: 10px;
+            color: #6e6e7e;
+            margin-top: 14px;
+            font-family: monospace;
+            letter-spacing: 1px;
         }
-
         .key-pressed {
-            animation: keyFlash 0.1s ease-out;
+            animation: keyFlashWhite 0.08s ease-out;
+        }
+        @keyframes keyFlashWhite {
+            0% { background: #5e5e74; color: white; border-color: #f0f0f0; transform: scale(1.02); }
+            100% { background: #121217; color: #f5f5ff; border-color: #6e6e82; transform: scale(1); }
         }
 
-        @keyframes keyFlash {
-            0% { background: #3a1030; color: #ff6a9d; border-color: #ff6a9d; transform: scale(1.05); }
-            100% { background: #110511; color: #ff2a6d; border-color: #ff2a6d; transform: scale(1); }
-        }
-
+        /* МОДАЛЬНОЕ ОКНО — БРУТАЛЬНЫЙ БЕТОН */
         .modal {
             display: none;
             position: fixed;
@@ -154,154 +212,248 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: #000000ee;
+            background: rgba(3, 3, 5, 0.94);
+            backdrop-filter: blur(5px);
             z-index: 1000;
             align-items: center;
             justify-content: center;
             font-family: 'Courier New', monospace;
-            backdrop-filter: blur(2px);
         }
-
         .modal-content {
-            background: #0a0006;
-            width: 400px;
-            max-width: 85%;
-            border: 1px solid #ff2a6d;
-            padding: 2rem;
+            background: #0c0c10;
+            width: 430px;
+            max-width: 86%;
+            border: 1px solid #5a5a70;
+            padding: 2rem 2rem 1.8rem;
             text-align: left;
-            color: #ddbbcc;
-            box-shadow: 0 0 30px rgba(255, 42, 109, 0.2);
+            color: #e2e2ec;
+            box-shadow: 0 0 45px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.05);
+            position: relative;
+            transform: scale(0.98);
+            transition: transform 0.2s;
         }
-
+        .modal-content::after {
+            content: "";
+            position: absolute;
+            bottom: 12px;
+            right: 18px;
+            width: 40px;
+            height: 2px;
+            background: #5a5a70;
+            opacity: 0.5;
+        }
         .modal-content h2 {
             font-size: 1.2rem;
             font-weight: 400;
             letter-spacing: 2px;
-            margin-bottom: 1.5rem;
-            color: #ff2a6d;
-            border-left: 3px solid #ff2a6d;
-            padding-left: 12px;
+            margin-bottom: 1.7rem;
+            color: #ffffff;
+            border-left: 3px solid #aaaabb;
+            padding-left: 14px;
             text-transform: uppercase;
         }
-
         .bio-item {
-            font-size: 0.95rem;
-            margin: 0.8rem 0;
-            border-bottom: 1px dashed #3a1030;
-            padding-bottom: 6px;
+            font-size: 0.92rem;
+            margin: 0.9rem 0;
+            border-bottom: 1px solid #26262e;
+            padding-bottom: 7px;
+            display: flex;
+            align-items: baseline;
         }
-
         .bio-item .label {
-            color: #ff6a9d;
+            color: #c5c5da;
             display: inline-block;
-            width: 70px;
-            font-weight: bold;
+            width: 75px;
+            font-weight: 500;
+            letter-spacing: 1px;
         }
-
         .bio-item .value {
             color: #fff;
+            font-weight: 300;
         }
-
         .close-modal-btn {
             background: transparent;
-            border: 1px solid #ff2a6d;
-            padding: 8px 20px;
-            font-size: 0.8rem;
+            border: 1px solid #7a7a8e;
+            padding: 9px 20px;
+            font-size: 0.75rem;
             font-weight: 400;
-            color: #ff2a6d;
+            color: #ddd;
             cursor: pointer;
-            margin-top: 1.5rem;
+            margin-top: 1.6rem;
             font-family: monospace;
             text-transform: uppercase;
             letter-spacing: 2px;
             transition: 0.2s;
             width: 100%;
         }
-
         .close-modal-btn:hover {
-            background: #1a0512;
-            border-color: #ff6a9d;
-            color: #ff6a9d;
+            background: #1f1f2a;
+            border-color: #f0f0f0;
+            color: white;
         }
 
+        /* нижняя информационная строка (динамический текст) */
         .matrix-line {
             position: fixed;
-            bottom: 10px;
-            left: 10px;
-            z-index: 5;
-            font-size: 0.6rem;
-            color: #3a1030;
+            bottom: 14px;
+            left: 18px;
+            z-index: 15;
+            font-size: 0.68rem;
+            color: #6a6a7c;
             font-family: monospace;
             white-space: nowrap;
             overflow: hidden;
-            width: 300px;
+            max-width: 85vw;
             pointer-events: none;
+            background: rgba(0,0,0,0.55);
+            padding: 5px 12px;
+            border-left: 2px solid #7a7a92;
+            letter-spacing: 0.8px;
+            backdrop-filter: blur(2px);
+        }
+        /* сканирующая линия поверх экрана */
+        .scan-line {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #ffffff60, transparent);
+            animation: scanMove 7s linear infinite;
+            pointer-events: none;
+            z-index: 35;
+            opacity: 0.4;
+        }
+        @keyframes scanMove {
+            0% { top: -3%; }
+            100% { top: 105%; }
+        }
+        /* мелкий шум поверх всего */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJmIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjYiIG51bU9jdGF2ZXM9IjMiLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjZikiIG9wYWNpdHk9IjAuMDgiLz48L3N2Zz4=');
+            background-repeat: repeat;
+            opacity: 0.1;
+            pointer-events: none;
+            z-index: 2;
+        }
+        /* дополнительный эффект "микровибрация" */
+        @keyframes slightShake {
+            0% { transform: translate(0px, 0px); }
+            25% { transform: translate(0.4px, -0.2px); }
+            75% { transform: translate(-0.3px, 0.1px); }
+            100% { transform: translate(0,0); }
+        }
+        .terminal-shake {
+            animation: slightShake 0.08s ease-in-out 2;
         }
     </style>
 </head>
 <body>
 
-<div class="stars" id="starfield"></div>
+<!-- Слои окружения: бетон, трещины, пыль, шум, сканер -->
+<div class="wall-texture"></div>
+<div class="dust" id="dustContainer"></div>
+<div class="noise-overlay"></div>
+<div class="scan-line"></div>
 
-<div class="terminal">
+<div class="terminal" id="mainTerminal">
     <div class="prompt-line">
-        > user@unknown:~<span>$</span> <span id="blinkingText">ACCESS_GRANTED</span><span class="cursor"></span>
+        > user@concrete:~<span>$</span> <span id="blinkingText">WALL.BIO</span><span class="cursor"></span>
     </div>
     
-    <div class="input-line">
-        <span class="input-prefix">$></span>
-        <input type="text" class="input-field" id="commandInput" placeholder="[ v+s ]" autocomplete="off">
+    <div class="input-line" id="inputLineWrapper">
+        <span class="input-prefix">$&gt;</span>
+        <input type="text" class="input-field" id="commandInput" placeholder="[ v+s ] / enter access" autocomplete="off">
     </div>
     
     <div class="hint-box">
         <div class="key-combo">
-            [V] + [S]
+            <kbd id="keyV">V</kbd> + <kbd id="keyS">S</kbd>
         </div>
         <div class="attempt-counter" id="attemptText">[ ATTEMPTS: 0 ]</div>
     </div>
 </div>
 
-<div class="matrix-line" id="matrixText">01101101 01100001 01110100 01110010 01101001 01111000</div>
+<div class="matrix-line" id="matrixText">>_ concrete_wall // silent mode</div>
 
 <div id="bioModal" class="modal">
     <div class="modal-content">
-        <h2>IDENTITY</h2>
+        <h2>IDENTITY // BRUTAL</h2>
         <div class="bio-item"><span class="label">NAME</span><span class="value">: PASHA</span></div>
         <div class="bio-item"><span class="label">AGE</span><span class="value">: 17</span></div>
         <div class="bio-item"><span class="label">CITY</span><span class="value">: PERM</span></div>
-        <div class="bio-item"><span class="label">STATUS</span><span class="value">: OFFLINE</span></div>
-        <button class="close-modal-btn" id="closeModalBtn">CLOSE</button>
+        <div class="bio-item"><span class="label">STATUS</span><span class="value">: OFFLINE // WATCHING</span></div>
+        <div class="bio-item"><span class="label">SIGNAL</span><span class="value">: ▰▰▰▰▰▰▰▰▰▰ 0%</span></div>
+        <div class="bio-item"><span class="label">WALL</span><span class="value">: GREY_STONE_0x7F</span></div>
+        <button class="close-modal-btn" id="closeModalBtn">CLOSE // ESC</button>
     </div>
 </div>
 
 <script>
-    function createStars() {
-        const container = document.getElementById('starfield');
-        if (!container) return;
-        const starCount = 400;
-        for (let i = 0; i < starCount; i++) {
-            const star = document.createElement('div');
-            star.classList.add('star');
-            const size = Math.random() * 2.2 + 0.5;
-            star.style.width = size + 'px';
-            star.style.height = size + 'px';
-            star.style.left = Math.random() * 100 + '%';
-            star.style.top = Math.random() * 100 + '%';
-            star.style.opacity = Math.random() * 0.8 + 0.2;
-            container.appendChild(star);
-        }
-        for (let i = 0; i < 100; i++) {
-            const bright = document.createElement('div');
-            bright.classList.add('star');
-            bright.style.width = (Math.random() * 2.5 + 1.2) + 'px';
-            bright.style.height = bright.style.width;
-            bright.style.left = Math.random() * 100 + '%';
-            bright.style.top = Math.random() * 100 + '%';
-            bright.style.opacity = Math.random() * 0.9 + 0.5;
-            container.appendChild(bright);
+    // 1. СОЗДАНИЕ ПЫЛИ (бетонная взвесь)
+    function createDust() {
+        const dustContainer = document.getElementById('dustContainer');
+        if (!dustContainer) return;
+        const particleCount = 110;
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('dust-particle');
+            const size = Math.random() * 3.2 + 0.5;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDuration = Math.random() * 8 + 4.5 + 's';
+            particle.style.animationDelay = Math.random() * 9 + 's';
+            particle.style.opacity = Math.random() * 0.45 + 0.08;
+            particle.style.background = `rgba(210, 215, 235, ${Math.random() * 0.35 + 0.1})`;
+            dustContainer.appendChild(particle);
         }
     }
 
+    // 2. ДОБАВЛЯЕМ "ТРЕЩИНЫ" на стену (горизонтальные полосы)
+    function addCrackExtras() {
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .crack-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-image: repeating-linear-gradient(105deg, 
+                    transparent, 
+                    transparent 18px, 
+                    rgba(255, 255, 240, 0.012) 18px, 
+                    rgba(220, 220, 245, 0.018) 22px);
+                pointer-events: none;
+                z-index: 1;
+            }
+            .vignette {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                box-shadow: inset 0 0 70px rgba(0,0,0,0.7);
+                pointer-events: none;
+                z-index: 3;
+            }
+        `;
+        document.head.appendChild(style);
+        const crackDiv = document.createElement('div');
+        crackDiv.className = 'crack-overlay';
+        document.body.appendChild(crackDiv);
+        const vignette = document.createElement('div');
+        vignette.className = 'vignette';
+        document.body.appendChild(vignette);
+    }
+    
+    // 3. ОСНОВНАЯ ЛОГИКА + ЭФФЕКТЫ
     let vKeyHeld = false;
     let sKeyHeld = false;
     let modalActive = false;
@@ -310,19 +462,31 @@
     const modal = document.getElementById('bioModal');
     const closeBtn = document.getElementById('closeModalBtn');
     const commandInput = document.getElementById('commandInput');
+    const keyVDiv = document.getElementById('keyV');
+    const keySDiv = document.getElementById('keyS');
+    const terminalDiv = document.getElementById('mainTerminal');
 
     function updateAttempts() {
         if (attemptSpan) attemptSpan.innerText = '[ ATTEMPTS: ' + attemptCount + ' ]';
     }
-
+    
     function flashKey(element) {
         if (!element) return;
         element.classList.add('key-pressed');
         setTimeout(() => {
             element.classList.remove('key-pressed');
-        }, 120);
+        }, 100);
     }
-
+    
+    // Эффект "дрожание терминала" при ошибке/открытии
+    function shakeTerminal() {
+        if (!terminalDiv) return;
+        terminalDiv.classList.add('terminal-shake');
+        setTimeout(() => {
+            terminalDiv.classList.remove('terminal-shake');
+        }, 180);
+    }
+    
     function openModal() {
         if (modalActive) return;
         modalActive = true;
@@ -331,36 +495,50 @@
         sKeyHeld = false;
         attemptCount++;
         updateAttempts();
+        // визуальный фидбек: терминал слегка подсвечивается
+        if (terminalDiv) {
+            terminalDiv.style.borderColor = '#aaaacc';
+            setTimeout(() => { if(terminalDiv) terminalDiv.style.borderColor = 'rgba(170, 170, 185, 0.3)'; }, 220);
+            shakeTerminal(); // легкая встряска при успешном доступе
+        }
+        const matrixSpanBottom = document.getElementById('matrixText');
+        if(matrixSpanBottom) matrixSpanBottom.textContent = '>_ access granted // wall opened';
+        setTimeout(() => {
+            if(matrixSpanBottom && matrixSpanBottom.textContent.includes('granted')) 
+                matrixSpanBottom.textContent = '>_ concrete_wall // silent mode';
+        }, 2700);
     }
 
     function closeModalFunc() {
         modal.style.display = 'none';
         modalActive = false;
+        // сброс эффектов
     }
-
+    
+    // КЛЮЧИ
     window.addEventListener('keydown', (e) => {
         const key = e.key.toLowerCase();
-        
-        if (modalActive) return;
-        
+        if (modalActive) {
+            if (key === 'escape') {
+                e.preventDefault();
+                closeModalFunc();
+            }
+            return;
+        }
         if (key === 'v') {
             e.preventDefault();
             if (!vKeyHeld) {
                 vKeyHeld = true;
-                const keyVDiv = document.getElementById('keyV');
-                if (keyVDiv) flashKey(keyVDiv);
+                flashKey(keyVDiv);
             }
         }
-        
         if (key === 's') {
             e.preventDefault();
             if (!sKeyHeld) {
                 sKeyHeld = true;
-                const keySDiv = document.getElementById('keyS');
-                if (keySDiv) flashKey(keySDiv);
+                flashKey(keySDiv);
             }
         }
-        
         if (vKeyHeld && sKeyHeld) {
             openModal();
         }
@@ -377,53 +555,140 @@
         if (e.target === modal) closeModalFunc();
     });
     
+    // Команды через инпут
     if (commandInput) {
         commandInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 const val = commandInput.value.trim().toLowerCase();
-                if (val === 'v s' || val === 'vs' || val === 'v+s') {
+                if (val === 'v s' || val === 'vs' || val === 'v+s' || val === 'v s') {
                     openModal();
                     commandInput.value = '';
+                } else if (val === 'help' || val === '?') {
+                    const matrixSpan = document.getElementById('matrixText');
+                    if (matrixSpan) matrixSpan.textContent = '>_ command: V+S | /status | /wall';
+                    setTimeout(() => {
+                        if(matrixSpan && matrixSpan.textContent.includes('command')) 
+                            matrixSpan.textContent = '>_ concrete_wall // silent mode';
+                    }, 2200);
+                    commandInput.value = '';
+                } else if (val === '/status') {
+                    const matrixSpan = document.getElementById('matrixText');
+                    matrixSpan.textContent = `>_ attempts: ${attemptCount} // wall integrity 97%`;
+                    setTimeout(() => {
+                        if(matrixSpan) matrixSpan.textContent = '>_ concrete_wall // silent mode';
+                    }, 2000);
+                    commandInput.value = '';
                 } else if (val !== '') {
+                    const matrixSpan = document.getElementById('matrixText');
+                    const originalMsg = matrixSpan.innerText;
+                    matrixSpan.textContent = '>_ unknown // access: V+S or /status';
+                    setTimeout(() => { if(matrixSpan) matrixSpan.innerText = originalMsg; }, 1800);
+                    shakeTerminal(); // дрожание при неверной команде
+                    commandInput.value = '';
+                } else {
                     commandInput.value = '';
                 }
             }
         });
     }
     
-    const matrixSpan = document.getElementById('matrixText');
-    let matrixStrings = [
-        ">_ access denied",
-        ">_ allow V+S", 
-        ">_ perm_17", 
-        "01110000 01100001 01110011 01101000 01100001",
-        ">_ waiting",
-        ">_ v+s = bio"
+    // Динамическая нижняя строка - меняющиеся сообщения
+    const matrixSpanBottom = document.getElementById('matrixText');
+    let matrixMessages = [
+        ">_ surface: concrete v2",
+        ">_ allow V+S // identity",
+        ">_ gray scale // offline",
+        ">_ wall whispers // access",
+        ">_ signal: ▰▰▰▰▰▰▰▰▰▰ 0%",
+        ">_ brutalist design",
+        ">_ /status for info"
     ];
-    let idx = 0;
+    let msgIdx = 0;
     setInterval(() => {
-        if (matrixSpan) {
-            idx = (idx + 1) % matrixStrings.length;
-            matrixSpan.textContent = matrixStrings[idx];
+        if (matrixSpanBottom && !modalActive) {
+            msgIdx = (msgIdx + 1) % matrixMessages.length;
+            matrixSpanBottom.textContent = matrixMessages[msgIdx];
         }
-    }, 2800);
+    }, 3400);
     
-    createStars();
-    
+    // Эффект печати текста WALL.BIO
     const textElement = document.getElementById('blinkingText');
     if (textElement) {
         const originalText = textElement.innerText;
         textElement.innerText = '';
-        let i = 0;
-        function typeWriter() {
-            if (i < originalText.length && textElement) {
-                textElement.innerText += originalText.charAt(i);
-                i++;
-                setTimeout(typeWriter, 80);
+        let charIndex = 0;
+        function typeWriterEffect() {
+            if (charIndex < originalText.length && textElement) {
+                textElement.innerText += originalText.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeWriterEffect, 70);
+            } else if (textElement && charIndex >= originalText.length) {
+                const curs = document.querySelector('.cursor');
+                if(curs) curs.style.opacity = '1';
             }
         }
-        typeWriter();
+        typeWriterEffect();
     }
+    
+    // Подсветка строки ввода при фокусе
+    const inputField = document.getElementById('commandInput');
+    const inputLineWrap = document.getElementById('inputLineWrapper');
+    if(inputField && inputLineWrap) {
+        inputField.addEventListener('focus', () => {
+            inputLineWrap.style.borderLeftColor = '#b0b0cc';
+        });
+        inputField.addEventListener('blur', () => {
+            inputLineWrap.style.borderLeftColor = '#444455';
+        });
+    }
+    
+    // БОНУС: слушатель esc для закрытия модалки везде
+    document.addEventListener('keydown', (e) => {
+        if (modalActive && e.key === 'Escape') {
+            closeModalFunc();
+        }
+    });
+    
+    // Мерцание счетчика при >3 попытках (дополнительный геймплей)
+    let lastAttempt = 0;
+    setInterval(() => {
+        if(attemptCount > 2 && attemptSpan && attemptCount !== lastAttempt) {
+            attemptSpan.style.opacity = '0.6';
+            setTimeout(() => { if(attemptSpan) attemptSpan.style.opacity = '1'; }, 300);
+            lastAttempt = attemptCount;
+        }
+    }, 200);
+    
+    // Создать эффект "микро-скрежет" при наведении на клавиши
+    const allKbd = document.querySelectorAll('kbd');
+    allKbd.forEach(k => {
+        k.addEventListener('mouseenter', () => {
+            k.style.backgroundColor = '#2a2a34';
+        });
+        k.addEventListener('mouseleave', () => {
+            k.style.backgroundColor = '#121217';
+        });
+    });
+    
+    // Запуск фич окружения
+    createDust();
+    addCrackExtras();
+    
+    // Анимация дыма/пыли дополнительная (рандомные частицы)
+    setInterval(() => {
+        if(Math.random() < 0.3 && !modalActive) {
+            const extraParticle = document.createElement('div');
+            extraParticle.classList.add('dust-particle');
+            extraParticle.style.width = Math.random() * 2 + 0.8 + 'px';
+            extraParticle.style.height = extraParticle.style.width;
+            extraParticle.style.left = Math.random() * 100 + '%';
+            extraParticle.style.animationDuration = Math.random() * 5 + 3 + 's';
+            extraParticle.style.opacity = '0.3';
+            extraParticle.style.background = `rgba(200,200,220,0.25)`;
+            document.getElementById('dustContainer')?.appendChild(extraParticle);
+            setTimeout(() => extraParticle.remove(), 5000);
+        }
+    }, 1800);
 </script>
 </body>
 </html>
