@@ -22,7 +22,6 @@
             overflow: hidden;
         }
 
-        /* звёзды */
         .stars {
             position: fixed;
             top: 0;
@@ -39,24 +38,23 @@
             border-radius: 50%;
         }
 
-        /* терминал */
         .terminal {
             position: relative;
             z-index: 10;
             width: 550px;
             max-width: 90vw;
             background: rgba(0, 0, 0, 0.95);
-            border: 1px solid #2a2a2a;
+            border: 1px solid #ff2a6d;
             padding: 2rem;
-            box-shadow: 0 0 30px rgba(0,0,0,0.9);
+            box-shadow: 0 0 30px rgba(255, 42, 109, 0.15);
         }
 
         .prompt-line {
-            color: #00ff41;
+            color: #ff2a6d;
             font-size: 0.9rem;
             margin-bottom: 1.5rem;
             font-family: monospace;
-            border-bottom: 1px solid #1a3a1a;
+            border-bottom: 1px solid #3a1030;
             padding-bottom: 0.7rem;
         }
 
@@ -68,7 +66,7 @@
             display: inline-block;
             width: 8px;
             height: 14px;
-            background-color: #00ff41;
+            background-color: #ff2a6d;
             animation: blink 1s infinite;
             vertical-align: middle;
             margin-left: 4px;
@@ -88,7 +86,7 @@
         }
 
         .input-prefix {
-            color: #00ff41;
+            color: #ff2a6d;
             font-size: 1rem;
         }
 
@@ -104,53 +102,51 @@
         }
 
         .input-field::placeholder {
-            color: #333;
+            color: #331a2a;
             font-size: 0.8rem;
         }
 
         .hint-box {
             margin-top: 2rem;
             padding-top: 1rem;
-            border-top: 1px solid #1a1a1a;
+            border-top: 1px solid #2a1020;
             text-align: center;
         }
 
         .key-combo {
-            color: #888;
+            color: #aa5588;
             font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 2px;
         }
 
         .key-combo kbd {
-            background: #111;
-            border: 1px solid #333;
+            background: #110511;
+            border: 1px solid #ff2a6d;
             padding: 4px 12px;
             margin: 0 4px;
             font-size: 1.2rem;
             font-weight: bold;
-            color: #00ff41;
+            color: #ff2a6d;
             border-radius: 0;
             font-family: monospace;
         }
 
         .attempt-counter {
             font-size: 0.7rem;
-            color: #444;
+            color: #552a44;
             margin-top: 10px;
         }
 
-        /* анимация нажатия */
         .key-pressed {
             animation: keyFlash 0.1s ease-out;
         }
 
         @keyframes keyFlash {
-            0% { background: #2a2a2a; color: #00ff41; border-color: #00ff41; transform: scale(1.05); }
-            100% { background: #111; color: #888; border-color: #333; transform: scale(1); }
+            0% { background: #3a1030; color: #ff6a9d; border-color: #ff6a9d; transform: scale(1.05); }
+            100% { background: #110511; color: #ff2a6d; border-color: #ff2a6d; transform: scale(1); }
         }
 
-        /* модальное окно */
         .modal {
             display: none;
             position: fixed;
@@ -167,14 +163,14 @@
         }
 
         .modal-content {
-            background: #0a0a0a;
+            background: #0a0006;
             width: 400px;
             max-width: 85%;
-            border: 1px solid #2a5a2a;
+            border: 1px solid #ff2a6d;
             padding: 2rem;
             text-align: left;
-            color: #cccccc;
-            box-shadow: 0 0 30px rgba(0,255,65,0.1);
+            color: #ddbbcc;
+            box-shadow: 0 0 30px rgba(255, 42, 109, 0.2);
         }
 
         .modal-content h2 {
@@ -182,8 +178,8 @@
             font-weight: 400;
             letter-spacing: 2px;
             margin-bottom: 1.5rem;
-            color: #00ff41;
-            border-left: 3px solid #00ff41;
+            color: #ff2a6d;
+            border-left: 3px solid #ff2a6d;
             padding-left: 12px;
             text-transform: uppercase;
         }
@@ -191,12 +187,12 @@
         .bio-item {
             font-size: 0.95rem;
             margin: 0.8rem 0;
-            border-bottom: 1px dashed #1a2a1a;
+            border-bottom: 1px dashed #3a1030;
             padding-bottom: 6px;
         }
 
         .bio-item .label {
-            color: #00ff41;
+            color: #ff6a9d;
             display: inline-block;
             width: 70px;
             font-weight: bold;
@@ -208,11 +204,11 @@
 
         .close-modal-btn {
             background: transparent;
-            border: 1px solid #2a5a2a;
+            border: 1px solid #ff2a6d;
             padding: 8px 20px;
             font-size: 0.8rem;
             font-weight: 400;
-            color: #00ff41;
+            color: #ff2a6d;
             cursor: pointer;
             margin-top: 1.5rem;
             font-family: monospace;
@@ -223,18 +219,18 @@
         }
 
         .close-modal-btn:hover {
-            background: #0a2a0a;
-            border-color: #00ff41;
+            background: #1a0512;
+            border-color: #ff6a9d;
+            color: #ff6a9d;
         }
 
-        /* доп элемент - матричный дождь внизу */
         .matrix-line {
             position: fixed;
             bottom: 10px;
             left: 10px;
             z-index: 5;
             font-size: 0.6rem;
-            color: #0a3a0a;
+            color: #3a1030;
             font-family: monospace;
             white-space: nowrap;
             overflow: hidden;
@@ -254,14 +250,14 @@
     
     <div class="input-line">
         <span class="input-prefix">$›</span>
-        <input type="text" class="input-field" id="commandInput" placeholder="введите код / или нажми V+S" autocomplete="off">
+        <input type="text" class="input-field" id="commandInput" placeholder="[ v+s ]" autocomplete="off">
     </div>
     
     <div class="hint-box">
         <div class="key-combo">
-            ⚡ КОМБИНАЦИЯ: <kbd id="keyV">V</kbd> + <kbd id="keyS">S</kbd> ⚡
+            [V] + [S]
         </div>
-        <div class="attempt-counter" id="attemptText">Попыток: 0</div>
+        <div class="attempt-counter" id="attemptText">[ ATTEMPTS: 0 ]</div>
     </div>
 </div>
 
@@ -270,17 +266,16 @@
 <div id="bioModal" class="modal">
     <div class="modal-content">
         <h2>⟫⟫ IDENTITY ⟪⟪</h2>
-        <div class="bio-item"><span class="label">NAME</span><span class="value">: PAŠA</span></div>
-        <div class="bio-item"><span class="label">AGE</span><span class="value">: 17</span></div>
-        <div class="bio-item"><span class="label">CITY</span><span class="value">: PERM</span></div>
-        <div class="bio-item"><span class="label">STATUS</span><span class="value">: ONLINE</span></div>
-        <div class="bio-item"><span class="label">SIGN</span><span class="value">: ██████████</span></div>
-        <button class="close-modal-btn" id="closeModalBtn">[ ЗАКРЫТЬ ]</button>
+        <div class="bio-item"><span class="label">NAME</span><span class="value">: P A S H A</span></div>
+        <div class="bio-item"><span class="label">AGE</span><span class="value">: 1 7</span></div>
+        <div class="bio-item"><span class="label">CITY</span><span class="value">: P E R M</span></div>
+        <div class="bio-item"><span class="label">STATUS</span><span class="value">: ██████</span></div>
+        <div class="bio-item"><span class="label">SIGN</span><span class="value">: ✦ ✦ ✦</span></div>
+        <button class="close-modal-btn" id="closeModalBtn">[ CLOSE ]</button>
     </div>
 </div>
 
 <script>
-    // ЗВЁЗДЫ
     function createStars() {
         const container = document.getElementById('starfield');
         if (!container) return;
@@ -308,7 +303,6 @@
         }
     }
 
-    // КОМБИНАЦИЯ V+S — надёжная, без глюков
     let vKeyHeld = false;
     let sKeyHeld = false;
     let modalActive = false;
@@ -321,7 +315,7 @@
     const commandInput = document.getElementById('commandInput');
 
     function updateAttempts() {
-        if (attemptSpan) attemptSpan.innerText = `Попыток: ${attemptCount}`;
+        if (attemptSpan) attemptSpan.innerText = `[ ATTEMPTS: ${attemptCount} ]`;
     }
 
     function flashKey(element) {
@@ -336,10 +330,8 @@
         if (modalActive) return;
         modalActive = true;
         modal.style.display = 'flex';
-        // сброс флагов после открытия
         vKeyHeld = false;
         sKeyHeld = false;
-        // увеличиваем счётчик только если открыли через комбинацию
         attemptCount++;
         updateAttempts();
     }
@@ -349,18 +341,16 @@
         modalActive = false;
     }
 
-    // ГЛАВНАЯ ЛОГИКА КЛАВИШ (работает без задержек)
     window.addEventListener('keydown', (e) => {
         const key = e.key.toLowerCase();
         
-        // игнорируем если модалка открыта
         if (modalActive) return;
         
         if (key === 'v') {
             e.preventDefault();
             if (!vKeyHeld) {
                 vKeyHeld = true;
-                flashKey(keyVDiv);
+                if (keyVDiv) flashKey(keyVDiv);
             }
         }
         
@@ -368,11 +358,10 @@
             e.preventDefault();
             if (!sKeyHeld) {
                 sKeyHeld = true;
-                flashKey(keySDiv);
+                if (keySDiv) flashKey(keySDiv);
             }
         }
         
-        // проверяем комбинацию в момент нажатия
         if (vKeyHeld && sKeyHeld) {
             openModal();
         }
@@ -380,21 +369,15 @@
     
     window.addEventListener('keyup', (e) => {
         const key = e.key.toLowerCase();
-        if (key === 'v') {
-            vKeyHeld = false;
-        }
-        if (key === 's') {
-            sKeyHeld = false;
-        }
+        if (key === 'v') vKeyHeld = false;
+        if (key === 's') sKeyHeld = false;
     });
     
-    // закрытие модалки
     if (closeBtn) closeBtn.addEventListener('click', closeModalFunc);
     modal.addEventListener('click', (e) => {
         if (e.target === modal) closeModalFunc();
     });
     
-    // ДОПОЛНИТЕЛЬНАЯ ФИЧА: если ввести в консоль "v s" или "vs" в поле ввода — тоже откроется
     if (commandInput) {
         commandInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
@@ -403,16 +386,12 @@
                     openModal();
                     commandInput.value = '';
                 } else if (val !== '') {
-                    // просто эффект - очищаем
                     commandInput.value = '';
-                    flashKey(keyVDiv);
-                    setTimeout(() => flashKey(keySDiv), 50);
                 }
             }
         });
     }
     
-    // БЕГУЩАЯ СТРОКА (ещё одна фича для атмосферы)
     const matrixSpan = document.getElementById('matrixText');
     let matrixStrings = [
         ">_ access denied", ">_ allow V+S", ">_ perm_17", 
@@ -427,10 +406,8 @@
         }
     }, 2800);
     
-    // создаём звёзды
     createStars();
     
-    // эффект печати в первой строке
     const textElement = document.getElementById('blinkingText');
     if (textElement) {
         const originalText = textElement.innerText;
