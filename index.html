@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>// UNKNOWN</title>
+    <title>unknown</title>
     <style>
         * {
             margin: 0;
@@ -249,7 +249,7 @@
     </div>
     
     <div class="input-line">
-        <span class="input-prefix">$›</span>
+        <span class="input-prefix">$></span>
         <input type="text" class="input-field" id="commandInput" placeholder="[ v+s ]" autocomplete="off">
     </div>
     
@@ -265,13 +265,12 @@
 
 <div id="bioModal" class="modal">
     <div class="modal-content">
-        <h2>⟫⟫ IDENTITY ⟪⟪</h2>
-        <div class="bio-item"><span class="label">NAME</span><span class="value">: P A S H A</span></div>
-        <div class="bio-item"><span class="label">AGE</span><span class="value">: 1 7</span></div>
-        <div class="bio-item"><span class="label">CITY</span><span class="value">: P E R M</span></div>
-        <div class="bio-item"><span class="label">STATUS</span><span class="value">: ██████</span></div>
-        <div class="bio-item"><span class="label">SIGN</span><span class="value">: ✦ ✦ ✦</span></div>
-        <button class="close-modal-btn" id="closeModalBtn">[ CLOSE ]</button>
+        <h2>IDENTITY</h2>
+        <div class="bio-item"><span class="label">NAME</span><span class="value">: PASHA</span></div>
+        <div class="bio-item"><span class="label">AGE</span><span class="value">: 17</span></div>
+        <div class="bio-item"><span class="label">CITY</span><span class="value">: PERM</span></div>
+        <div class="bio-item"><span class="label">STATUS</span><span class="value">: OFFLINE</span></div>
+        <button class="close-modal-btn" id="closeModalBtn">CLOSE</button>
     </div>
 </div>
 
@@ -308,14 +307,12 @@
     let modalActive = false;
     let attemptCount = 0;
     const attemptSpan = document.getElementById('attemptText');
-    const keyVDiv = document.getElementById('keyV');
-    const keySDiv = document.getElementById('keyS');
     const modal = document.getElementById('bioModal');
     const closeBtn = document.getElementById('closeModalBtn');
     const commandInput = document.getElementById('commandInput');
 
     function updateAttempts() {
-        if (attemptSpan) attemptSpan.innerText = `[ ATTEMPTS: ${attemptCount} ]`;
+        if (attemptSpan) attemptSpan.innerText = '[ ATTEMPTS: ' + attemptCount + ' ]';
     }
 
     function flashKey(element) {
@@ -350,6 +347,7 @@
             e.preventDefault();
             if (!vKeyHeld) {
                 vKeyHeld = true;
+                const keyVDiv = document.getElementById('keyV');
                 if (keyVDiv) flashKey(keyVDiv);
             }
         }
@@ -358,6 +356,7 @@
             e.preventDefault();
             if (!sKeyHeld) {
                 sKeyHeld = true;
+                const keySDiv = document.getElementById('keyS');
                 if (keySDiv) flashKey(keySDiv);
             }
         }
@@ -394,9 +393,12 @@
     
     const matrixSpan = document.getElementById('matrixText');
     let matrixStrings = [
-        ">_ access denied", ">_ allow V+S", ">_ perm_17", 
-        "01110000 01100001 01110011 01101000 01100001", 
-        ">>> WAITING", ">_ v+s = bio", "pasha_17_perm"
+        ">_ access denied",
+        ">_ allow V+S", 
+        ">_ perm_17", 
+        "01110000 01100001 01110011 01101000 01100001",
+        ">_ waiting",
+        ">_ v+s = bio"
     ];
     let idx = 0;
     setInterval(() => {
