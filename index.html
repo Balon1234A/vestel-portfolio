@@ -363,7 +363,6 @@
 <div class="terminal-container">
     <div class="skull-card">
         <div class="rank-badge">
-            <span class="badge-icon">⚔️</span>
             <span>VESTEL.BIO</span>
         </div>
         <h1>A beautiful night</h1>
@@ -403,12 +402,12 @@
 <!-- модальное окно (досье) -->
 <div id="dossierModal" class="modal-army">
     <div class="modal-content">
-        <h3 style="margin-bottom: 1rem;">⚔️ ARMY DOSSIER</h3>
-        <div class="info-row" style="justify-content:center; gap: 1rem; flex-wrap:wrap;">CURATOR: PAVEL</div>
-        <div class="info-row" style="justify-content:center;">RANK: BONE CAPTAIN</div>
-        <div class="info-row" style="justify-content:center;">UNIT: SKELETON ARMY (CURATOR DIVISION)</div>
+        <h3 style="margin-bottom: 1rem;">VESTEL DOSSIER</h3>
+        <div class="info-row" style="justify-content:center; gap: 1rem; flex-wrap:wrap;">NAME: PAVEL</div>
+        <div class="info-row" style="justify-content:center;">TG: VEST_ELL</div>
+        <div class="info-row" style="justify-content:center;">DC: VEST_EL</div>
         <div class="info-row" style="justify-content:center;">TASKS: COORDINATION, TACTICAL LOGS</div>
-        <div class="info-row" style="justify-content:center;">STATUS: ACTIVE / PERM FRONT</div>
+        <div class="info-row" style="justify-content:center;">STATUS: SLEEP MAN</div>
         <button class="close-modal-btn" id="closeModalBtn">⟡ CLOSE TERMINAL ⟡</button>
     </div>
 </div>
@@ -704,7 +703,7 @@
         const label = document.getElementById('statusLabel');
         if (hour >= 8 && hour < 22) {
             dot.className = 'status-dot status-active';
-            label.innerText = 'ACTIVE DUTY';
+            label.innerText = 'SLEEP';
         } else if (hour >= 22 || hour < 3) {
             dot.className = 'status-dot';
             dot.style.background = '#4a4a4a';
