@@ -364,23 +364,23 @@
     <div class="skull-card">
         <div class="rank-badge">
             <span class="badge-icon">⚔️</span>
-            <span>SKELETON ARMY // CURATOR TIER-3</span>
+            <span>VESTEL.BIO</span>
         </div>
-        <h1>SCELETON CURATOR</h1>
+        <h1>A beautiful night</h1>
         <div class="title-role">⟡ OPERATIVE: PAVEL | CURATOR | PERM DIVISION ⟡</div>
 
         <div class="info-grid">
-            <div class="info-row"><span class="info-label">CODENAME</span><span class="info-value">GRAVEKEEPER</span></div>
+            <div class="info-row"><span class="info-label">MAIN NICK</span><span class="info-value">VEST_EL</span></div>
             <div class="info-row"><span class="info-label">AGE</span><span class="info-value">17</span></div>
-            <div class="info-row"><span class="info-label">LOCATION</span><span class="info-value">PERM // HQ RU</span></div>
-            <div class="info-row"><span class="info-label">ROLE</span><span class="info-value">CURATOR @ SCELETON ARMY</span></div>
-            <div class="info-row"><span class="info-label">STATUS</span><span class="info-value"><span class="status-dot" id="statusDot"></span><span id="statusLabel">ACTIVE DUTY</span></span></div>
+            <div class="info-row"><span class="info-label">LOCATION</span><span class="info-value">PERM // RU</span></div>
+            <div class="info-row"><span class="info-label">ROLE</span><span class="info-value">SCELETON ARMY / CURATOR </span></div>
+            <div class="info-row"><span class="info-label">STATUS</span><span class="info-value"><span class="status-dot" id="statusDot"></span><span id="statusLabel">SLEEP</span></span></div>
         </div>
 
         <!-- ИГРОВЫЕ ЧАСЫ + открытие часов игры -->
         <div class="game-clock-section" id="gameClockSection">
             <div class="clock-header">
-                <span>⟡ ARMY TIMEKEEPER</span>
+                <span>⟡ VEST TIMEKEEPER</span>
                 <span id="sessionLabel">SESSION OPEN</span>
             </div>
             <div class="time-display" id="clockDisplay">00:00:00</div>
@@ -394,7 +394,7 @@
 
         <!-- расписание куратора -->
         <div id="schedulePanel" class="schedule-panel">
-            <div class="schedule-title">✧ OPERATING HOURS (SCELETON ARMY) ✧</div>
+            <div class="schedule-title">✧ OPERATING HOURS ✧</div>
             <div class="schedule-grid" id="scheduleGrid"></div>
         </div>
     </div>
@@ -616,7 +616,7 @@
         const elapsedMinutes = Math.floor((elapsedMs % 3600000) / 60000);
         const sessionElem = document.getElementById('sessionTimer');
         if (sessionElem) {
-            sessionElem.innerText = `🎮 игровая сессия: ${elapsedHours} ч ${elapsedMinutes} мин`;
+            sessionElem.innerText = `Gaming session: ${elapsedHours} ч ${elapsedMinutes} мин`;
         }
     }
     
